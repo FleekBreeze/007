@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>007 — Pixel Spy</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --panel: #12121a;
+    --border: #2a2a3a;
+    --gold: #f5c518;
+    --gold2: #8b6e00;
+    --red: #e63946;
+    --red2: #8b1c24;
+    --green: #2dc653;
+    --green2: #166b2b;
+    --blue: #4cc9f0;
+    --blue2: #1a6d8a;
+    --white: #eaeaea;
+    --gray: #555570;
+    --purple: #b57bee;
+    --purple2: #5a2d8a;
+    --orange: #f4a261;
+    --orange2: #8b4e1c;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html, body {
+    width:100%; height:100%;
+    background:var(--bg);
+    font-family:'Press Start 2P',monospace;
+    color:var(--white);
+    overflow:hidden;
+    touch-action:manipulation;
+  }
+
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);
+    pointer-events:none; z-index:9999;
+  }
+
+  /* ── SCREENS ── */
+  .screen {
+    display:none; position:fixed; inset:0;
+    flex-direction:column; align-items:center; justify-content:flex-start;
+    overflow:hidden; z-index:1;
+  }
+  .screen.active { display:flex; }
+
+  /* ── TITLE ── */
+  #screen-title { justify-content:center; gap:clamp(10px,3vh,26px); padding:20px; }
+
+  .title-logo { text-align:center; animation:flicker 5s infinite; }
+  .title-logo .big {
+    display:block; font-size:clamp(36px,10vw,80px); color:var(--gold);
+    text-shadow:0 0 10px var(--gold),0 0 30px rgba(245,197,24,0.3); letter-spacing:10px;
+  }
+  .title-logo .sub {
+    display:block; font-size:clamp(7px,1.8vw,12px); color:var(--gray); letter-spacing:5px; margin-top:6px;
+  }
+  @keyframes flicker { 0%,93%,100%{opacity:1} 94%{opacity:0.6} 95%{opacity:1} 97%{opacity:0.4} 98%{opacity:1} }
+
+  .pixel-spy { font-size:clamp(48px,12vw,80px); animation:bobbing 2s ease-in-out infinite; }
+  @keyframes bobbing { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+  .menu-btns { display:flex; flex-direction:column; gap:10px; width:100%; max-width:280px; }
+  .title-coins { font-size:clamp(6px,1.5vw,9px); color:var(--gray); }
+  .title-coins span { color:var(--gold); }
+
+  /* ── BUTTONS ── */
+  .px-btn {
+    font-family:'Press Start 2P',monospace; font-size:clamp(8px,1.8vw,11px);
+    padding:12px 16px; background:var(--panel); color:var(--gold);
+    border:3px solid var(--gold); cursor:pointer; letter-spacing:1px;
+    transition:all 0.08s; box-shadow:3px 3px 0 var(--gold2);
+    width:100%; text-align:center; -webkit-tap-highlight-color:transparent;
+  }
+  .px-btn:hover,.px-btn:active { background:var(--gold); color:var(--bg); transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--gold2); }
+  .px-btn.gray  { color:var(--gray); border-color:var(--gray); box-shadow:3px 3px 0 #333; }
+  .px-btn.gray:hover,.px-btn.gray:active  { background:var(--gray); color:var(--bg); }
+  .px-btn.red   { color:var(--red); border-color:var(--red); box-shadow:3px 3px 0 var(--red2); }
+  .px-btn.red:hover,.px-btn.red:active   { background:var(--red); color:#fff; }
+  .px-btn.green { color:var(--green); border-color:var(--green); box-shadow:3px 3px 0 var(--green2); }
+  .px-btn.green:hover,.px-btn.green:active { background:var(--green); color:#fff; }
+  .px-btn.blue  { color:var(--blue); border-color:var(--blue); box-shadow:3px 3px 0 var(--blue2); }
+  .px-btn.blue:hover,.px-btn.blue:active  { background:var(--blue); color:#fff; }
+  .px-btn.purple { color:var(--purple); border-color:var(--purple); box-shadow:3px 3px 0 var(--purple2); }
+  .px-btn.purple:hover,.px-btn.purple:active { background:var(--purple); color:#fff; }
+  .px-btn:disabled { opacity:0.3; cursor:not-allowed; transform:none !important; }
+  .px-btn.sm { font-size:clamp(6px,1.4vw,9px); padding:8px 10px; }
+
+  /* ── LEVELS ── */
+  #screen-levels { gap:10px; padding:12px; }
+  .levels-header { display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px; flex-shrink:0; }
+  .levels-title  { font-size:clamp(10px,2.5vw,15px); color:var(--gold); letter-spacing:2px; }
+  .levels-scroll { width:100%; flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; }
+  .levels-grid   { display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; padding-bottom:8px; }
+  .level-card {
+    background:var(--panel); border:3px solid var(--border); padding:10px 6px;
+    display:flex; flex-direction:column; align-items:center; gap:5px;
+    cursor:pointer; transition:all 0.08s; box-shadow:3px 3px 0 var(--border);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .level-card:hover:not(.locked) { border-color:var(--gold); transform:translate(-1px,-1px); }
+  .level-card.locked  { opacity:0.35; cursor:not-allowed; }
+  .level-card.current { border-color:var(--blue); }
+  .level-card .lv-icon { font-size:22px; }
+  .level-card .lv-num  { font-size:12px; color:var(--gold); }
+  .level-card .lv-name { font-size:5px; color:var(--white); text-align:center; }
+  .level-card .lv-diff { font-size:5px; color:var(--gray); }
+
+  /* ── GAME ── */
+  #screen-game { justify-content:space-between; padding:6px 8px; gap:4px; }
+
+  .top-bar {
+    display:flex; justify-content:space-between; align-items:center; width:100%;
+    font-size:clamp(6px,1.5vw,9px); color:var(--gray); flex-shrink:0;
+  }
+  .top-bar .coins { color:var(--gold); }
+  .top-bar .level { color:var(--blue); }
+
+  .arena { display:grid; grid-template-columns:1fr auto 1fr; gap:6px; width:100%; flex-shrink:0; }
+
+  .fighter-card {
+    background:var(--panel); border:2px solid var(--border);
+    padding:clamp(5px,1.5vw,10px);
+    display:flex; flex-direction:column; align-items:center; gap:clamp(2px,1vh,5px);
+  }
+  .fighter-card.player-card { border-color:var(--blue); }
+  .fighter-card.enemy-card  { border-color:var(--red); }
+
+  .fighter-name {
+    font-size:clamp(5px,1.2vw,7px); letter-spacing:1px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
+  }
+  .player-card .fighter-name { color:var(--blue); }
+  .enemy-card  .fighter-name { color:var(--red); }
+
+  .fighter-sprite { font-size:clamp(26px,6.5vw,44px); line-height:1; }
+  .fighter-sprite.hit    { animation:hit-flash 0.4s; }
+  .fighter-sprite.attack { animation:atk 0.35s; }
+  @keyframes hit-flash { 0%,100%{filter:none} 50%{filter:brightness(4) saturate(0)} }
+  @keyframes atk { 0%,100%{transform:translateX(0)} 35%{transform:translateX(14px)} }
+  .enemy-card .fighter-sprite { transform:scaleX(-1); }
+  .enemy-card .fighter-sprite.attack { animation:atk-e 0.35s; }
+  @keyframes atk-e { 0%,100%{transform:scaleX(-1)} 35%{transform:scaleX(-1) translateX(14px)} }
+
+  .hearts { display:flex; gap:2px; flex-wrap:wrap; justify-content:center; }
+  .heart  { font-size:clamp(9px,2.3vw,13px); }
+  .heart.lost { filter:grayscale(1); opacity:0.22; }
+
+  .bullets-bar { display:flex; gap:2px; flex-wrap:wrap; justify-content:center; min-height:12px; }
+  .bullet-pip { width:5px; height:11px; background:var(--gold); clip-path:polygon(50% 0%,100% 20%,100% 100%,0% 100%,0% 20%); }
+  .bullet-pip.empty { background:var(--gray); opacity:0.22; }
+
+  .status-badge {
+    font-size:clamp(5px,1.1vw,7px); padding:3px 5px;
+    background:var(--border); color:var(--gray); text-align:center; white-space:nowrap;
+  }
+  .status-badge.defending { background:#0a3a1a; color:var(--green); }
+  .status-badge.reloading { background:#1a2a0a; color:#aacc44; }
+  .status-badge.shooting  { background:#3a0a0a; color:var(--red); }
+
+  .vs-area { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding-top:18px; }
+  .vs-txt  { font-size:clamp(11px,3vw,17px); color:var(--gold); text-shadow:0 0 6px var(--gold); }
+
+  .result-banner {
+    font-size:clamp(6px,1.4vw,8px); text-align:center; padding:7px 9px;
+    border:2px solid var(--gold); background:var(--panel); width:100%;
+    color:var(--white); letter-spacing:1px; line-height:1.9; flex-shrink:0;
+    min-height:clamp(34px,8vh,52px); display:flex; align-items:center; justify-content:center;
+  }
+
+  .action-area { display:flex; flex-direction:column; gap:5px; width:100%; align-items:center; flex-shrink:0; }
+  .action-row  { display:flex; gap:7px; justify-content:center; width:100%; }
+
+  .action-btn {
+    font-family:'Press Start 2P',monospace; font-size:clamp(6px,1.3vw,8px);
+    padding:clamp(7px,1.8vh,11px) clamp(6px,1.8vw,12px);
+    background:var(--panel); border:2px solid var(--border); color:var(--white);
+    cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px;
+    transition:all 0.08s; flex:1; max-width:115px; box-shadow:2px 2px 0 var(--border);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .action-btn .icon { font-size:clamp(16px,4.5vw,24px); }
+  .action-btn:hover:not(:disabled),.action-btn:active:not(:disabled) { transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--border); }
+  .action-btn:disabled { opacity:0.22; cursor:not-allowed; }
+  .action-btn.shoot  { border-color:var(--red);   color:var(--red);   box-shadow:2px 2px 0 var(--red2); }
+  .action-btn.reload { border-color:var(--gold);  color:var(--gold);  box-shadow:2px 2px 0 var(--gold2); }
+  .action-btn.defend { border-color:var(--green); color:var(--green); box-shadow:2px 2px 0 var(--green2); }
+  .action-btn.shoot:hover:not(:disabled)  { background:#2a0a0a; }
+  .action-btn.reload:hover:not(:disabled) { background:#1a1500; }
+  .action-btn.defend:hover:not(:disabled) { background:#0a1a0a; }
+
+  .round-info { font-size:clamp(5px,1.2vw,7px); color:var(--gray); text-align:center; line-height:1.9; white-space:pre-line; }
+
+  .game-btns { display:flex; gap:8px; width:100%; justify-content:center; flex-shrink:0; }
+
+  /* ── BAG ── */
+  .bag-row {
+    display:flex; gap:4px; flex-wrap:wrap; justify-content:center;
+    min-height:14px; width:100%; flex-shrink:0;
+  }
+  .bag-btn {
+    font-family:'Press Start 2P',monospace; font-size:clamp(5px,1.2vw,7px);
+    padding:3px 5px; background:var(--panel); border:2px solid var(--purple);
+    color:var(--purple); cursor:pointer; display:flex; align-items:center; gap:3px;
+    -webkit-tap-highlight-color:transparent; transition:all 0.08s;
+  }
+  .bag-btn:hover { background:var(--purple); color:#fff; }
+  .bag-btn .bag-qty { font-size:5px; color:var(--gold); }
+  .bag-empty { font-size:clamp(5px,1.1vw,7px); color:var(--gray); }
+
+  /* ── SHOP ── */
+  #screen-shop { gap:8px; padding:10px; }
+  .shop-header { display:flex; justify-content:space-between; align-items:center; width:100%; flex-shrink:0; }
+  .shop-title  { font-size:clamp(10px,2.5vw,15px); color:var(--gold); letter-spacing:3px; }
+  .shop-coins  { font-size:clamp(7px,1.6vw,10px); color:var(--gold); }
+
+  .shop-tabs { display:flex; width:100%; flex-shrink:0; }
+  .shop-tab {
+    font-family:'Press Start 2P',monospace; font-size:clamp(5px,1.2vw,7px);
+    padding:7px 3px; background:var(--panel); border:2px solid var(--border);
+    color:var(--gray); cursor:pointer; flex:1; text-align:center; border-bottom:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .shop-tab.active { color:var(--gold); border-color:var(--gold); background:#1a1500; }
+
+  .shop-scroll {
+    flex:1; width:100%; overflow-y:auto; overflow-x:hidden;
+    -webkit-overflow-scrolling:touch; background:var(--panel);
+    border:2px solid var(--border); padding:10px;
+  }
+  .shop-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px; }
+
+  .shop-item {
+    background:var(--bg); border:2px solid var(--border); padding:9px 7px;
+    display:flex; flex-direction:column; align-items:center; gap:5px;
+    cursor:pointer; transition:all 0.08s; position:relative;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .shop-item:hover { border-color:var(--gold); }
+  .shop-item.owned    { border-color:var(--green); }
+  .shop-item.equipped { border-color:var(--blue); background:#0a0f1a; }
+  .shop-item.in-bag   { border-color:var(--purple); background:#0f0a1a; }
+  .shop-item .item-icon  { font-size:24px; }
+  .shop-item .item-name  { font-size:6px; color:var(--white); text-align:center; letter-spacing:1px; }
+  .shop-item .item-desc  { font-size:5px; color:var(--gray); text-align:center; line-height:1.7; white-space:pre-line; }
+  .shop-item .item-price { font-size:7px; color:var(--gold); }
+  .shop-item .item-price.owned-lbl    { color:var(--green); }
+  .shop-item .item-price.equipped-lbl { color:var(--blue); }
+  .shop-item .item-price.bag-lbl      { color:var(--purple); }
+  .shop-item .owned-badge { position:absolute; top:3px; right:3px; font-size:5px; background:var(--green); color:#000; padding:1px 3px; }
+  .shop-item .bag-badge   { position:absolute; top:3px; right:3px; font-size:5px; background:var(--purple); color:#fff; padding:1px 3px; }
+
+  /* ── GAME OVER ── */
+  #screen-gameover { justify-content:center; gap:clamp(10px,3vh,22px); padding:20px; }
+  .go-title { font-size:clamp(18px,6vw,46px); animation:blink 1s step-end infinite; }
+  .go-title.win  { color:var(--gold); }
+  .go-title.lose { color:var(--red); }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .go-emoji { font-size:clamp(40px,10vw,70px); }
+  .go-stats { font-size:clamp(6px,1.5vw,9px); color:var(--gray); text-align:center; line-height:2.4; white-space:pre-line; }
+  .go-coins { font-size:clamp(8px,2vw,12px); color:var(--gold); }
+  .go-btns  { display:flex; flex-direction:column; gap:9px; width:100%; max-width:250px; }
+
+  /* ── MODAL (Save + Regras) ── */
+  .modal-bg {
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88);
+    z-index:500; align-items:center; justify-content:center; padding:16px;
+  }
+  .modal-bg.open { display:flex; }
+  .modal {
+    background:var(--panel); border:3px solid var(--gold);
+    padding:18px; width:100%; max-width:380px;
+    display:flex; flex-direction:column; gap:12px;
+    box-shadow:5px 5px 0 var(--gold2);
+    max-height:90vh; overflow-y:auto;
+  }
+  .modal-title   { font-size:clamp(9px,2.5vw,13px); color:var(--gold); letter-spacing:2px; }
+  .modal-section { display:flex; flex-direction:column; gap:7px; }
+  .modal-label   { font-size:clamp(6px,1.4vw,8px); color:var(--gray); }
+  .modal textarea {
+    font-family:'Press Start 2P',monospace; font-size:6px;
+    background:var(--bg); border:2px solid var(--border);
+    color:var(--green); padding:7px; resize:none; height:70px; width:100%; outline:none;
+  }
+  .modal-row { display:flex; gap:7px; }
+
+  /* rules modal */
+  .rules-block { display:flex; flex-direction:column; gap:10px; }
+  .rules-section-title { font-size:clamp(7px,1.8vw,9px); color:var(--gold); border-bottom:1px solid var(--border); padding-bottom:5px; }
+  .rules-line { font-size:clamp(5px,1.2vw,7px); color:var(--white); line-height:2.2; display:flex; gap:6px; }
+  .rules-line span.lbl { color:var(--gold); min-width:18px; }
+  .rules-note { font-size:clamp(5px,1.1vw,6px); color:var(--gray); line-height:2; margin-top:2px; }
+
+  /* ── NOTIF ── */
+  .notif {
+    position:fixed; top:14px; left:50%;
+    transform:translateX(-50%) translateY(-100px);
+    background:var(--panel); border:2px solid var(--gold); color:var(--gold);
+    font-family:'Press Start 2P',monospace; font-size:clamp(7px,1.8vw,9px);
+    padding:9px 14px; z-index:1000; transition:transform 0.25s;
+    text-align:center; max-width:min(290px,90vw); pointer-events:none;
+  }
+  .notif.show  { transform:translateX(-50%) translateY(0); }
+  .notif.red   { border-color:var(--red); color:var(--red); }
+  .notif.green { border-color:var(--green); color:var(--green); }
+  .notif.purple { border-color:var(--purple); color:var(--purple); }
+
+  .level-flash { position:fixed; inset:0; background:var(--gold); opacity:0; pointer-events:none; z-index:400; }
+  .level-flash.flash { animation:flash-anim 0.5s; }
+  @keyframes flash-anim { 0%{opacity:0.5} 100%{opacity:0} }
+
+  .coin-float {
+    position:fixed; font-family:'Press Start 2P',monospace; font-size:11px;
+    pointer-events:none; z-index:999; animation:floatUp 1.4s forwards;
+  }
+  @keyframes floatUp { 0%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-65px)} }
+
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:var(--border); }
+</style>
+</head>
+<body>
+
+<div class="level-flash" id="levelFlash"></div>
+<div class="notif" id="notif"></div>
+
+<!-- ═══ SAVE / LOAD MODAL ═══ -->
+<div class="modal-bg" id="saveModal">
+  <div class="modal">
+    <div class="modal-title">💾 GUARDAR / CARREGAR</div>
+
+    <div class="modal-section">
+      <div class="modal-label">▼ EXPORTAR — copia ou descarrega:</div>
+      <textarea id="saveOutput" readonly onclick="this.select()" placeholder="Clica em GERAR SAVE..."></textarea>
+      <div class="modal-row">
+        <button class="px-btn green sm" onclick="exportSave()" style="flex:1">📋 GERAR</button>
+        <button class="px-btn sm" onclick="downloadSave()" style="flex:1">⬇ .TXT</button>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-label">▲ IMPORTAR — cola ou abre ficheiro:</div>
+      <textarea id="saveInput" placeholder="Cola aqui o teu save..."></textarea>
+      <div class="modal-row">
+        <button class="px-btn blue sm" onclick="loadFromText()" style="flex:1">✅ CARREGAR</button>
+        <label class="px-btn blue sm" style="flex:1;cursor:pointer;text-align:center;display:flex;align-items:center;justify-content:center">
+          📁 ABRIR .TXT
+          <input type="file" accept=".txt" onchange="loadFromFile(event)" style="display:none">
+        </label>
+      </div>
+    </div>
+
+    <button class="px-btn gray sm" onclick="closeSaveModal()">✕ FECHAR</button>
+  </div>
+</div>
+
+<!-- ═══ REGRAS MODAL ═══ -->
+<div class="modal-bg" id="rulesModal">
+  <div class="modal">
+    <div class="modal-title">📖 REGRAS — 007</div>
+    <div class="rules-block">
+
+      <div>
+        <div class="rules-section-title">🎯 OBJETIVO</div>
+        <div class="rules-line">Reduzir as vidas do inimigo a zero antes de ele reduzir as tuas.</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title">⚡ AÇÕES POR RONDA</div>
+        <div class="rules-line"><span class="lbl">🔄</span> RECARREGAR — +1 bala (+2 com Double Reload). Não disponível se a arma já estiver cheia!</div>
+        <div class="rules-line"><span class="lbl">🛡️</span> DEFENDER — bloqueia disparos do inimigo nessa ronda.</div>
+        <div class="rules-line"><span class="lbl">🔫</span> DISPARAR — usa 1 bala para atacar. Bloqueado na Ronda 1!</div>
+        <div class="rules-note">Ambos escolhem em simultâneo. A IA revela depois.</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title">💥 DUELO (ambos disparam)</div>
+        <div class="rules-line"><span class="lbl">▸</span> Mais balas → vence, inimigo perde vida.</div>
+        <div class="rules-line"><span class="lbl">▸</span> Igual → empate, balas gastas, ninguém morre.</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title">🎒 BAG DE ITENS</div>
+        <div class="rules-line"><span class="lbl">🟣</span> Utilitys e Skills ficam na tua bag após compra.</div>
+        <div class="rules-line"><span class="lbl">🟣</span> Clica nos botões da bag durante a batalha para usar quando quiseres.</div>
+        <div class="rules-line"><span class="lbl">🟣</span> Utilitys podem ser compradas várias vezes e acumulam na bag.</div>
+        <div class="rules-line"><span class="lbl">🟣</span> Skills duram toda a batalha mas são gastas no fim do nível.</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title">🔫 ARMAS &amp; SKINS</div>
+        <div class="rules-line"><span class="lbl">▸</span> Armas e Skins compram-se uma vez e equipam-se na loja.</div>
+        <div class="rules-line"><span class="lbl">▸</span> Só podes ter uma arma equipada de cada vez.</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title">💀 PERDER UMA VIDA</div>
+        <div class="rules-line"><span class="lbl">▸</span> Ao perderes uma vida, as tuas balas são reiniciadas a zero!</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title">💰 MOEDAS</div>
+        <div class="rules-line"><span class="lbl">🏆</span> Vitória +2 🪙</div>
+        <div class="rules-line"><span class="lbl">💀</span> Derrota -1 🪙</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title">💾 SAVE</div>
+        <div class="rules-line">Exporta um ficheiro .txt e importa para continuar o teu progresso.</div>
+      </div>
+
+    </div>
+    <button class="px-btn gray sm" onclick="closeRulesModal()">✕ FECHAR</button>
+  </div>
+</div>
+
+<!-- ═══ TITLE ═══ -->
+<div class="screen active" id="screen-title">
+  <div class="title-logo">
+    <span class="big">007</span>
+    <span class="sub">PIXEL SPY</span>
+  </div>
+  <div class="pixel-spy" id="titleSpy">🕵️</div>
+  <div class="menu-btns">
+    <button class="px-btn" onclick="showScreen('screen-levels')">▶ JOGAR</button>
+    <button class="px-btn blue" onclick="goShop('screen-title')">🛒 LOJA</button>
+    <button class="px-btn gray" onclick="openSaveModal()">💾 SAVE / LOAD</button>
+    <button class="px-btn gray" onclick="openRulesModal()">? REGRAS</button>
+    <button class="px-btn red" onclick="confirmReset()">🗑️ RECOMEÇAR</button>
+  </div>
+  <div class="title-coins">MOEDAS: <span id="titleCoins">10</span> 🪙 &nbsp;|&nbsp; NÍV MÁX: <span id="titleMaxLvl" style="color:var(--blue)">1</span></div>
+</div>
+
+<!-- ═══ LEVELS ═══ -->
+<div class="screen" id="screen-levels">
+  <div class="levels-header">
+    <div class="levels-title">⚔️ ESCOLHE</div>
+    <div style="font-size:7px;color:var(--gold)">🪙 <span id="levelsCoins">10</span></div>
+    <button class="px-btn gray sm" onclick="showScreen('screen-title')" style="width:auto">← VOLTAR</button>
+  </div>
+  <div class="levels-scroll">
+    <div class="levels-grid" id="levelsGrid"></div>
+  </div>
+</div>
+
+<!-- ═══ GAME ═══ -->
+<div class="screen" id="screen-game">
+  <div class="top-bar">
+    <div class="coins">🪙 <span id="hud-coins">10</span></div>
+    <div class="level">LV <span id="hud-level">1</span></div>
+    <div>RONDA <span id="hud-round" style="color:var(--white)">1</span></div>
+  </div>
+
+  <div class="arena">
+    <div class="fighter-card player-card">
+      <div class="fighter-name">🕵️ AGENTE</div>
+      <div class="fighter-sprite" id="playerSprite">🕵️</div>
+      <div class="hearts" id="playerHearts"></div>
+      <div class="bullets-bar" id="playerBullets"></div>
+      <div class="status-badge" id="playerStatus">— AGUARDA —</div>
+    </div>
+    <div class="vs-area">
+      <div class="vs-txt">VS</div>
+    </div>
+    <div class="fighter-card enemy-card">
+      <div class="fighter-name" id="enemyName">👤 INIMIGO</div>
+      <div class="fighter-sprite" id="enemySprite">👤</div>
+      <div class="hearts" id="enemyHearts"></div>
+      <div class="bullets-bar" id="enemyBullets"></div>
+      <div class="status-badge" id="enemyStatus">— AGUARDA —</div>
+    </div>
+  </div>
+
+  <div class="result-banner" id="resultBanner">Escolhe a tua ação!</div>
+
+  <!-- BAG -->
+  <div class="bag-row" id="bagRow"></div>
+
+  <div class="action-area">
+    <div class="action-row">
+      <button class="action-btn reload" id="btn-reload" onclick="playerAction('reload')">
+        <span class="icon">🔄</span><span>RECARREGAR</span>
+      </button>
+      <button class="action-btn defend" id="btn-defend" onclick="playerAction('defend')">
+        <span class="icon">🛡️</span><span>DEFENDER</span>
+      </button>
+      <button class="action-btn shoot" id="btn-shoot" onclick="playerAction('shoot')">
+        <span class="icon">🔫</span><span>DISPARAR</span>
+      </button>
+    </div>
+    <div class="round-info" id="roundInfo">Ronda 1 — só podes recarregar ou defender!</div>
+  </div>
+
+  <div class="game-btns">
+    <button class="px-btn blue sm" onclick="goShop('screen-game')" style="flex:1;max-width:130px">🛒 LOJA</button>
+    <button class="px-btn gray sm" onclick="confirmQuit()" style="flex:1;max-width:130px">✕ SAIR</button>
+  </div>
+</div>
+
+<!-- ═══ SHOP ═══ -->
+<div class="screen" id="screen-shop">
+  <div class="shop-header">
+    <div class="shop-title">🛒 ARSENAL</div>
+    <div class="shop-coins">🪙 <span id="shopCoins">10</span></div>
+    <button class="px-btn gray sm" onclick="goBackFromShop()" style="width:auto">← VOLTAR</button>
+  </div>
+  <div class="shop-tabs">
+    <button class="shop-tab active" onclick="switchTab('weapons')">🔫 ARMAS</button>
+    <button class="shop-tab" onclick="switchTab('utilitys')">🎒 UTILITY</button>
+    <button class="shop-tab" onclick="switchTab('skills')">⚡ SKILLS</button>
+    <button class="shop-tab" onclick="switchTab('skins')">🎨 SKINS</button>
+  </div>
+  <div class="shop-scroll">
+    <div class="shop-grid" id="shopGrid"></div>
+  </div>
+</div>
+
+<!-- ═══ RESET MODAL ═══ -->
+<div class="modal-bg" id="resetModal">
+  <div class="modal">
+    <div class="modal-title">🗑️ RECOMEÇAR?</div>
+    <div class="modal-section">
+      <div class="modal-label">Isto irá apagar <span style="color:var(--red)">todo o progresso</span>:</div>
+      <div class="modal-label" style="line-height:2.2">— Moedas<br>— Níveis desbloqueados<br>— Itens comprados<br>— Bag de itens</div>
+      <div class="modal-label" style="color:var(--red)">Esta ação é irreversível!</div>
+    </div>
+    <div class="modal-row">
+      <button class="px-btn red sm" onclick="executeReset()" style="flex:1">🗑️ APAGAR TUDO</button>
+      <button class="px-btn green sm" onclick="closeResetModal()" style="flex:1">← CANCELAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ QUIT MODAL ═══ -->
+<div class="modal-bg" id="quitModal">
+  <div class="modal">
+    <div class="modal-title">⚠️ DESISTIR?</div>
+    <div class="modal-section">
+      <div class="modal-label">Se saíres agora perdes <span style="color:var(--red)">1 🪙</span> e a batalha é perdida.</div>
+      <div class="modal-label">Tens a certeza?</div>
+    </div>
+    <div class="modal-row">
+      <button class="px-btn red sm" onclick="closeQuitModal();endGame('lose')" style="flex:1">💀 DESISTIR</button>
+      <button class="px-btn green sm" onclick="closeQuitModal()" style="flex:1">⚔️ CONTINUAR</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="screen" id="screen-gameover">
+  <div class="go-title" id="goTitle">GAME OVER</div>
+  <div class="go-emoji" id="goEmoji">💀</div>
+  <div class="go-stats" id="goStats"></div>
+  <div class="go-coins" id="goCoins"></div>
+  <div class="go-btns">
+    <button class="px-btn green" onclick="showScreen('screen-levels')">▶ JOGAR NOVAMENTE</button>
+    <button class="px-btn blue" onclick="goShop('screen-gameover')">🛒 LOJA</button>
+    <button class="px-btn gray" onclick="openSaveModal()">💾 SAVE / LOAD</button>
+    <button class="px-btn gray" onclick="showScreen('screen-title')">🏠 INÍCIO</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// SAVE SYSTEM
+// ═══════════════════════════════════════════
+const SAVE_VER = '3';
+
+function serializeSave(st) {
+  const obj = { v:SAVE_VER, coins:st.coins, maxLvl:st.unlockedLevels, owned:st.owned, equipped:st.equipped, bag:st.bag };
+  return '=== 007 PIXEL SPY SAVE ===\n' + btoa(unescape(encodeURIComponent(JSON.stringify(obj)))) + '\n=== END ===';
+}
+
+function deserializeSave(txt) {
+  try {
+    const match = txt.match(/=== 007 PIXEL SPY SAVE ===\s*([\w+/=]+)\s*=== END ===/);
+    if (!match) throw new Error('fmt');
+    const obj = JSON.parse(decodeURIComponent(escape(atob(match[1]))));
+    return obj;
+  } catch(e) { return null; }
+}
+
+function exportSave() {
+  document.getElementById('saveOutput').value = serializeSave(state);
+  document.getElementById('saveOutput').select();
+}
+
+function downloadSave() {
+  exportSave();
+  const blob = new Blob([document.getElementById('saveOutput').value], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '007pixelspy_save.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showNotif('✅ Ficheiro descarregado!', 'green');
+}
+
+function loadFromText() {
+  const txt = document.getElementById('saveInput').value.trim();
+  if (!txt) { showNotif('Cola um save primeiro!', 'red'); return; }
+  applySave(txt);
+}
+
+function loadFromFile(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => applySave(e.target.result);
+  reader.readAsText(file);
+  evt.target.value = '';
+}
+
+function applySave(txt) {
+  const obj = deserializeSave(txt);
+  if (!obj) { showNotif('Save inválido ou corrompido!', 'red'); return; }
+  state.coins          = obj.coins   ?? 10;
+  state.unlockedLevels = obj.maxLvl  ?? 1;
+  state.owned          = obj.owned   ?? [];
+  state.equipped       = obj.equipped ?? {};
+  state.bag            = obj.bag     ?? {};
+  save();
+  closeSaveModal();
+  showNotif('✅ Save carregado!', 'green');
+  showScreen('screen-title');
+}
+
+function openSaveModal()  { document.getElementById('saveModal').classList.add('open'); document.getElementById('saveOutput').value=''; document.getElementById('saveInput').value=''; }
+function closeSaveModal() { document.getElementById('saveModal').classList.remove('open'); }
+function openRulesModal() { document.getElementById('rulesModal').classList.add('open'); }
+function closeRulesModal(){ document.getElementById('rulesModal').classList.remove('open'); }
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+const state = {
+  coins:          parseInt(localStorage.getItem('007_coins')    || '10'),
+  unlockedLevels: parseInt(localStorage.getItem('007_maxLevel') || '1'),
+  owned:          JSON.parse(localStorage.getItem('007_owned')    || '[]'),
+  equipped:       JSON.parse(localStorage.getItem('007_equipped') || '{}'),
+  // bag: { itemId: quantity }  — utilitys & skills
+  bag:            JSON.parse(localStorage.getItem('007_bag')      || '{}'),
+};
+
+const game = {
+  level:1, round:1,
+  playerHP:5, enemyHP:5, playerMaxHP:5, enemyMaxHP:5,
+  playerBullets:0, enemyBullets:0, playerMaxBullets:3, enemyMaxBullets:3,
+  gameOver:false, waitingForAction:true,
+  lvData:null, fx:null,
+  playerLastAction:null, enemyLastAction:null,
+  previousScreen:'screen-title',
+  // active skill effects for this battle (from bag usage)
+  activeBattleSkills: {},
+  // locked enemy action for Eye of God preview consistency
+  _lockedEnemyAction: null,
+};
+
+// ═══════════════════════════════════════════
+// SHOP DATA  (novo formato)
+// ═══════════════════════════════════════════
+const SHOP = {
+  weapons:[
+    {id:'usps',             icon:'🔫',name:'USP-S',           desc:'Máx: 5 balas',                      price:10, effect:{maxBullets:5}},
+    {id:'glock',            icon:'🔫',name:'GLOCK',            desc:'Máx: 7 balas',                      price:15, effect:{maxBullets:7}},
+    {id:'shotgun',          icon:'💥',name:'SHOTGUN',           desc:'2 de Damage p/bala',                price:25, effect:{damage:2}},
+    {id:'american_shotgun', icon:'💥',name:'AMERICAN SHOTGUN', desc:'2 de Damage p/bala\nMáx: 5 balas',  price:35, effect:{maxBullets:5,damage:2}},
+    {id:'uzi',              icon:'🔫',name:'UZI',               desc:'Máx: 5 balas\n+1 vida',             price:35, effect:{maxBullets:5,bonusHP:1}},
+    {id:'ak47',             icon:'🔫',name:'AK-47',             desc:'Máx: 5 balas\n+ Double Reload',     price:35, effect:{maxBullets:5,doubleReload:true}},
+    {id:'sniper',           icon:'🎯',name:'SNIPER',            desc:'Perfura\ncolete inimigo',            price:60, effect:{armorPierce:true}},
+  ],
+  utilitys:[
+    {id:'cigarrete',  icon:'🚬',name:'CIGARRETE',  desc:'+1 vida\npor ronda',       price:5,  effect:{bonusHP:1}},
+    {id:'beer',       icon:'🍺',name:'BEER',        desc:'+2 vidas\npor ronda',      price:8,  effect:{bonusHP:2}},
+    {id:'hamsa',      icon:'🪬',name:'HAMSA',       desc:'+3 vidas\npor ronda',      price:10, effect:{bonusHP:3}},
+    {id:'eyeofgod',   icon:'👁️',name:'EYE OF GOD', desc:'Vês a jogada\ndo inimigo', price:5,  effect:{seeEnemy:true}},
+  ],
+  skills:[
+    {id:'double_reload', icon:'⚡', name:'DOUBLE RELOAD', desc:'Recarrega a dobrar',          price:7,  effect:{doubleReload:true}},
+    {id:'helmet',        icon:'⛑️',name:'HELMET 35',      desc:'35% bloqueio\nautomático',    price:7,  effect:{autoBlock:0.35}},
+    {id:'burst_shield',  icon:'💠', name:'BURST SHIELD',  desc:'1x: defender\nE atacar',      price:10, effect:{shieldBurst:true}},
+  ],
+  skins:[
+    {id:'skin_clown',   icon:'🤡',  name:'CLOWN',   desc:'Smile! Why so serius?', price:2,  effect:{sprite:'🤡'}},
+    {id:'skin_merman',  icon:'🧜🏻‍♂️', name:'MERMAN',  desc:'Mermaid? Nah Merman',  price:3,  effect:{sprite:'🧜🏻‍♂️'}},
+    {id:'skin_ralien',  icon:'👾',  name:'RALIEN',  desc:'Retro alien',           price:5,  effect:{sprite:'👾'}},
+    {id:'skin_skull',   icon:'💀',  name:'SKULL',   desc:'We are all the same',  price:7,  effect:{sprite:'💀'}},
+    {id:'skin_hitman',  icon:'🤵🏼‍♂️', name:'HITMAN',  desc:'Kill it',              price:10, effect:{sprite:'🤵🏼‍♂️'}},
+    {id:'skin_lninja',  icon:'🥷',  name:'W NINJA', desc:'White Ninja',          price:12, effect:{sprite:'🥷'}},
+    {id:'skin_dninja',  icon:'🥷🏿', name:'B NINJA', desc:'Black Ninja',          price:12, effect:{sprite:'🥷🏿'}},
+  ],
+};
+
+// Helper: get any item from any category by id
+function getShopItem(id) {
+  for (const cat of Object.values(SHOP)) {
+    const found = cat.find(i=>i.id===id);
+    if (found) return found;
+  }
+  return null;
+}
+
+const LEVEL_DEFS = [
+  {name:'RECRUTA',   icon:'👮',sprite:'👮',difficulty:'FÁCIL',    aiStyle:'random',     hp:5, maxBullets:3},
+  {name:'GUARDA',    icon:'💂',sprite:'💂',difficulty:'FÁCIL+',   aiStyle:'cautious',   hp:5, maxBullets:3},
+  {name:'AGENTE',    icon:'🕵️',sprite:'🕵️',difficulty:'MÉDIO',   aiStyle:'smart',      hp:6, maxBullets:4},
+  {name:'ASSASSINO', icon:'🧛',sprite:'🧛',difficulty:'MÉDIO+',   aiStyle:'aggressive', hp:6, maxBullets:5},
+  {name:'CYBORG',    icon:'🤖',sprite:'🤖',difficulty:'DIFÍCIL',  aiStyle:'adaptive',   hp:7, maxBullets:5},
+  {name:'CHEFE',     icon:'👹',sprite:'👹',difficulty:'DIFÍCIL+', aiStyle:'master',     hp:8, maxBullets:6},
+];
+
+function getLevelData(lvl) {
+  const base = LEVEL_DEFS[Math.min(lvl-1, LEVEL_DEFS.length-1)];
+  if (lvl > LEVEL_DEFS.length) {
+    const extra = lvl - LEVEL_DEFS.length;
+    return { ...base, name:`ÉLITE ${extra}`, icon:'💀', sprite:'💀', difficulty:`ELITE ${extra}`,
+      hp: base.hp + Math.floor(extra*0.6), maxBullets: Math.min(base.maxBullets + Math.floor(extra*0.4), 12) };
+  }
+  return base;
+}
+
+// ═══════════════════════════════════════════
+// PERSIST
+// ═══════════════════════════════════════════
+function save() {
+  localStorage.setItem('007_coins',    state.coins);
+  localStorage.setItem('007_maxLevel', state.unlockedLevels);
+  localStorage.setItem('007_owned',    JSON.stringify(state.owned));
+  localStorage.setItem('007_equipped', JSON.stringify(state.equipped));
+  localStorage.setItem('007_bag',      JSON.stringify(state.bag));
+}
+
+// ═══════════════════════════════════════════
+// SCREENS
+// ═══════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id !== 'screen-shop') game.previousScreen = id;
+  if (id === 'screen-title')  { document.getElementById('titleCoins').textContent=state.coins; document.getElementById('titleMaxLvl').textContent=state.unlockedLevels; document.getElementById('titleSpy').textContent=getPlayerSprite(); }
+  if (id === 'screen-levels') { document.getElementById('levelsCoins').textContent=state.coins; renderLevels(); }
+  if (id === 'screen-shop')   { document.getElementById('shopCoins').textContent=state.coins; renderShop(currentTab); }
+}
+
+function goShop(from)    { game.previousScreen=from; showScreen('screen-shop'); }
+function goBackFromShop(){ showScreen(game.previousScreen||'screen-title'); }
+
+// ═══════════════════════════════════════════
+// LEVELS
+// ═══════════════════════════════════════════
+function renderLevels() {
+  const grid = document.getElementById('levelsGrid');
+  const max  = Math.max(state.unlockedLevels, 1);
+  grid.innerHTML = '';
+  for (let i = 1; i <= max+3; i++) {
+    const d = getLevelData(i);
+    const locked = i > max;
+    const card = document.createElement('div');
+    card.className = 'level-card'+(locked?' locked':'')+(i===max?' current':'');
+    card.innerHTML = `<div class="lv-icon">${d.icon}</div><div class="lv-num">LV ${i}</div><div class="lv-name">${d.name}</div><div class="lv-diff">${locked?'🔒 BLOQUEADO':d.difficulty}</div>`;
+    if (!locked) card.onclick = () => startGame(i);
+    grid.appendChild(card);
+  }
+}
+
+// ═══════════════════════════════════════════
+// EFFECTS
+// ═══════════════════════════════════════════
+function getPlayerSprite() {
+  const id = state.equipped.skins;
+  if (id) { const s=SHOP.skins.find(i=>i.id===id); if(s) return s.effect.sprite; }
+  return '🕵️';
+}
+
+// Base effects from equipped weapon only (no more armor/skills tab)
+function getEquippedWeaponEffects() {
+  const fx = {maxBullets:3, damage:1, bonusHP:0, autoBlock:0, seeEnemy:false, doubleReload:false, armorPierce:false, shieldBurst:false};
+  const wId = state.equipped.weapons;
+  if (wId) {
+    const item = SHOP.weapons.find(i=>i.id===wId);
+    if (item) {
+      const e = item.effect;
+      if (e.maxBullets)   fx.maxBullets   = Math.max(fx.maxBullets, e.maxBullets);
+      if (e.damage)       fx.damage       = e.damage;
+      if (e.bonusHP)      fx.bonusHP     += e.bonusHP;
+      if (e.autoBlock)    fx.autoBlock    = Math.max(fx.autoBlock, e.autoBlock);
+      if (e.seeEnemy)     fx.seeEnemy     = true;
+      if (e.doubleReload) fx.doubleReload = true;
+      if (e.armorPierce)  fx.armorPierce  = true;
+    }
+  }
+  return fx;
+}
+
+// Merge active battle skills into fx
+function getAllEffects() {
+  const fx = getEquippedWeaponEffects();
+  // Merge active skills used from bag this battle
+  const sk = game.activeBattleSkills;
+  if (sk.doubleReload) fx.doubleReload = true;
+  if (sk.autoBlock)    fx.autoBlock    = Math.max(fx.autoBlock, sk.autoBlock);
+  if (sk.shieldBurst)  fx.shieldBurst  = true;
+  if (sk.seeEnemy)     fx.seeEnemy     = true;
+  return fx;
+}
+
+// ═══════════════════════════════════════════
+// BAG SYSTEM
+// ═══════════════════════════════════════════
+function bagAdd(itemId, qty=1) {
+  state.bag[itemId] = (state.bag[itemId] || 0) + qty;
+  save();
+}
+
+function bagRemove(itemId) {
+  if (!state.bag[itemId] || state.bag[itemId] <= 0) return false;
+  state.bag[itemId]--;
+  if (state.bag[itemId] <= 0) delete state.bag[itemId];
+  save();
+  return true;
+}
+
+function bagCount(itemId) {
+  return state.bag[itemId] || 0;
+}
+
+function renderBag() {
+  const row = document.getElementById('bagRow');
+  row.innerHTML = '';
+  const entries = Object.entries(state.bag).filter(([,q])=>q>0);
+  if (entries.length === 0) {
+    row.innerHTML = '<span class="bag-empty">🎒 bag vazia</span>';
+    return;
+  }
+  entries.forEach(([id, qty]) => {
+    const item = getShopItem(id);
+    if (!item) return;
+    const btn = document.createElement('button');
+    btn.className = 'bag-btn';
+    btn.innerHTML = `${item.icon} ${item.name} <span class="bag-qty">x${qty}</span>`;
+    btn.title = item.desc;
+    btn.onclick = () => useBagItem(id);
+    row.appendChild(btn);
+  });
+}
+
+function useBagItem(itemId) {
+  if (game.gameOver) return;
+  const item = getShopItem(itemId);
+  if (!item) return;
+  if (!bagRemove(itemId)) { showNotif('Item não disponível!','red'); return; }
+
+  const e = item.effect;
+  const inBattle = !game.gameOver && game.lvData !== null;
+
+  // UTILITY effects
+  if (item.id === 'cigarrete' || item.id === 'beer' || item.id === 'hamsa') {
+    if (inBattle) {
+      game.playerHP = Math.min(game.playerHP + (e.bonusHP||0), game.playerMaxHP + (e.bonusHP||0));
+      game.playerMaxHP = Math.max(game.playerMaxHP, game.playerHP);
+      updateHUD();
+      showNotif(`${item.icon} +${e.bonusHP} vida(s)!`,'green');
+    } else {
+      // Will apply on next battle start (stored in bag, removed on use — effect already consumed next startGame)
+      // Re-add so startGame reads it; actually we handle bonusHP on startGame from bag
+      // For simplicity: we apply the HP boost to base so startGame picks it up
+      showNotif(`${item.icon} ${item.name} usada fora de batalha! Efeito na próxima batalha.`,'purple');
+      // We track pending utility HP outside of battle
+      state._pendingBonusHP = (state._pendingBonusHP||0) + (e.bonusHP||0);
+      save();
+    }
+    renderBag();
+    return;
+  }
+
+  if (item.id === 'eyeofgod') {
+    if (inBattle) {
+      game.activeBattleSkills.seeEnemy = true;
+      game.fx = getAllEffects();
+      showNotif(`${item.icon} Vês a próxima jogada do inimigo!`,'purple');
+    } else {
+      // Eye of God fora de batalha — sem efeito prático, devolver
+      bagAdd(itemId, 1);
+      showNotif('Usa o Eye of God durante a batalha!','red');
+    }
+    renderBag();
+    updateButtons();
+    return;
+  }
+
+  // SKILL effects (active for the whole battle, spent at end)
+  if (item.id === 'double_reload') {
+    game.activeBattleSkills.doubleReload = true;
+    game.fx = getAllEffects();
+    showNotif(`${item.icon} Double Reload ativo!`,'purple');
+    renderBag(); updateButtons(); return;
+  }
+  if (item.id === 'helmet') {
+    game.activeBattleSkills.autoBlock = Math.max(game.activeBattleSkills.autoBlock||0, 0.35);
+    game.fx = getAllEffects();
+    showNotif(`${item.icon} Helmet 35 ativo! 35% auto-block.`,'purple');
+    renderBag(); updateButtons(); return;
+  }
+  if (item.id === 'burst_shield') {
+    game.activeBattleSkills.shieldBurst = true;
+    game.fx = getAllEffects();
+    showNotif(`${item.icon} Burst Shield ativo!`,'purple');
+    renderBag(); updateButtons(); return;
+  }
+
+  renderBag();
+}
+
+// ═══════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════
+function startGame(level) {
+  const lv = getLevelData(level);
+  const baseWpnFx = getEquippedWeaponEffects();
+
+  // Reset active battle skills
+  game.activeBattleSkills = {};
+  game._lockedEnemyAction = null;
+
+  // Pending utility HP from out-of-battle usage
+  const pendingHP = state._pendingBonusHP || 0;
+  state._pendingBonusHP = 0;
+  save();
+
+  game.level=level; game.round=1;
+  game.playerHP=5 + baseWpnFx.bonusHP + pendingHP;
+  game.playerMaxHP=game.playerHP;
+  game.enemyHP=lv.hp; game.enemyMaxHP=lv.hp;
+  game.playerBullets=0; game.enemyBullets=0;
+  game.playerMaxBullets=baseWpnFx.maxBullets; game.enemyMaxBullets=lv.maxBullets;
+  game.gameOver=false; game.waitingForAction=true;
+  game.lvData=lv; game.fx=getAllEffects();
+  game.playerLastAction=null; game.enemyLastAction=null;
+  document.getElementById('playerSprite').textContent=getPlayerSprite();
+  document.getElementById('enemySprite').textContent=lv.sprite;
+  document.getElementById('enemyName').textContent=lv.icon+' '+lv.name;
+  document.getElementById('hud-level').textContent=level;
+  showScreen('screen-game');
+  updateHUD();
+  renderBag();
+  setResultBanner('Ronda 1! Só podes recarregar ou defender.');
+  updateButtons();
+}
+
+// ═══════════════════════════════════════════
+// HUD
+// ═══════════════════════════════════════════
+function updateHUD() {
+  document.getElementById('hud-coins').textContent=state.coins;
+  document.getElementById('hud-round').textContent=game.round;
+  renderHearts('playerHearts', game.playerHP, game.playerMaxHP);
+  renderHearts('enemyHearts',  game.enemyHP,  game.enemyMaxHP);
+  renderBullets('playerBullets', game.playerBullets, game.playerMaxBullets);
+  renderBullets('enemyBullets',  game.enemyBullets,  game.enemyMaxBullets);
+}
+
+function renderHearts(id, cur, max) {
+  const el=document.getElementById(id); el.innerHTML='';
+  for(let i=0;i<max;i++){ const h=document.createElement('span'); h.className='heart'+(i>=cur?' lost':''); h.textContent=i<cur?'❤️':'🖤'; el.appendChild(h); }
+}
+
+function renderBullets(id, cur, max) {
+  const el=document.getElementById(id); el.innerHTML='';
+  for(let i=0;i<max;i++){ const b=document.createElement('span'); b.className='bullet-pip'+(i>=cur?' empty':''); el.appendChild(b); }
+}
+
+function setResultBanner(txt) { document.getElementById('resultBanner').innerHTML=txt; }
+
+function updateButtons() {
+  const isR1      = game.round === 1;
+  const canShoot  = game.playerBullets > 0;
+  const canReload = game.playerBullets < game.playerMaxBullets;
+  document.getElementById('btn-reload').disabled = !game.waitingForAction || !canReload;
+  document.getElementById('btn-defend').disabled = !game.waitingForAction;
+  document.getElementById('btn-shoot').disabled  = !game.waitingForAction || !canShoot || isR1;
+
+  const fx = game.fx || {};
+  let info = isR1
+    ? 'Ronda 1 — só podes recarregar ou defender!'
+    : `Balas: ${game.playerBullets}/${game.playerMaxBullets}  |  Inimigo: ${game.enemyBullets} balas`;
+
+  if (fx.seeEnemy && game.waitingForAction && game.round > 1) {
+    if (!game._lockedEnemyAction) game._lockedEnemyAction = getEnemyAction();
+    const h = game._lockedEnemyAction;
+    info += `\n👁️ INIMIGO VAI: ${h==='reload'?'🔄 RECARREGAR':h==='defend'?'🛡️ DEFENDER':'🔫 DISPARAR'}`;
+  } else if (!fx.seeEnemy) {
+    game._lockedEnemyAction = null;
+  }
+
+  // Show active skills
+  const activeKeys = Object.keys(game.activeBattleSkills);
+  if (activeKeys.length) {
+    const labels = [];
+    if (game.activeBattleSkills.doubleReload) labels.push('⚡ DBL.RLD');
+    if (game.activeBattleSkills.autoBlock)    labels.push(`⛑️ HELMET`);
+    if (game.activeBattleSkills.shieldBurst)  labels.push('💠 BURST');
+    if (game.activeBattleSkills.seeEnemy)     labels.push('👁️ VISION');
+    info += '\n' + labels.join('  ');
+  }
+
+  document.getElementById('roundInfo').textContent = info;
+}
+
+// ═══════════════════════════════════════════
+// AI
+// ═══════════════════════════════════════════
+function getEnemyAction() {
+  const {aiStyle}=game.lvData;
+  const {enemyBullets,enemyMaxBullets,playerBullets,round}=game;
+
+  const canShoot  = enemyBullets > 0;
+  const canReload = enemyBullets < enemyMaxBullets;
+
+  if (round === 1) {
+    return canReload ? (Math.random()<0.6?'reload':'defend') : 'defend';
+  }
+
+  function wpick(weights) {
+    const valid = weights.filter(([a,w])=>{
+      if (a==='reload' && !canReload) return false;
+      if (a==='shoot'  && !canShoot)  return false;
+      return w > 0;
+    });
+    if (!valid.length) return canShoot?'shoot':'defend';
+    const tot = valid.reduce((s,[,w])=>s+w,0);
+    let r = Math.random()*tot;
+    for (const [a,w] of valid){ r-=w; if(r<=0) return a; }
+    return valid[0][0];
+  }
+
+  const rl = canReload ? 1 : 0;
+
+  switch(aiStyle) {
+    case 'random':
+      return wpick([['reload',rl],['defend',1],['shoot',1]]);
+    case 'cautious':
+      if (!canShoot) return wpick([['reload',3*rl],['defend',1]]);
+      return wpick([['shoot',2],['reload',2*rl],['defend',3]]);
+    case 'aggressive':
+      if (canShoot) return wpick([['shoot',6],['reload',rl],['defend',0]]);
+      return 'reload';
+    case 'smart':
+      if (!canShoot) return canReload?'reload':'defend';
+      if (playerBullets===0) return 'shoot';
+      return wpick([['shoot',3],['defend',3],['reload',rl]]);
+    case 'adaptive': {
+      const last=game.playerLastAction;
+      if (last==='reload') return wpick([['shoot',4],['defend',1],['reload',rl]]);
+      if (last==='shoot')  return wpick([['defend',4],['reload',2*rl],['shoot',1]]);
+      if (last==='defend') return wpick([['reload',3*rl],['shoot',2],['defend',1]]);
+      if (!canShoot) return canReload?'reload':'defend';
+      return wpick([['shoot',2],['defend',2],['reload',rl]]);
+    }
+    case 'master': {
+      if (!canShoot) return canReload?'reload':'defend';
+      if (playerBullets===0) return 'shoot';
+      const last=game.playerLastAction;
+      if (last==='reload') return 'shoot';
+      if (last==='shoot')  return 'defend';
+      if (enemyBullets<=1 && canReload) return wpick([['reload',3],['defend',2],['shoot',1]]);
+      return wpick([['shoot',4],['defend',3],['reload',rl]]);
+    }
+    default:
+      return canReload?'reload':'defend';
+  }
+}
+
+// ═══════════════════════════════════════════
+// PLAYER ACTION
+// ═══════════════════════════════════════════
+function playerAction(action) {
+  if (!game.waitingForAction || game.gameOver) return;
+  game.waitingForAction = false;
+  updateButtons();
+  const fx = game.fx || {};
+  const reloadAmt = (action==='reload' && fx.doubleReload) ? 2 : 1;
+  // ★ Lock enemy action NOW (same state the preview used) before any state changes
+  const eAct = game._lockedEnemyAction || getEnemyAction();
+  game._lockedEnemyAction = null;
+  game.playerLastAction=action; game.enemyLastAction=eAct;
+  document.getElementById('playerStatus').textContent = labelAction(action);
+  document.getElementById('playerStatus').className   = 'status-badge '+action+'ing';
+  document.getElementById('enemyStatus').textContent  = '🤔 ...';
+  document.getElementById('enemyStatus').className    = 'status-badge';
+  setTimeout(()=>{
+    document.getElementById('enemyStatus').textContent = labelAction(eAct);
+    document.getElementById('enemyStatus').className   = 'status-badge '+eAct+'ing';
+    resolveRound(action, eAct, reloadAmt);
+  }, 550);
+}
+
+function labelAction(a) { return a==='reload'?'🔄 RECARREGOU':a==='defend'?'🛡️ DEFENDEU':'🔫 DISPAROU'; }
+
+// ═══════════════════════════════════════════
+// RESOLVE
+// ═══════════════════════════════════════════
+function resolveRound(pA, eA, reloadAmt) {
+  let result='';
+  const fx=game.fx||{};
+  const dmg=fx.damage||1;
+  const armorPierce=fx.armorPierce||false;
+  const pAutoBlk=fx.autoBlock||0;
+
+  if (pA==='reload') game.playerBullets=Math.min(game.playerBullets+reloadAmt, game.playerMaxBullets);
+  if (eA==='reload') game.enemyBullets =Math.min(game.enemyBullets+1,          game.enemyMaxBullets);
+
+  const pShoot=pA==='shoot'&&game.playerBullets>0;
+  const eShoot=eA==='shoot'&&game.enemyBullets>0;
+  const pDefend=pA==='defend';
+  const eDefend=eA==='defend';
+  let pHit=false, eHit=false;
+  let playerLostLife = false;
+
+  if (pShoot && eShoot) {
+    // Duelo simplificado: vence quem tem mais balas; empate = ninguém morre; balas sempre reiniciadas
+    const pB=game.playerBullets, eB=game.enemyBullets;
+    game.playerBullets=0; game.enemyBullets=0;
+    if (pB>eB)      { game.enemyHP-=dmg; eHit=true; result=`💥 DUELO! ${pB} vs ${eB} — Inimigo perde ${dmg} vida! Balas reiniciadas.`; }
+    else if (eB>pB) { game.playerHP-=1; pHit=true; playerLostLife=true; result=`💥 DUELO! ${eB} vs ${pB} — Perdes 1 vida! Balas reiniciadas.`; }
+    else            { result=`⚡ EMPATE no duelo (${pB} vs ${eB})! Ninguém morre. Balas reiniciadas.`; }
+  }
+  else if (pShoot && !eShoot) {
+    game.playerBullets-=1;
+    if (eDefend&&!armorPierce) { result=`🛡️ Inimigo defendeu! Bala desperdiçada.`; }
+    else {
+      // Inimigo atingido -> perde a vida e reinicia as balas
+      game.enemyHP-=dmg; eHit=true;
+      game.enemyBullets=0;
+      result=`🎯 ACERTO! Inimigo perde ${dmg} vida! Balas do inimigo reiniciadas.`;
+    }
+  }
+  else if (eShoot && !pShoot) {
+    game.enemyBullets-=1;
+    if (pDefend) {
+      if (armorPierce) { game.playerHP-=1; pHit=true; playerLostLife=true; result=`💀 SNIPER perfurou o teu colete! -1 vida!`; }
+      else { result=`🛡️ Defendeste! Nenhum dano.`; }
+    } else if (pAutoBlk>0&&Math.random()<pAutoBlk) { result=`✨ Colete automático bloqueou o disparo!`; }
+    else { game.playerHP-=1; pHit=true; playerLostLife=true; result=`💥 Foste atingido! Perdes 1 vida!`; }
+  }
+  else {
+    const msgs={'reload-reload':'🔄 Ambos recarregaram. Silêncio.','reload-defend':'🔄 Recarregaste. Inimigo em guarda.','defend-reload':'🛡️ Defendeste. Inimigo recarregou.','defend-defend':'🛡️ Standoff! Ambos em guarda.'};
+    result = msgs[`${pA}-${eA}`]||'— Ronda sem incidentes.';
+  }
+
+  // ★ Perder uma vida → balas reiniciadas
+  if (playerLostLife && game.playerHP > 0) {
+    game.playerBullets = 0;
+    result += `\n💔 Perdeste uma vida — balas reiniciadas!`;
+  }
+
+  const pSpr=document.getElementById('playerSprite'), eSpr=document.getElementById('enemySprite');
+  if(pHit)   pSpr.classList.add('hit');
+  if(pShoot) pSpr.classList.add('attack');
+  if(eShoot) eSpr.classList.add('attack');
+  if(eHit)   setTimeout(()=>eSpr.classList.add('hit'),180);
+  setTimeout(()=>{ pSpr.classList.remove('hit','attack'); eSpr.classList.remove('hit','attack'); },600);
+
+  setResultBanner(result);
+  updateHUD();
+  game.round++;
+
+  setTimeout(()=>{
+    if(game.playerHP<=0&&game.enemyHP<=0)endGame('draw');
+    else if(game.playerHP<=0)endGame('lose');
+    else if(game.enemyHP<=0)endGame('win');
+    else {
+      game.waitingForAction=true;
+      game._lockedEnemyAction = null;
+      // Eye of God dura apenas 1 ronda — reset após resolução
+      if (game.activeBattleSkills.seeEnemy) {
+        delete game.activeBattleSkills.seeEnemy;
+        game.fx = getAllEffects();
+      }
+      document.getElementById('playerStatus').textContent='— AGUARDA —'; document.getElementById('playerStatus').className='status-badge';
+      document.getElementById('enemyStatus').textContent='— AGUARDA —';  document.getElementById('enemyStatus').className='status-badge';
+      updateButtons();
+    }
+  }, 1100);
+}
+
+// ═══════════════════════════════════════════
+// END GAME — skills gastas no fim do nível
+// ═══════════════════════════════════════════
+function endGame(outcome) {
+  game.gameOver=true;
+
+  // Skills gastam-se no fim do nível (já foram removidas da bag ao usar)
+  game.activeBattleSkills = {};
+
+  const lv=game.lvData;
+  if (outcome==='win') {
+    state.coins+=5;
+    if(game.level>=state.unlockedLevels) state.unlockedLevels=game.level+1;
+    document.getElementById('goTitle').textContent='VITÓRIA!'; document.getElementById('goTitle').className='go-title win';
+    document.getElementById('goEmoji').textContent='🏆';
+    document.getElementById('goStats').textContent=`NÍVEL ${game.level} — ${lv.name}\nRONDA FINAL: ${game.round-1}`;
+    document.getElementById('goCoins').textContent=`+5 🪙  (Total: ${state.coins})`;
+    flashLevel(); showNotif('+5 moedas! Vitória!','green'); floatCoins('+5');
+  } else if (outcome==='lose') {
+    state.coins=Math.max(0,state.coins-1);
+    document.getElementById('goTitle').textContent='ELIMINADO!'; document.getElementById('goTitle').className='go-title lose';
+    document.getElementById('goEmoji').textContent='💀';
+    document.getElementById('goStats').textContent=`NÍVEL ${game.level} — ${lv.name}\nRONDA: ${game.round-1}`;
+    document.getElementById('goCoins').textContent=`-1 🪙  (Total: ${state.coins})`;
+    showNotif('-1 moeda. Derrota!','red'); floatCoins('-1','red');
+  } else {
+    document.getElementById('goTitle').textContent='EMPATE!'; document.getElementById('goTitle').className='go-title'; document.getElementById('goTitle').style.color='var(--white)';
+    document.getElementById('goEmoji').textContent='🤝';
+    document.getElementById('goStats').textContent=`NÍVEL ${game.level}\nSem vencedor`;
+    document.getElementById('goCoins').textContent=`Moedas: ${state.coins} 🪙`;
+  }
+  save();
+  setTimeout(()=>showScreen('screen-gameover'),1400);
+}
+
+// ═══════════════════════════════════════════
+// SHOP
+// ═══════════════════════════════════════════
+let currentTab='weapons';
+
+function switchTab(tab) {
+  currentTab=tab;
+  document.querySelectorAll('.shop-tab').forEach((t,i)=>t.classList.toggle('active',['weapons','utilitys','skills','skins'][i]===tab));
+  renderShop(tab);
+}
+
+function renderShop(tab) {
+  const items=SHOP[tab]; const grid=document.getElementById('shopGrid'); grid.innerHTML='';
+  items.forEach(item=>{
+    const isUtility = tab === 'utilitys';
+    const isSkill   = tab === 'skills';
+    const isSkin    = tab === 'skins';
+    const isWeapon  = tab === 'weapons';
+
+    // Weapons & Skins: buy once, equip
+    // Utilitys: buy multiple, go to bag
+    // Skills: buy, go to bag
+
+    const owned    = state.owned.includes(item.id);
+    const equipped = state.equipped[tab] === item.id;
+    const inBag    = bagCount(item.id) > 0;
+    const bagQty   = bagCount(item.id);
+
+    const card=document.createElement('div');
+    let cls = 'shop-item';
+    let badgeHtml = '';
+    let priceLabel = '';
+
+    if (isUtility || isSkill) {
+      if (inBag) { cls += ' in-bag'; badgeHtml = `<span class="bag-badge">x${bagQty}</span>`; }
+      priceLabel = `<div class="item-price">🪙 ${item.price}</div>`;
+    } else {
+      if (owned)    { cls += ' owned'; badgeHtml = `<span class="owned-badge">✓</span>`; }
+      if (equipped) { cls += ' equipped'; }
+      if (equipped) priceLabel = `<div class="item-price equipped-lbl">✅ EQUIPADO</div>`;
+      else if (owned) priceLabel = `<div class="item-price owned-lbl">🔧 EQUIPAR</div>`;
+      else priceLabel = `<div class="item-price">🪙 ${item.price}</div>`;
+    }
+
+    card.className = cls;
+    card.innerHTML = `${badgeHtml}<div class="item-icon">${item.icon}</div><div class="item-name">${item.name}</div><div class="item-desc">${item.desc}</div>${priceLabel}`;
+    card.onclick = () => shopAction(tab, item);
+    grid.appendChild(card);
+  });
+}
+
+function shopAction(tab, item) {
+  const isUtility = tab === 'utilitys';
+  const isSkill   = tab === 'skills';
+
+  // Utilitys: sempre compráveis (múltiplas vezes), vão para a bag
+  if (isUtility || isSkill) {
+    if (state.coins < item.price) { showNotif('Moedas insuficientes!','red'); return; }
+    state.coins -= item.price;
+    bagAdd(item.id, 1);
+    save();
+    document.getElementById('shopCoins').textContent = state.coins;
+    renderShop(tab);
+    // Atualizar bag se estiver em batalha
+    if (document.getElementById('screen-game').classList.contains('active') || game.previousScreen === 'screen-game') {
+      renderBag();
+    }
+    showNotif(`✅ ${item.name} adicionado à bag!`,'green');
+    floatCoins(`-${item.price}`,'red');
+    return;
+  }
+
+  // Weapons & Skins: comprar uma vez, equipar
+  const owned   = state.owned.includes(item.id);
+  const equipped = state.equipped[tab] === item.id;
+  if (equipped)  { delete state.equipped[tab]; save(); renderShop(tab); showNotif('Item desequipado.'); return; }
+  if (owned)     { state.equipped[tab]=item.id; save(); renderShop(tab); showNotif('✅ Equipado: '+item.name,'green'); return; }
+  if (state.coins < item.price) { showNotif('Moedas insuficientes!','red'); return; }
+  state.coins -= item.price; state.owned.push(item.id); state.equipped[tab]=item.id;
+  save(); document.getElementById('shopCoins').textContent=state.coins; renderShop(tab);
+  showNotif('✅ Comprado e equipado!','green'); floatCoins(`-${item.price}`,'red');
+}
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+function showNotif(msg,type='') {
+  const n=document.getElementById('notif'); n.textContent=msg; n.className='notif show'+(type?' '+type:'');
+  clearTimeout(n._t); n._t=setTimeout(()=>{n.className='notif'+(type?' '+type:'');},2300);
+}
+function flashLevel() { const f=document.getElementById('levelFlash'); f.classList.add('flash'); setTimeout(()=>f.classList.remove('flash'),600); }
+function floatCoins(txt,color='gold') {
+  const el=document.createElement('div'); el.className='coin-float'; el.textContent=txt+' 🪙';
+  el.style.cssText=`left:50%;top:38%;transform:translateX(-50%);color:${color==='red'?'var(--red)':'var(--gold)'}`;
+  document.body.appendChild(el); setTimeout(()=>el.remove(),1500);
+}
+function confirmReset()  { document.getElementById('resetModal').classList.add('open'); }
+function closeResetModal(){ document.getElementById('resetModal').classList.remove('open'); }
+function executeReset() {
+  localStorage.removeItem('007_coins');
+  localStorage.removeItem('007_maxLevel');
+  localStorage.removeItem('007_owned');
+  localStorage.removeItem('007_equipped');
+  localStorage.removeItem('007_bag');
+  state.coins=10; state.unlockedLevels=1; state.owned=[]; state.equipped={}; state.bag={}; state._pendingBonusHP=0;
+  closeResetModal();
+  showNotif('Jogo reiniciado!','red');
+  showScreen('screen-title');
+}
+function confirmQuit() { document.getElementById('quitModal').classList.add('open'); }
+function closeQuitModal() { document.getElementById('quitModal').classList.remove('open'); }
+
+// ── INIT
+showScreen('screen-title');
+</script>
+</body>
+</html>
