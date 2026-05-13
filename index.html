@@ -25,6 +25,8 @@
     --purple2: #5a2d8a;
     --orange: #f4a261;
     --orange2: #8b4e1c;
+    --casino: #ffd700;
+    --casino2: #b8860b;
   }
 
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -44,7 +46,6 @@
     pointer-events:none; z-index:9999;
   }
 
-  /* ── SCREENS ── */
   .screen {
     display:none; position:fixed; inset:0;
     flex-direction:column; align-items:center; justify-content:flex-start;
@@ -91,6 +92,8 @@
   .px-btn.blue:hover,.px-btn.blue:active  { background:var(--blue); color:#fff; }
   .px-btn.purple { color:var(--purple); border-color:var(--purple); box-shadow:3px 3px 0 var(--purple2); }
   .px-btn.purple:hover,.px-btn.purple:active { background:var(--purple); color:#fff; }
+  .px-btn.casino { color:var(--casino); border-color:var(--casino); box-shadow:3px 3px 0 var(--casino2); background:var(--panel); }
+  .px-btn.casino:hover,.px-btn.casino:active { background:var(--casino); color:var(--bg); }
   .px-btn:disabled { opacity:0.3; cursor:not-allowed; transform:none !important; }
   .px-btn.sm { font-size:clamp(8px,1.4vw,12px); padding:8px 10px; }
 
@@ -269,6 +272,276 @@
   .go-coins { font-size:clamp(11px,2vw,17px); color:var(--gold); }
   .go-btns  { display:flex; flex-direction:column; gap:9px; width:100%; max-width:250px; }
 
+  /* ══════════════════════════════════════
+     CASINO SCREEN
+  ══════════════════════════════════════ */
+  #screen-casino {
+    gap:0; padding:0; overflow:hidden;
+    background: radial-gradient(ellipse at top, #1a1000 0%, #0a0a0f 60%);
+  }
+
+  .casino-header {
+    display:flex; justify-content:space-between; align-items:center;
+    width:100%; padding:10px 14px; flex-shrink:0;
+    border-bottom:2px solid var(--casino2);
+    background:linear-gradient(90deg,#1a1000,#0d0d00,#1a1000);
+  }
+  .casino-title {
+    font-size:clamp(14px,3vw,22px); color:var(--casino);
+    text-shadow:0 0 12px var(--casino),0 0 30px rgba(255,215,0,0.3);
+    letter-spacing:3px; animation:casinoGlow 2s ease-in-out infinite alternate;
+  }
+  @keyframes casinoGlow {
+    0%  { text-shadow:0 0 8px var(--casino),0 0 20px rgba(255,215,0,0.2); }
+    100%{ text-shadow:0 0 18px var(--casino),0 0 45px rgba(255,215,0,0.5),0 0 70px rgba(255,215,0,0.2); }
+  }
+  .casino-coins { font-size:clamp(9px,1.6vw,13px); color:var(--gold); }
+
+  /* Casino Game Tabs */
+  .casino-tabs {
+    display:flex; width:100%; flex-shrink:0;
+    border-bottom:2px solid var(--casino2);
+  }
+  .casino-tab {
+    font-family:'Press Start 2P',monospace; font-size:clamp(6px,1.1vw,9px);
+    padding:8px 4px; background:var(--panel); border:none;
+    color:var(--gray); cursor:pointer; flex:1; text-align:center;
+    border-right:1px solid var(--border);
+    -webkit-tap-highlight-color:transparent; transition:all 0.1s;
+  }
+  .casino-tab:last-child { border-right:none; }
+  .casino-tab.active { color:var(--casino); background:#1a1000; border-bottom:2px solid var(--casino); }
+  .casino-tab:hover:not(.active) { color:var(--white); background:#1a1500; }
+
+  /* Casino Content Area */
+  .casino-content {
+    flex:1; width:100%; overflow-y:auto; overflow-x:hidden;
+    -webkit-overflow-scrolling:touch; padding:12px 14px;
+    display:flex; flex-direction:column; align-items:center; gap:12px;
+  }
+
+  /* ── Bet Selector ── */
+  .bet-area {
+    width:100%; background:var(--panel);
+    border:2px solid var(--casino2); padding:10px;
+    display:flex; flex-direction:column; gap:8px; align-items:center;
+  }
+  .bet-label { font-size:clamp(8px,1.4vw,11px); color:var(--casino); letter-spacing:2px; }
+  .bet-btns  { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; }
+  .bet-btn {
+    font-family:'Press Start 2P',monospace; font-size:clamp(8px,1.4vw,10px);
+    padding:6px 10px; background:var(--bg); border:2px solid var(--casino2);
+    color:var(--casino); cursor:pointer; transition:all 0.08s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .bet-btn.selected { background:var(--casino); color:var(--bg); border-color:var(--casino); }
+  .bet-btn:hover:not(.selected) { border-color:var(--casino); }
+
+  /* ═══════════════════
+     SLOT MACHINE
+  ═══════════════════ */
+  .slot-machine {
+    width:100%; background:var(--panel);
+    border:3px solid var(--casino2);
+    box-shadow:0 0 20px rgba(255,215,0,0.15), inset 0 0 20px rgba(0,0,0,0.5);
+    padding:14px; display:flex; flex-direction:column; align-items:center; gap:12px;
+  }
+  .slot-title { font-size:clamp(10px,2vw,14px); color:var(--casino); letter-spacing:3px; }
+
+  .slot-reels {
+    display:flex; gap:8px; justify-content:center;
+  }
+  .slot-reel {
+    width:clamp(60px,16vw,90px); height:clamp(70px,14vh,100px);
+    background:var(--bg); border:3px solid var(--casino2);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden; position:relative;
+    box-shadow:inset 0 0 15px rgba(0,0,0,0.8);
+  }
+  .slot-reel-inner {
+    display:flex; flex-direction:column; align-items:center;
+    transition:transform 0s;
+  }
+  .slot-reel-inner.spinning {
+    animation:slotSpin var(--dur,0.8s) ease-out;
+  }
+  @keyframes slotSpin {
+    0%   { transform:translateY(0); }
+    100% { transform:translateY(calc(var(--offset,0) * 1px)); }
+  }
+  .slot-symbol {
+    font-size:clamp(28px,7vw,48px); line-height:1;
+    height:clamp(70px,14vh,100px); display:flex; align-items:center; justify-content:center;
+    width:100%;
+  }
+  .slot-reel::before,.slot-reel::after {
+    content:''; position:absolute; left:0; right:0; height:30%;
+    z-index:2; pointer-events:none;
+  }
+  .slot-reel::before { top:0; background:linear-gradient(to bottom,rgba(10,10,15,0.9),transparent); }
+  .slot-reel::after  { bottom:0; background:linear-gradient(to top,rgba(10,10,15,0.9),transparent); }
+
+  .slot-line {
+    width:100%; height:3px; background:linear-gradient(90deg,transparent,var(--casino),transparent);
+    position:relative;
+  }
+
+  .slot-result {
+    font-size:clamp(9px,1.5vw,12px); color:var(--white); text-align:center;
+    line-height:1.9; min-height:32px;
+  }
+  .slot-result.win  { color:var(--casino); animation:pulse 0.5s ease infinite alternate; }
+  .slot-result.lose { color:var(--red); }
+  @keyframes pulse { 0%{opacity:0.7} 100%{opacity:1} }
+
+  /* ═══════════════════
+     BLACKJACK
+  ═══════════════════ */
+  .bj-table {
+    width:100%; background:var(--panel);
+    border:3px solid var(--casino2); padding:12px;
+    display:flex; flex-direction:column; gap:10px; align-items:center;
+  }
+  .bj-title { font-size:clamp(10px,2vw,14px); color:var(--casino); letter-spacing:3px; }
+
+  .bj-area { width:100%; display:flex; flex-direction:column; gap:8px; }
+  .bj-player-area,.bj-dealer-area {
+    background:var(--bg); border:2px solid var(--border); padding:8px;
+    display:flex; flex-direction:column; gap:5px; align-items:center;
+  }
+  .bj-area-label { font-size:clamp(7px,1.2vw,9px); color:var(--gray); letter-spacing:2px; }
+  .bj-score { font-size:clamp(12px,2.5vw,18px); color:var(--casino); }
+  .bj-score.bust { color:var(--red); }
+  .bj-score.blackjack { color:var(--gold); animation:pulse 0.5s infinite alternate; }
+
+  .bj-cards { display:flex; gap:5px; flex-wrap:wrap; justify-content:center; min-height:50px; }
+  .bj-card {
+    width:clamp(32px,7vw,44px); height:clamp(48px,9vh,60px);
+    background:var(--white); border:2px solid #ccc; border-radius:3px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:clamp(10px,2vw,16px); color:#111; font-family:'Press Start 2P',monospace;
+    font-weight:bold; flex-direction:column; gap:1px;
+    box-shadow:2px 2px 0 rgba(0,0,0,0.4);
+    animation:cardDeal 0.2s ease-out;
+  }
+  @keyframes cardDeal { from{transform:scale(0.5) translateY(-20px);opacity:0} to{transform:none;opacity:1} }
+  .bj-card.red-card { color:#cc0000; }
+  .bj-card.hidden { background:repeating-linear-gradient(45deg,#1a3a8a,#1a3a8a 4px,#0d2060 4px,#0d2060 8px); color:transparent; }
+  .bj-card .card-suit { font-size:clamp(7px,1.2vw,10px); }
+
+  .bj-btns { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; width:100%; }
+
+  .bj-result {
+    font-size:clamp(9px,1.5vw,12px); color:var(--white); text-align:center;
+    min-height:24px; line-height:1.8;
+  }
+  .bj-result.win { color:var(--casino); }
+  .bj-result.lose { color:var(--red); }
+  .bj-result.push { color:var(--blue); }
+
+  /* ═══════════════════
+     RUSSIAN ROULETTE
+  ═══════════════════ */
+  .rr-table {
+    width:100%; background:var(--panel);
+    border:3px solid var(--red2); padding:12px;
+    display:flex; flex-direction:column; gap:12px; align-items:center;
+  }
+  .rr-title { font-size:clamp(10px,2vw,14px); color:var(--red); letter-spacing:2px; }
+
+  .rr-gun {
+    font-size:clamp(55px,12vw,90px);
+    animation:rrBob 2s ease-in-out infinite;
+    filter:drop-shadow(0 0 10px rgba(230,57,70,0.3));
+  }
+  @keyframes rrBob { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
+  .rr-gun.fired { animation:rrFire 0.5s forwards; }
+  @keyframes rrFire { 0%{transform:rotate(-5deg) scale(1)} 30%{transform:rotate(10deg) scale(1.2)} 100%{transform:rotate(-10deg) scale(0.9)} }
+
+  .rr-chamber {
+    display:flex; gap:8px; justify-content:center;
+  }
+  .rr-slot {
+    width:22px; height:22px; border-radius:50%;
+    border:2px solid var(--border); background:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; transition:all 0.3s;
+  }
+  .rr-slot.loaded { background:var(--red); border-color:var(--red); box-shadow:0 0 8px var(--red); }
+  .rr-slot.empty  { background:var(--green2); border-color:var(--green); }
+  .rr-slot.active { border-color:var(--casino); box-shadow:0 0 12px var(--casino); }
+
+  .rr-odds { font-size:clamp(8px,1.4vw,10px); color:var(--gray); text-align:center; line-height:2; }
+  .rr-result { font-size:clamp(10px,2vw,16px); text-align:center; min-height:28px; }
+  .rr-result.survive { color:var(--green); animation:pulse 0.4s infinite alternate; }
+  .rr-result.dead    { color:var(--red); animation:blink 0.5s step-end infinite; }
+
+  .rr-rounds-left { font-size:clamp(9px,1.5vw,11px); color:var(--gray); }
+  .rr-rounds-left span { color:var(--casino); }
+
+  /* ═══════════════════
+     DOUBLE OR NOTHING
+  ═══════════════════ */
+  .don-table {
+    width:100%; background:var(--panel);
+    border:3px solid var(--blue2); padding:14px;
+    display:flex; flex-direction:column; gap:12px; align-items:center;
+  }
+  .don-title { font-size:clamp(10px,2vw,14px); color:var(--blue); letter-spacing:2px; }
+
+  .don-coin-wrap { position:relative; width:90px; height:90px; }
+  .don-coin {
+    width:90px; height:90px; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, var(--casino), var(--casino2));
+    border:4px solid var(--casino); font-size:42px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 20px rgba(255,215,0,0.3), 4px 4px 0 var(--casino2);
+    transition:transform 0.1s;
+  }
+  .don-coin.flipping { animation:coinFlip 1s ease-in-out; }
+  @keyframes coinFlip {
+    0%   { transform:rotateY(0deg) scale(1); }
+    25%  { transform:rotateY(90deg) scale(0.8); }
+    50%  { transform:rotateY(180deg) scale(1.1); }
+    75%  { transform:rotateY(270deg) scale(0.8); }
+    100% { transform:rotateY(360deg) scale(1); }
+  }
+
+  .don-streak {
+    font-size:clamp(8px,1.4vw,11px); color:var(--gray); text-align:center; line-height:2;
+  }
+  .don-streak span { color:var(--casino); }
+
+  .don-result { font-size:clamp(10px,2vw,16px); text-align:center; min-height:28px; }
+  .don-result.win  { color:var(--casino); animation:pulse 0.4s infinite alternate; }
+  .don-result.lose { color:var(--red); }
+
+  .don-btns { display:flex; gap:8px; width:100%; justify-content:center; }
+
+  /* ── Prize Banner ── */
+  .prize-banner {
+    width:100%; background:linear-gradient(90deg,#1a1000,#2a2000,#1a1000);
+    border:2px solid var(--casino); padding:10px;
+    text-align:center; font-size:clamp(8px,1.4vw,10px);
+    color:var(--casino); line-height:2.2;
+  }
+  .prize-banner .rare { color:var(--purple); }
+  .prize-banner .uncommon { color:var(--blue); }
+
+  /* ── Casino Log ── */
+  .casino-log {
+    width:100%; background:var(--bg);
+    border:2px solid var(--border); padding:8px;
+    max-height:80px; overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .casino-log p {
+    font-size:clamp(6px,1.1vw,8px); color:var(--gray); line-height:2;
+  }
+  .casino-log p.win { color:var(--casino); }
+  .casino-log p.lose { color:var(--red); }
+  .casino-log p.rare { color:var(--purple); }
+
   /* ── MODAL (Save + Regras) ── */
   .modal-bg {
     display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88);
@@ -292,7 +565,6 @@
   }
   .modal-row { display:flex; gap:7px; }
 
-  /* rules modal */
   .rules-block { display:flex; flex-direction:column; gap:10px; }
   .rules-section-title { font-size:clamp(10px,1.8vw,12px); color:var(--gold); border-bottom:1px solid var(--border); padding-bottom:5px; }
   .rules-line { font-size:clamp(7px,1.2vw,10px); color:var(--white); line-height:2.2; display:flex; gap:6px; }
@@ -312,6 +584,7 @@
   .notif.red   { border-color:var(--red); color:var(--red); }
   .notif.green { border-color:var(--green); color:var(--green); }
   .notif.purple { border-color:var(--purple); color:var(--purple); }
+  .notif.casino { border-color:var(--casino); color:var(--casino); }
 
   .level-flash { position:fixed; inset:0; background:var(--gold); opacity:0; pointer-events:none; z-index:400; }
   .level-flash.flash { animation:flash-anim 0.5s; }
@@ -337,7 +610,6 @@
 <div class="modal-bg" id="saveModal">
   <div class="modal">
     <div class="modal-title">💾 GUARDAR / CARREGAR</div>
-
     <div class="modal-section">
       <div class="modal-label">▼ EXPORTAR — copia ou descarrega:</div>
       <textarea id="saveOutput" readonly onclick="this.select()" placeholder="Clica em GERAR SAVE..."></textarea>
@@ -346,7 +618,6 @@
         <button class="px-btn sm" onclick="downloadSave()" style="flex:1">⬇ .TXT</button>
       </div>
     </div>
-
     <div class="modal-section">
       <div class="modal-label">▲ IMPORTAR — cola ou abre ficheiro:</div>
       <textarea id="saveInput" placeholder="Cola aqui o teu save..."></textarea>
@@ -358,7 +629,6 @@
         </label>
       </div>
     </div>
-
     <button class="px-btn gray sm" onclick="closeSaveModal()">✕ FECHAR</button>
   </div>
 </div>
@@ -368,12 +638,10 @@
   <div class="modal">
     <div class="modal-title">📖 REGRAS — 007</div>
     <div class="rules-block">
-
       <div>
         <div class="rules-section-title">🎯 OBJETIVO</div>
         <div class="rules-line">Reduzir as vidas do inimigo a zero antes de ele reduzir as tuas.</div>
       </div>
-
       <div>
         <div class="rules-section-title">⚡ AÇÕES POR RONDA</div>
         <div class="rules-line"><span class="lbl">🔄</span> RECARREGAR — +1 bala (+2 com Double Reload). Não disponível se a arma já estiver cheia!</div>
@@ -381,44 +649,29 @@
         <div class="rules-line"><span class="lbl">🔫</span> DISPARAR — usa 1 bala para atacar. Bloqueado na Ronda 1!</div>
         <div class="rules-note">Ambos escolhem em simultâneo. A IA revela depois.</div>
       </div>
-
       <div>
         <div class="rules-section-title">💥 DUELO (ambos disparam)</div>
         <div class="rules-line"><span class="lbl">▸</span> Mais balas → vence, inimigo perde vida.</div>
         <div class="rules-line"><span class="lbl">▸</span> Igual → empate, balas gastas, ninguém morre.</div>
       </div>
-
       <div>
         <div class="rules-section-title">🎒 BAG DE ITENS</div>
         <div class="rules-line"><span class="lbl">▸</span> Utilitys e Skills ficam na tua bag após compra.</div>
         <div class="rules-line"><span class="lbl">▸</span> Clica nos botões da bag durante a batalha para usar quando quiseres.</div>
-        <div class="rules-line"><span class="lbl">▸</span> Utilitys podem ser compradas várias vezes e acumulam na bag.</div>
-        <div class="rules-line"><span class="lbl">▸</span> Skills duram toda a batalha mas são gastas no fim do nível.</div>
       </div>
-
       <div>
-        <div class="rules-section-title">🔫 ARMAS &amp; SKINS</div>
-        <div class="rules-line"><span class="lbl">▸</span> Armas e Skins compram-se uma vez e equipam-se na loja.</div>
-        <div class="rules-line"><span class="lbl">▸</span> Só podes ter uma arma equipada de cada vez.</div>
-        <div class="rules-line"><span class="lbl">▸</span> Armas apenas são equipadas na próxima batalha.</div>
+        <div class="rules-section-title">🎰 CASINO</div>
+        <div class="rules-line"><span class="lbl">▸</span> Slot Machine — combina símbolos para ganhar.</div>
+        <div class="rules-line"><span class="lbl">▸</span> Blackjack — chega ao 21 sem passar.</div>
+        <div class="rules-line"><span class="lbl">▸</span> Roleta Russa — 1 em 6 de perder tudo!</div>
+        <div class="rules-line"><span class="lbl">▸</span> Double or Nothing — dobra ou perde.</div>
+        <div class="rules-note">Jackpots raros dão utilitys e skills à bag!</div>
       </div>
-
-      <div>
-        <div class="rules-section-title">💀 PERDER UMA VIDA</div>
-        <div class="rules-line"><span class="lbl">▸</span> Ao perderes uma vida, as tuas balas são reiniciadas a zero!</div>
-      </div>
-
       <div>
         <div class="rules-section-title">💰 MOEDAS</div>
         <div class="rules-line"><span class="lbl">🏆</span> Vitória +5 🪙</div>
         <div class="rules-line"><span class="lbl">💀</span> Derrota -1 🪙</div>
       </div>
-
-      <div>
-        <div class="rules-section-title">💾 SAVE</div>
-        <div class="rules-line">Exporta um ficheiro .txt e importa para continuar o teu progresso.</div>
-      </div>
-
     </div>
     <button class="px-btn gray sm" onclick="closeRulesModal()">✕ FECHAR</button>
   </div>
@@ -434,6 +687,7 @@
   <div class="menu-btns">
     <button class="px-btn" onclick="showScreen('screen-levels')">▶ JOGAR</button>
     <button class="px-btn blue" onclick="goShop('screen-title')">🛒 LOJA</button>
+    <button class="px-btn casino" onclick="showCasino()">🎰 CASINO</button>
     <button class="px-btn gray" onclick="openSaveModal()">💾 SAVE / LOAD</button>
     <button class="px-btn gray" onclick="openRulesModal()">? REGRAS</button>
     <button class="px-btn red" onclick="confirmReset()">🗑️ RECOMEÇAR</button>
@@ -460,7 +714,6 @@
     <div class="level">LV <span id="hud-level">1</span></div>
     <div>RONDA <span id="hud-round" style="color:var(--white)">1</span></div>
   </div>
-
   <div class="arena">
     <div class="fighter-card player-card">
       <div class="fighter-name">🕴🏼 AGENTE</div>
@@ -480,12 +733,8 @@
       <div class="status-badge" id="enemyStatus">— AGUARDA —</div>
     </div>
   </div>
-
   <div class="result-banner" id="resultBanner">Escolhe a tua ação!</div>
-
-  <!-- BAG -->
   <div class="bag-row" id="bagRow"></div>
-
   <div class="action-area">
     <div class="action-row">
       <button class="action-btn reload" id="btn-reload" onclick="playerAction('reload')">
@@ -500,7 +749,6 @@
     </div>
     <div class="round-info" id="roundInfo">Ronda 1 — só podes recarregar ou defender!</div>
   </div>
-
   <div class="game-btns">
     <button class="px-btn blue sm" onclick="goShop('screen-game')" style="flex:1;max-width:130px">🛒 LOJA</button>
     <button class="px-btn gray sm" onclick="confirmQuit()" style="flex:1;max-width:130px">✕ SAIR</button>
@@ -522,6 +770,39 @@
   </div>
   <div class="shop-scroll">
     <div class="shop-grid" id="shopGrid"></div>
+  </div>
+</div>
+
+<!-- ═══ CASINO ═══ -->
+<div class="screen" id="screen-casino">
+  <div class="casino-header">
+    <div class="casino-title">🎰 CASINO</div>
+    <div class="casino-coins">🪙 <span id="casinoCoins">10</span></div>
+    <button class="px-btn gray sm" onclick="showScreen('screen-title')" style="width:auto">← SAIR</button>
+  </div>
+  <div class="casino-tabs">
+    <button class="casino-tab active" onclick="switchCasinoTab('slots')">🎰<br>SLOTS</button>
+    <button class="casino-tab" onclick="switchCasinoTab('blackjack')">🃏<br>BLACK<br>JACK</button>
+    <button class="casino-tab" onclick="switchCasinoTab('roulette')">🎯<br>ROLETA</button>
+    <button class="casino-tab" onclick="switchCasinoTab('donuts')">🪙<br>DOUBLE</button>
+  </div>
+  <div class="casino-content" id="casinoContent">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- ═══ GAME OVER ═══ -->
+<div class="screen" id="screen-gameover">
+  <div class="go-title" id="goTitle">GAME OVER</div>
+  <div class="go-emoji" id="goEmoji">💀</div>
+  <div class="go-stats" id="goStats"></div>
+  <div class="go-coins" id="goCoins"></div>
+  <div class="go-btns">
+    <button class="px-btn green" onclick="showScreen('screen-levels')">▶ JOGAR NOVAMENTE</button>
+    <button class="px-btn blue" onclick="goShop('screen-gameover')">🛒 LOJA</button>
+    <button class="px-btn casino" onclick="showCasino()">🎰 CASINO</button>
+    <button class="px-btn gray" onclick="openSaveModal()">💾 SAVE / LOAD</button>
+    <button class="px-btn gray" onclick="showScreen('screen-title')">🏠 INÍCIO</button>
   </div>
 </div>
 
@@ -553,20 +834,6 @@
       <button class="px-btn red sm" onclick="closeQuitModal();endGame('lose')" style="flex:1">💀 DESISTIR</button>
       <button class="px-btn green sm" onclick="closeQuitModal()" style="flex:1">⚔️ CONTINUAR</button>
     </div>
-  </div>
-</div>
-
-
-<div class="screen" id="screen-gameover">
-  <div class="go-title" id="goTitle">GAME OVER</div>
-  <div class="go-emoji" id="goEmoji">💀</div>
-  <div class="go-stats" id="goStats"></div>
-  <div class="go-coins" id="goCoins"></div>
-  <div class="go-btns">
-    <button class="px-btn green" onclick="showScreen('screen-levels')">▶ JOGAR NOVAMENTE</button>
-    <button class="px-btn blue" onclick="goShop('screen-gameover')">🛒 LOJA</button>
-    <button class="px-btn gray" onclick="openSaveModal()">💾 SAVE / LOAD</button>
-    <button class="px-btn gray" onclick="showScreen('screen-title')">🏠 INÍCIO</button>
   </div>
 </div>
 
@@ -648,7 +915,6 @@ const state = {
   unlockedLevels: parseInt(localStorage.getItem('007_maxLevel') || '1'),
   owned:          JSON.parse(localStorage.getItem('007_owned')    || '[]'),
   equipped:       JSON.parse(localStorage.getItem('007_equipped') || '{}'),
-  // bag: { itemId: quantity }  — utilitys & skills
   bag:            JSON.parse(localStorage.getItem('007_bag')      || '{}'),
 };
 
@@ -660,9 +926,7 @@ const game = {
   lvData:null, fx:null,
   playerLastAction:null, enemyLastAction:null,
   previousScreen:'screen-title',
-  // active skill effects for this battle (from bag usage)
   activeBattleSkills: {},
-  // locked enemy action for Eye of God preview consistency
   _lockedEnemyAction: null,
 };
 
@@ -671,39 +935,38 @@ const game = {
 // ═══════════════════════════════════════════
 const SHOP = {
   weapons:[
-    {id:'usps',             icon:'🔫',name:'USP-S',           	desc:'Máx: 5 balas',                      price:10, effect:{maxBullets:5}},
-    {id:'glock',            icon:'🔫',name:'GLOCK',            	desc:'Máx: 7 balas',                      price:15, effect:{maxBullets:7}},
-    {id:'shotgun',          icon:'💥',name:'SHOTGUN',          	desc:'2 de Damage p/bala',                price:35, effect:{damage:2}},
-    {id:'american_shotgun', icon:'💥',name:'AMERICAN SHOTGUN', 	desc:'2 de Damage p/bala\nMáx: 5 balas',  price:45, effect:{maxBullets:5,damage:2}},
-    {id:'uzi',              icon:'🔫',name:'UZI',              	desc:'Máx: 5 balas\n+1 vida',             price:45, effect:{maxBullets:5,bonusHP:1}},
-    {id:'ak47',             icon:'🔫',name:'AK-47',            	desc:'Máx: 5 balas\n+ Double Reload',     price:50, effect:{maxBullets:5,doubleReload:true}},
-    {id:'sniper',           icon:'🎯',name:'SNIPER',           	desc:'Perfura\ncolete inimigo',           price:75, effect:{armorPierce:true}},
+    {id:'usps',             icon:'🔫',name:'USP-S',           desc:'Máx: 5 balas',                      price:10, effect:{maxBullets:5}},
+    {id:'glock',            icon:'🔫',name:'GLOCK',            desc:'Máx: 7 balas',                      price:15, effect:{maxBullets:7}},
+    {id:'shotgun',          icon:'💥',name:'SHOTGUN',          desc:'2 de Damage p/bala',                price:35, effect:{damage:2}},
+    {id:'american_shotgun', icon:'💥',name:'AMERICAN SHOTGUN', desc:'2 de Damage p/bala\nMáx: 5 balas',  price:45, effect:{maxBullets:5,damage:2}},
+    {id:'uzi',              icon:'🔫',name:'UZI',              desc:'Máx: 5 balas\n+1 vida',             price:45, effect:{maxBullets:5,bonusHP:1}},
+    {id:'ak47',             icon:'🔫',name:'AK-47',            desc:'Máx: 5 balas\n+ Double Reload',     price:50, effect:{maxBullets:5,doubleReload:true}},
+    {id:'sniper',           icon:'🎯',name:'SNIPER',           desc:'Perfura\ncolete inimigo',           price:75, effect:{armorPierce:true}},
   ],
   utilitys:[
-    {id:'cigarrete',  icon:'🚬',name:'CIGARRETE',  	desc:'+1 vida\npor ronda',       	price:5,  effect:{bonusHP:1}},
-    {id:'beer',       icon:'🍺',name:'BEER',        	desc:'+2 vidas\npor ronda',      	price:8,  effect:{bonusHP:2}},
-    {id:'hamsa',      icon:'🪬',name:'HAMSA',       	desc:'+3 vidas\npor ronda',      	price:10, effect:{bonusHP:3}},
-    {id:'eyeofgod',   icon:'👁️',name:'EYE OF GOD', 	desc:'Vês a jogada\ndo inimigo', 	price:5,  effect:{seeEnemy:true}},
+    {id:'cigarrete',  icon:'🚬',name:'CIGARRETE',  desc:'+1 vida\npor ronda',       price:5,  effect:{bonusHP:1}},
+    {id:'beer',       icon:'🍺',name:'BEER',        desc:'+2 vidas\npor ronda',      price:8,  effect:{bonusHP:2}},
+    {id:'hamsa',      icon:'🪬',name:'HAMSA',       desc:'+3 vidas\npor ronda',      price:10, effect:{bonusHP:3}},
+    {id:'eyeofgod',   icon:'👁️',name:'EYE OF GOD', desc:'Vês a jogada\ndo inimigo', price:5,  effect:{seeEnemy:true}},
   ],
   skills:[
-    {id:'double_reload', icon:'⚡', name:'DOUBLE RELOAD', desc:'Recarrega a dobrar',          		price:7,  effect:{doubleReload:true}},
-    {id:'helmet',        icon:'⛑️',name:'HELMET 35',      desc:'35% bloqueio\nautomático',    		price:7,  effect:{autoBlock:0.35}},
-    {id:'burst_shield',  icon:'💠', name:'BURST SHIELD',  desc:'Defende e dispara\nna mesma ronda',    	price:10, effect:{shieldBurst:true}},
+    {id:'double_reload', icon:'⚡', name:'DOUBLE RELOAD', desc:'Recarrega a dobrar',                   price:7,  effect:{doubleReload:true}},
+    {id:'helmet',        icon:'⛑️',name:'HELMET 35',      desc:'35% bloqueio\nautomático',             price:7,  effect:{autoBlock:0.35}},
+    {id:'burst_shield',  icon:'💠', name:'BURST SHIELD',  desc:'Defende e dispara\nna mesma ronda',    price:10, effect:{shieldBurst:true}},
   ],
   skins:[
-    {id:'skin_clown',   icon:'🤡',  	name:'CLOWN',   	desc:'Smile! Why so serius?',price:2,  effect:{sprite:'🤡'}},
-    {id:'skin_merman',  icon:'🧜🏻‍♂️', 	name:'MERMAN',  	desc:'Mermaid? Nah Merman',  price:3,  effect:{sprite:'🧜🏻‍♂️'}},
-    {id:'skin_ralien',  icon:'👾',  	name:'RALIEN',  	desc:'Retro alien',          price:5,  effect:{sprite:'👾'}},
-    {id:'skin_villain', icon:'🦹🏻‍♂️',  	name:'VILLAIN',  	desc:'I gotta do it',        price:5,  effect:{sprite:'🦹🏻‍♂️'}},
-    {id:'skin_pbombero',icon:'👨🏻‍🚒',  	name:'PEDRO BOMBERO',  	desc:'Where is the fire?',   price:7,  effect:{sprite:'👨🏻‍🚒'}},
-    {id:'skin_skull',   icon:'💀',  	name:'SKULL',   	desc:'We are all the same',  price:7,  effect:{sprite:'💀'}},
-    {id:'skin_hitman',  icon:'🤵🏼‍♂️', 	name:'HITMAN',  	desc:'Kill it',              price:10, effect:{sprite:'🤵🏼‍♂️'}},
-    {id:'skin_lninja',  icon:'🥷',  	name:'W NINJA', 	desc:'White Ninja',          price:12, effect:{sprite:'🥷'}},
-    {id:'skin_dninja',  icon:'🥷🏿', 	name:'B NINJA', 	desc:'Black Ninja',          price:12, effect:{sprite:'🥷🏿'}},
+    {id:'skin_clown',   icon:'🤡',  name:'CLOWN',        desc:'Smile! Why so serius?',price:2,  effect:{sprite:'🤡'}},
+    {id:'skin_merman',  icon:'🧜🏻‍♂️',name:'MERMAN',       desc:'Mermaid? Nah Merman',  price:3,  effect:{sprite:'🧜🏻‍♂️'}},
+    {id:'skin_ralien',  icon:'👾',  name:'RALIEN',        desc:'Retro alien',          price:5,  effect:{sprite:'👾'}},
+    {id:'skin_villain', icon:'🦹🏻‍♂️', name:'VILLAIN',      desc:'I gotta do it',        price:5,  effect:{sprite:'🦹🏻‍♂️'}},
+    {id:'skin_pbombero',icon:'👨🏻‍🚒', name:'PEDRO BOMBERO',desc:'Where is the fire?',   price:7,  effect:{sprite:'👨🏻‍🚒'}},
+    {id:'skin_skull',   icon:'💀',  name:'SKULL',         desc:'We are all the same',  price:7,  effect:{sprite:'💀'}},
+    {id:'skin_hitman',  icon:'🤵🏼‍♂️',name:'HITMAN',        desc:'Kill it',              price:10, effect:{sprite:'🤵🏼‍♂️'}},
+    {id:'skin_lninja',  icon:'🥷',  name:'W NINJA',       desc:'White Ninja',          price:12, effect:{sprite:'🥷'}},
+    {id:'skin_dninja',  icon:'🥷🏿', name:'B NINJA',       desc:'Black Ninja',          price:12, effect:{sprite:'🥷🏿'}},
   ],
 };
 
-// Helper: get any item from any category by id
 function getShopItem(id) {
   for (const cat of Object.values(SHOP)) {
     const found = cat.find(i=>i.id===id);
@@ -713,18 +976,18 @@ function getShopItem(id) {
 }
 
 const LEVEL_DEFS = [
-  {name:'RECRUTA',   	icon:'👮',sprite:'👮',difficulty:'FÁCIL',    	aiStyle:'master',     	hp:5, maxBullets:3},
-  {name:'GENIE',   	icon:'🧞‍♂️',sprite:'🧞‍♂️',difficulty:'FÁCIL',    	aiStyle:'random',     	hp:5, maxBullets:3},
-  {name:'GUARDA',    	icon:'💂',sprite:'💂',difficulty:'FÁCIL+',   	aiStyle:'cautious',   	hp:5, maxBullets:3},
-  {name:'MOAI',    	icon:'🗿​',sprite:'🗿​',difficulty:'FÁCIL+',   	aiStyle:'cautious',   	hp:5, maxBullets:3},
-  {name:'TROLL',    	icon:'🧌',sprite:'🧌',difficulty:'MÉDIO',   	aiStyle:'random',  	hp:6, maxBullets:4},
-  {name:'ASTRONAUT',    icon:'👨‍🚀',sprite:'👨‍🚀',difficulty:'MÉDIO',   	aiStyle:'random',  	hp:6, maxBullets:4},
-  {name:'DRACULA', 	icon:'🧛🏻‍♂️',sprite:'🧛🏻‍♂️',difficulty:'MÉDIO+',   	aiStyle:'cautious',     hp:6, maxBullets:5},
-  {name:'ALIEN', 	icon:'👽',sprite:'👽',difficulty:'MÉDIO+',   	aiStyle:'random',      	hp:6, maxBullets:5},
-  {name:'CYBORG',    	icon:'🤖',sprite:'🤖',difficulty:'DIFÍCIL',  	aiStyle:'random',   	hp:7, maxBullets:5},
-  {name:'DSKULL',    	icon:'🩻​',sprite:'🩻​',difficulty:'DIFÍCIL',  	aiStyle:'random',   	hp:7, maxBullets:5},
-  {name:'DEMON',     	icon:'👹',sprite:'👹',difficulty:'DIFÍCIL+', 	aiStyle:'cautious',    	hp:8, maxBullets:6},
-  {name:'RALIEN',     	icon:'👾',sprite:'👾',difficulty:'DIFÍCIL+', 	aiStyle:'random',     	hp:8, maxBullets:6},
+  {name:'RECRUTA',    icon:'👮',sprite:'👮',difficulty:'FÁCIL',   aiStyle:'master',   hp:5, maxBullets:3},
+  {name:'GENIE',      icon:'🧞‍♂️',sprite:'🧞‍♂️',difficulty:'FÁCIL',   aiStyle:'random',   hp:5, maxBullets:3},
+  {name:'GUARDA',     icon:'💂',sprite:'💂',difficulty:'FÁCIL+',  aiStyle:'cautious', hp:5, maxBullets:3},
+  {name:'MOAI',       icon:'🗿​',sprite:'🗿​',difficulty:'FÁCIL+',  aiStyle:'cautious', hp:5, maxBullets:3},
+  {name:'TROLL',      icon:'🧌',sprite:'🧌',difficulty:'MÉDIO',   aiStyle:'random',   hp:6, maxBullets:4},
+  {name:'ASTRONAUT',  icon:'👨‍🚀',sprite:'👨‍🚀',difficulty:'MÉDIO',   aiStyle:'random',   hp:6, maxBullets:4},
+  {name:'DRACULA',    icon:'🧛🏻‍♂️',sprite:'🧛🏻‍♂️',difficulty:'MÉDIO+',  aiStyle:'cautious', hp:6, maxBullets:5},
+  {name:'ALIEN',      icon:'👽',sprite:'👽',difficulty:'MÉDIO+',  aiStyle:'random',   hp:6, maxBullets:5},
+  {name:'CYBORG',     icon:'🤖',sprite:'🤖',difficulty:'DIFÍCIL', aiStyle:'random',   hp:7, maxBullets:5},
+  {name:'DSKULL',     icon:'🩻​',sprite:'🩻​',difficulty:'DIFÍCIL', aiStyle:'random',   hp:7, maxBullets:5},
+  {name:'DEMON',      icon:'👹',sprite:'👹',difficulty:'DIFÍCIL+',aiStyle:'cautious', hp:8, maxBullets:6},
+  {name:'RALIEN',     icon:'👾',sprite:'👾',difficulty:'DIFÍCIL+',aiStyle:'random',   hp:8, maxBullets:6},
 ];
 
 function getLevelData(lvl) {
@@ -755,10 +1018,23 @@ function save() {
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if (id !== 'screen-shop') game.previousScreen = id;
-  if (id === 'screen-title')  { document.getElementById('titleCoins').textContent=state.coins; document.getElementById('titleMaxLvl').textContent=state.unlockedLevels; document.getElementById('titleSpy').textContent=getPlayerSprite(); }
+  if (id !== 'screen-shop' && id !== 'screen-casino') game.previousScreen = id;
+  if (id === 'screen-title')  {
+    document.getElementById('titleCoins').textContent=state.coins;
+    document.getElementById('titleMaxLvl').textContent=state.unlockedLevels;
+    document.getElementById('titleSpy').textContent=getPlayerSprite();
+  }
   if (id === 'screen-levels') { document.getElementById('levelsCoins').textContent=state.coins; renderLevels(); }
   if (id === 'screen-shop')   { document.getElementById('shopCoins').textContent=state.coins; renderShop(currentTab); }
+}
+
+function showCasino() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-casino').classList.add('active');
+  document.getElementById('casinoCoins').textContent = state.coins;
+  currentCasinoTab = 'slots';
+  document.querySelectorAll('.casino-tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  renderCasinoTab('slots');
 }
 
 function goShop(from)    { game.previousScreen=from; showScreen('screen-shop'); }
@@ -791,7 +1067,6 @@ function getPlayerSprite() {
   return '🕴🏼';
 }
 
-// Base effects from equipped weapon only (no more armor/skills tab)
 function getEquippedWeaponEffects() {
   const fx = {maxBullets:3, damage:1, bonusHP:0, autoBlock:0, seeEnemy:false, doubleReload:false, armorPierce:false, shieldBurst:false};
   const wId = state.equipped.weapons;
@@ -811,10 +1086,8 @@ function getEquippedWeaponEffects() {
   return fx;
 }
 
-// Merge active battle skills into fx
 function getAllEffects() {
   const fx = getEquippedWeaponEffects();
-  // Merge active skills used from bag this battle
   const sk = game.activeBattleSkills;
   if (sk.doubleReload) fx.doubleReload = true;
   if (sk.autoBlock)    fx.autoBlock    = Math.max(fx.autoBlock, sk.autoBlock);
@@ -839,18 +1112,13 @@ function bagRemove(itemId) {
   return true;
 }
 
-function bagCount(itemId) {
-  return state.bag[itemId] || 0;
-}
+function bagCount(itemId) { return state.bag[itemId] || 0; }
 
 function renderBag() {
   const row = document.getElementById('bagRow');
   row.innerHTML = '';
   const entries = Object.entries(state.bag).filter(([,q])=>q>0);
-  if (entries.length === 0) {
-    row.innerHTML = '<span class="bag-empty">🎒 bag vazia</span>';
-    return;
-  }
+  if (entries.length === 0) { row.innerHTML = '<span class="bag-empty">🎒 bag vazia</span>'; return; }
   entries.forEach(([id, qty]) => {
     const item = getShopItem(id);
     if (!item) return;
@@ -868,11 +1136,9 @@ function useBagItem(itemId) {
   const item = getShopItem(itemId);
   if (!item) return;
   if (!bagRemove(itemId)) { showNotif('Item não disponível!','red'); return; }
-
   const e = item.effect;
   const inBattle = !game.gameOver && game.lvData !== null;
 
-  // UTILITY effects
   if (item.id === 'cigarrete' || item.id === 'beer' || item.id === 'hamsa') {
     if (inBattle) {
       game.playerHP = Math.min(game.playerHP + (e.bonusHP||0), game.playerMaxHP + (e.bonusHP||0));
@@ -880,16 +1146,11 @@ function useBagItem(itemId) {
       updateHUD();
       showNotif(`${item.icon} +${e.bonusHP} vida(s)!`,'green');
     } else {
-      // Will apply on next battle start (stored in bag, removed on use — effect already consumed next startGame)
-      // Re-add so startGame reads it; actually we handle bonusHP on startGame from bag
-      // For simplicity: we apply the HP boost to base so startGame picks it up
       showNotif(`${item.icon} ${item.name} usada fora de batalha! Efeito na próxima batalha.`,'purple');
-      // We track pending utility HP outside of battle
       state._pendingBonusHP = (state._pendingBonusHP||0) + (e.bonusHP||0);
       save();
     }
-    renderBag();
-    return;
+    renderBag(); return;
   }
 
   if (item.id === 'eyeofgod') {
@@ -898,56 +1159,31 @@ function useBagItem(itemId) {
       game.fx = getAllEffects();
       showNotif(`${item.icon} Vês a próxima jogada do inimigo!`,'purple');
     } else {
-      // Eye of God fora de batalha — sem efeito prático, devolver
       bagAdd(itemId, 1);
       showNotif('Usa o Eye of God durante a batalha!','red');
     }
-    renderBag();
-    updateButtons();
-    return;
-  }
-
-  // SKILL effects (active for the whole battle, spent at end)
-  if (item.id === 'double_reload') {
-    game.activeBattleSkills.doubleReload = true;
-    game.fx = getAllEffects();
-    showNotif(`${item.icon} Double Reload ativo!`,'purple');
-    renderBag(); updateButtons(); return;
-  }
-  if (item.id === 'helmet') {
-    game.activeBattleSkills.autoBlock = Math.max(game.activeBattleSkills.autoBlock||0, 0.35);
-    game.fx = getAllEffects();
-    showNotif(`${item.icon} Helmet 35 ativo! 35% auto-block.`,'purple');
-    renderBag(); updateButtons(); return;
-  }
-  if (item.id === 'burst_shield') {
-    game.activeBattleSkills.shieldBurst = true;
-    game.fx = getAllEffects();
-    showNotif(`${item.icon} Burst Shield ativo!`,'purple');
     renderBag(); updateButtons(); return;
   }
 
+  if (item.id === 'double_reload') { game.activeBattleSkills.doubleReload=true; game.fx=getAllEffects(); showNotif(`${item.icon} Double Reload ativo!`,'purple'); renderBag(); updateButtons(); return; }
+  if (item.id === 'helmet')        { game.activeBattleSkills.autoBlock=Math.max(game.activeBattleSkills.autoBlock||0,0.35); game.fx=getAllEffects(); showNotif(`${item.icon} Helmet 35 ativo!`,'purple'); renderBag(); updateButtons(); return; }
+  if (item.id === 'burst_shield')  { game.activeBattleSkills.shieldBurst=true; game.fx=getAllEffects(); showNotif(`${item.icon} Burst Shield ativo!`,'purple'); renderBag(); updateButtons(); return; }
   renderBag();
 }
 
 // ═══════════════════════════════════════════
-// START
+// START GAME
 // ═══════════════════════════════════════════
 function startGame(level) {
   const lv = getLevelData(level);
   const baseWpnFx = getEquippedWeaponEffects();
-
-  // Reset active battle skills
   game.activeBattleSkills = {};
   game._lockedEnemyAction = null;
-
-  // Pending utility HP from out-of-battle usage
   const pendingHP = state._pendingBonusHP || 0;
   state._pendingBonusHP = 0;
   save();
-
   game.level=level; game.round=1;
-  game.playerHP=5 + baseWpnFx.bonusHP + pendingHP;
+  game.playerHP=5+baseWpnFx.bonusHP+pendingHP;
   game.playerMaxHP=game.playerHP;
   game.enemyHP=lv.hp; game.enemyMaxHP=lv.hp;
   game.playerBullets=0; game.enemyBullets=0;
@@ -991,38 +1227,27 @@ function renderBullets(id, cur, max) {
 function setResultBanner(txt) { document.getElementById('resultBanner').innerHTML=txt; }
 
 function updateButtons() {
-  const isR1      = game.round === 1;
-  const canShoot  = game.playerBullets > 0;
-  const canReload = game.playerBullets < game.playerMaxBullets;
-  document.getElementById('btn-reload').disabled = !game.waitingForAction || !canReload;
+  const isR1=game.round===1, canShoot=game.playerBullets>0, canReload=game.playerBullets<game.playerMaxBullets;
+  document.getElementById('btn-reload').disabled = !game.waitingForAction||!canReload;
   document.getElementById('btn-defend').disabled = !game.waitingForAction;
-  document.getElementById('btn-shoot').disabled  = !game.waitingForAction || !canShoot || isR1;
-
-  const fx = game.fx || {};
-  let info = isR1
-    ? 'Ronda 1 — só podes recarregar ou defender!'
-    : `Balas: ${game.playerBullets}/${game.playerMaxBullets}  |  Inimigo: ${game.enemyBullets} balas`;
-
-  if (fx.seeEnemy && game.waitingForAction && game.round > 1) {
-    if (!game._lockedEnemyAction) game._lockedEnemyAction = getEnemyAction();
-    const h = game._lockedEnemyAction;
-    info += `\n👁️ INIMIGO VAI: ${h==='reload'?'🔄 RECARREGAR':h==='defend'?'🛡️ DEFENDER':'🔫 DISPARAR'}`;
-  } else if (!fx.seeEnemy) {
-    game._lockedEnemyAction = null;
-  }
-
-  // Show active skills
-  const activeKeys = Object.keys(game.activeBattleSkills);
+  document.getElementById('btn-shoot').disabled  = !game.waitingForAction||!canShoot||isR1;
+  const fx=game.fx||{};
+  let info = isR1 ? 'Ronda 1 — só podes recarregar ou defender!' : `Balas: ${game.playerBullets}/${game.playerMaxBullets}  |  Inimigo: ${game.enemyBullets} balas`;
+  if (fx.seeEnemy&&game.waitingForAction&&game.round>1) {
+    if (!game._lockedEnemyAction) game._lockedEnemyAction=getEnemyAction();
+    const h=game._lockedEnemyAction;
+    info+=`\n👁️ INIMIGO VAI: ${h==='reload'?'🔄 RECARREGAR':h==='defend'?'🛡️ DEFENDER':'🔫 DISPARAR'}`;
+  } else if (!fx.seeEnemy) { game._lockedEnemyAction=null; }
+  const activeKeys=Object.keys(game.activeBattleSkills);
   if (activeKeys.length) {
-    const labels = [];
+    const labels=[];
     if (game.activeBattleSkills.doubleReload) labels.push('⚡ DBL.RLD');
-    if (game.activeBattleSkills.autoBlock)    labels.push(`⛑️ HELMET`);
+    if (game.activeBattleSkills.autoBlock)    labels.push('⛑️ HELMET');
     if (game.activeBattleSkills.shieldBurst)  labels.push('💠 BURST');
     if (game.activeBattleSkills.seeEnemy)     labels.push('👁️ VISION');
-    info += '\n' + labels.join('  ');
+    info+='\n'+labels.join('  ');
   }
-
-  document.getElementById('roundInfo').textContent = info;
+  document.getElementById('roundInfo').textContent=info;
 }
 
 // ═══════════════════════════════════════════
@@ -1031,61 +1256,23 @@ function updateButtons() {
 function getEnemyAction() {
   const {aiStyle}=game.lvData;
   const {enemyBullets,enemyMaxBullets,playerBullets,round}=game;
-
-  const canShoot  = enemyBullets > 0;
-  const canReload = enemyBullets < enemyMaxBullets;
-
-  if (round === 1) {
-    return canReload ? (Math.random()<0.6?'reload':'defend') : 'defend';
-  }
-
+  const canShoot=enemyBullets>0, canReload=enemyBullets<enemyMaxBullets;
+  if (round===1) return canReload?(Math.random()<0.6?'reload':'defend'):'defend';
   function wpick(weights) {
-    const valid = weights.filter(([a,w])=>{
-      if (a==='reload' && !canReload) return false;
-      if (a==='shoot'  && !canShoot)  return false;
-      return w > 0;
-    });
-    if (!valid.length) return canShoot?'shoot':'defend';
-    const tot = valid.reduce((s,[,w])=>s+w,0);
-    let r = Math.random()*tot;
-    for (const [a,w] of valid){ r-=w; if(r<=0) return a; }
-    return valid[0][0];
+    const valid=weights.filter(([a,w])=>{ if(a==='reload'&&!canReload)return false; if(a==='shoot'&&!canShoot)return false; return w>0; });
+    if(!valid.length) return canShoot?'shoot':'defend';
+    const tot=valid.reduce((s,[,w])=>s+w,0); let r=Math.random()*tot;
+    for(const[a,w]of valid){r-=w;if(r<=0)return a;} return valid[0][0];
   }
-
-  const rl = canReload ? 1 : 0;
-
+  const rl=canReload?1:0;
   switch(aiStyle) {
-    case 'random':
-      return wpick([['reload',rl],['defend',1],['shoot',1]]);
-    case 'cautious':
-      if (!canShoot) return wpick([['reload',3*rl],['defend',1]]);
-      return wpick([['shoot',2],['reload',2*rl],['defend',3]]);
-    case 'aggressive':
-      if (canShoot) return wpick([['shoot',6],['reload',rl],['defend',0]]);
-      return 'reload';
-    case 'smart':
-      if (!canShoot) return canReload?'reload':'defend';
-      if (playerBullets===0) return 'shoot';
-      return wpick([['shoot',3],['defend',3],['reload',rl]]);
-    case 'adaptive': {
-      const last=game.playerLastAction;
-      if (last==='reload') return wpick([['shoot',4],['defend',1],['reload',rl]]);
-      if (last==='shoot')  return wpick([['defend',4],['reload',2*rl],['shoot',1]]);
-      if (last==='defend') return wpick([['reload',3*rl],['shoot',2],['defend',1]]);
-      if (!canShoot) return canReload?'reload':'defend';
-      return wpick([['shoot',2],['defend',2],['reload',rl]]);
-    }
-    case 'master': {
-      if (!canShoot) return canReload?'reload':'defend';
-      if (playerBullets===0) return 'shoot';
-      const last=game.playerLastAction;
-      if (last==='reload') return 'shoot';
-      if (last==='shoot')  return 'defend';
-      if (enemyBullets<=1 && canReload) return wpick([['reload',3],['defend',2],['shoot',1]]);
-      return wpick([['shoot',4],['defend',3],['reload',rl]]);
-    }
-    default:
-      return canReload?'reload':'defend';
+    case 'random':    return wpick([['reload',rl],['defend',1],['shoot',1]]);
+    case 'cautious':  if(!canShoot)return wpick([['reload',3*rl],['defend',1]]); return wpick([['shoot',2],['reload',2*rl],['defend',3]]);
+    case 'aggressive':if(canShoot)return wpick([['shoot',6],['reload',rl],['defend',0]]); return 'reload';
+    case 'smart':     if(!canShoot)return canReload?'reload':'defend'; if(playerBullets===0)return'shoot'; return wpick([['shoot',3],['defend',3],['reload',rl]]);
+    case 'adaptive':  {const last=game.playerLastAction; if(last==='reload')return wpick([['shoot',4],['defend',1],['reload',rl]]); if(last==='shoot')return wpick([['defend',4],['reload',2*rl],['shoot',1]]); if(last==='defend')return wpick([['reload',3*rl],['shoot',2],['defend',1]]); if(!canShoot)return canReload?'reload':'defend'; return wpick([['shoot',2],['defend',2],['reload',rl]]);}
+    case 'master':    {if(!canShoot)return canReload?'reload':'defend'; if(playerBullets===0)return'shoot'; const last=game.playerLastAction; if(last==='reload')return'shoot'; if(last==='shoot')return'defend'; if(enemyBullets<=1&&canReload)return wpick([['reload',3],['defend',2],['shoot',1]]); return wpick([['shoot',4],['defend',3],['reload',rl]]);}
+    default: return canReload?'reload':'defend';
   }
 }
 
@@ -1093,24 +1280,22 @@ function getEnemyAction() {
 // PLAYER ACTION
 // ═══════════════════════════════════════════
 function playerAction(action) {
-  if (!game.waitingForAction || game.gameOver) return;
-  game.waitingForAction = false;
-  updateButtons();
-  const fx = game.fx || {};
-  const reloadAmt = (action==='reload' && fx.doubleReload) ? 2 : 1;
-  // ★ Lock enemy action NOW (same state the preview used) before any state changes
-  const eAct = game._lockedEnemyAction || getEnemyAction();
-  game._lockedEnemyAction = null;
+  if (!game.waitingForAction||game.gameOver) return;
+  game.waitingForAction=false; updateButtons();
+  const fx=game.fx||{};
+  const reloadAmt=(action==='reload'&&fx.doubleReload)?2:1;
+  const eAct=game._lockedEnemyAction||getEnemyAction();
+  game._lockedEnemyAction=null;
   game.playerLastAction=action; game.enemyLastAction=eAct;
-  document.getElementById('playerStatus').textContent = labelAction(action);
-  document.getElementById('playerStatus').className   = 'status-badge '+action+'ing';
-  document.getElementById('enemyStatus').textContent  = '🤔 ...';
-  document.getElementById('enemyStatus').className    = 'status-badge';
+  document.getElementById('playerStatus').textContent=labelAction(action);
+  document.getElementById('playerStatus').className='status-badge '+action+'ing';
+  document.getElementById('enemyStatus').textContent='🤔 ...';
+  document.getElementById('enemyStatus').className='status-badge';
   setTimeout(()=>{
-    document.getElementById('enemyStatus').textContent = labelAction(eAct);
-    document.getElementById('enemyStatus').className   = 'status-badge '+eAct+'ing';
-    resolveRound(action, eAct, reloadAmt);
-  }, 550);
+    document.getElementById('enemyStatus').textContent=labelAction(eAct);
+    document.getElementById('enemyStatus').className='status-badge '+eAct+'ing';
+    resolveRound(action,eAct,reloadAmt);
+  },550);
 }
 
 function labelAction(a) { return a==='reload'?'🔄 RECARREGOU':a==='defend'?'🛡️ DEFENDEU':'🔫 DISPAROU'; }
@@ -1118,152 +1303,71 @@ function labelAction(a) { return a==='reload'?'🔄 RECARREGOU':a==='defend'?'�
 // ═══════════════════════════════════════════
 // RESOLVE
 // ═══════════════════════════════════════════
-function resolveRound(pA, eA, reloadAmt) {
+function resolveRound(pA,eA,reloadAmt) {
   let result='';
   const fx=game.fx||{};
-  const dmg=fx.damage||1;
-  const armorPierce=fx.armorPierce||false;
-  const pAutoBlk=fx.autoBlock||0;
-
-  // ★ Burst Shield: se ativo e o jogador defender, trata-se como defender+disparar simultaneamente
-  let pActionFinal = pA;
-  let burstFired = false;
-  if (pA==='defend' && fx.shieldBurst && game.playerBullets > 0) {
-    burstFired = true;
-    pActionFinal = 'burst'; // defende E dispara
-    // consumir a skill após uso
-    delete game.activeBattleSkills.shieldBurst;
-    game.fx = getAllEffects();
-  }
-
-  if (pActionFinal==='reload') game.playerBullets=Math.min(game.playerBullets+reloadAmt, game.playerMaxBullets);
-  if (eA==='reload') game.enemyBullets=Math.min(game.enemyBullets+1, game.enemyMaxBullets);
-
-  const pShoot  = pActionFinal==='shoot' && game.playerBullets>0;
-  const pDefend = pActionFinal==='defend' || pActionFinal==='burst';
-  const eBulletsBefore = game.enemyBullets;
-  const eShoot  = eA==='shoot' && game.enemyBullets>0;
-  const eDefend = eA==='defend';
-  let pHit=false, eHit=false;
-  let playerLostLife=false;
-
-  // ── BURST SHIELD: defende e dispara na mesma ronda
-  if (burstFired) {
-    game.playerBullets -= 1; // gasta 1 bala ao disparar
-    // Resolver o disparo do inimigo (bloqueado pelo escudo)
-    if (eShoot) {
-      game.enemyBullets -= 1;
-      result = `💠 BURST SHIELD! Bloqueaste o disparo do inimigo`;
-    } else {
-      result = `💠 BURST SHIELD! Atacaste enquanto te defendias`;
-    }
-    // Resolver o teu disparo contra o inimigo
-    if (eDefend && !armorPierce) {
-      result += `\n🛡️ Inimigo defendeu-se do teu disparo.`;
-    } else {
-      game.enemyHP -= dmg; eHit = true;
-      game.enemyBullets = 0;
-      result += `\n🎯 ACERTO! Inimigo perde ${dmg} vida!`;
-    }
-  }
-  // ── DUELO: ambos disparam
-  else if (pShoot && eShoot) {
-    const pB=game.playerBullets, eB=game.enemyBullets;
-    game.playerBullets=0; game.enemyBullets=0;
-    if (pB>eB)      { game.enemyHP-=dmg; eHit=true; result=`💥 DUELO! ${pB} vs ${eB} — Inimigo perde ${dmg} vida! Balas reiniciadas.`; }
-    else if (eB>pB) { game.playerHP-=1; pHit=true; playerLostLife=true; result=`💥 DUELO! ${eB} vs ${pB} — Perdes 1 vida! Balas reiniciadas.`; }
-    else            { result=`⚡ EMPATE no duelo (${pB} vs ${eB})! Ninguém morre. Balas reiniciadas.`; }
-  }
-  // ── PLAYER DISPARA, INIMIGO NÃO
-  else if (pShoot && !eShoot) {
-    game.playerBullets -= 1;
-    if (eDefend && !armorPierce) { result=`🛡️ Inimigo defendeu! Bala desperdiçada.`; }
-    else { game.enemyHP-=dmg; eHit=true; game.enemyBullets=0; result=`🎯 ACERTO! Inimigo perde ${dmg} vida! Balas do inimigo reiniciadas.`; }
-  }
-  // ── INIMIGO DISPARA, PLAYER NÃO
-  else if (eShoot && !pShoot) {
-    game.enemyBullets -= 1;
-    if (pDefend) {
-      if (armorPierce) { game.playerHP-=1; pHit=true; playerLostLife=true; result=`💀 SNIPER perfurou o teu colete! -1 vida!`; }
-      else { result=`🛡️ Defendeste! Nenhum dano.`; }
-    } else if (pAutoBlk>0 && Math.random()<pAutoBlk) { result=`✨ Colete automático bloqueou o disparo!`; }
-    else { game.playerHP-=1; pHit=true; playerLostLife=true; result=`💥 Foste atingido! Perdes 1 vida!`; }
-  }
-  // ── SEM DISPAROS
-  else {
-    const msgs={'reload-reload':'🔄 Ambos recarregaram. Silêncio.','reload-defend':'🔄 Recarregaste. Inimigo em guarda.','defend-reload':'🛡️ Defendeste. Inimigo recarregou.','defend-defend':'🛡️ Standoff! Ambos em guarda.'};
-    result = msgs[`${pA}-${eA}`] || '— Ronda sem incidentes.';
-  }
-
-  // ★ Perder uma vida → balas reiniciadas
-  if (playerLostLife && game.playerHP > 0) {
-    game.playerBullets = 0;
-    result += `\n💔 Perdeste uma vida — balas reiniciadas!`;
-  }
-
-  const pSpr=document.getElementById('playerSprite'), eSpr=document.getElementById('enemySprite');
-  if(pHit)   pSpr.classList.add('hit');
-  if(pShoot) pSpr.classList.add('attack');
-  if(eShoot) eSpr.classList.add('attack');
-  if(eHit)   setTimeout(()=>eSpr.classList.add('hit'),180);
-  setTimeout(()=>{ pSpr.classList.remove('hit','attack'); eSpr.classList.remove('hit','attack'); },600);
-
-  setResultBanner(result);
-  updateHUD();
-  game.round++;
-
+  const dmg=fx.damage||1, armorPierce=fx.armorPierce||false, pAutoBlk=fx.autoBlock||0;
+  let pActionFinal=pA, burstFired=false;
+  if(pA==='defend'&&fx.shieldBurst&&game.playerBullets>0){burstFired=true;pActionFinal='burst';delete game.activeBattleSkills.shieldBurst;game.fx=getAllEffects();}
+  if(pActionFinal==='reload')game.playerBullets=Math.min(game.playerBullets+reloadAmt,game.playerMaxBullets);
+  if(eA==='reload')game.enemyBullets=Math.min(game.enemyBullets+1,game.enemyMaxBullets);
+  const pShoot=pActionFinal==='shoot'&&game.playerBullets>0;
+  const pDefend=pActionFinal==='defend'||pActionFinal==='burst';
+  const eShoot=eA==='shoot'&&game.enemyBullets>0, eDefend=eA==='defend';
+  let pHit=false,eHit=false,playerLostLife=false;
+  if(burstFired){game.playerBullets-=1;if(eShoot){game.enemyBullets-=1;result=`💠 BURST SHIELD! Bloqueaste o disparo do inimigo`;}else{result=`💠 BURST SHIELD! Atacaste enquanto te defendias`;} if(eDefend&&!armorPierce){result+=`\n🛡️ Inimigo defendeu-se do teu disparo.`;}else{game.enemyHP-=dmg;eHit=true;game.enemyBullets=0;result+=`\n🎯 ACERTO! Inimigo perde ${dmg} vida!`;}}
+  else if(pShoot&&eShoot){const pB=game.playerBullets,eB=game.enemyBullets;game.playerBullets=0;game.enemyBullets=0;if(pB>eB){game.enemyHP-=dmg;eHit=true;result=`💥 DUELO! ${pB} vs ${eB} — Inimigo perde ${dmg} vida! Balas reiniciadas.`;}else if(eB>pB){game.playerHP-=1;pHit=true;playerLostLife=true;result=`💥 DUELO! ${eB} vs ${pB} — Perdes 1 vida! Balas reiniciadas.`;}else{result=`⚡ EMPATE no duelo (${pB} vs ${eB})! Ninguém morre. Balas reiniciadas.`;}}
+  else if(pShoot&&!eShoot){game.playerBullets-=1;if(eDefend&&!armorPierce){result=`🛡️ Inimigo defendeu! Bala desperdiçada.`;}else{game.enemyHP-=dmg;eHit=true;game.enemyBullets=0;result=`🎯 ACERTO! Inimigo perde ${dmg} vida! Balas do inimigo reiniciadas.`;}}
+  else if(eShoot&&!pShoot){game.enemyBullets-=1;if(pDefend){if(armorPierce){game.playerHP-=1;pHit=true;playerLostLife=true;result=`💀 SNIPER perfurou o teu colete! -1 vida!`;}else{result=`🛡️ Defendeste! Nenhum dano.`;}}else if(pAutoBlk>0&&Math.random()<pAutoBlk){result=`✨ Colete automático bloqueou o disparo!`;}else{game.playerHP-=1;pHit=true;playerLostLife=true;result=`💥 Foste atingido! Perdes 1 vida!`;}}
+  else{const msgs={'reload-reload':'🔄 Ambos recarregaram. Silêncio.','reload-defend':'🔄 Recarregaste. Inimigo em guarda.','defend-reload':'🛡️ Defendeste. Inimigo recarregou.','defend-defend':'🛡️ Standoff! Ambos em guarda.'};result=msgs[`${pA}-${eA}`]||'— Ronda sem incidentes.';}
+  if(playerLostLife&&game.playerHP>0){game.playerBullets=0;result+=`\n💔 Perdeste uma vida — balas reiniciadas!`;}
+  const pSpr=document.getElementById('playerSprite'),eSpr=document.getElementById('enemySprite');
+  if(pHit)pSpr.classList.add('hit'); if(pShoot)pSpr.classList.add('attack');
+  if(eShoot)eSpr.classList.add('attack'); if(eHit)setTimeout(()=>eSpr.classList.add('hit'),180);
+  setTimeout(()=>{pSpr.classList.remove('hit','attack');eSpr.classList.remove('hit','attack');},600);
+  setResultBanner(result); updateHUD(); game.round++;
   setTimeout(()=>{
     if(game.playerHP<=0&&game.enemyHP<=0)endGame('draw');
     else if(game.playerHP<=0)endGame('lose');
     else if(game.enemyHP<=0)endGame('win');
-    else {
-      game.waitingForAction=true;
-      game._lockedEnemyAction = null;
-      // Eye of God dura apenas 1 ronda — reset após resolução
-      if (game.activeBattleSkills.seeEnemy) {
-        delete game.activeBattleSkills.seeEnemy;
-        game.fx = getAllEffects();
-      }
-      document.getElementById('playerStatus').textContent='— AGUARDA —'; document.getElementById('playerStatus').className='status-badge';
-      document.getElementById('enemyStatus').textContent='— AGUARDA —';  document.getElementById('enemyStatus').className='status-badge';
+    else{
+      game.waitingForAction=true; game._lockedEnemyAction=null;
+      if(game.activeBattleSkills.seeEnemy){delete game.activeBattleSkills.seeEnemy;game.fx=getAllEffects();}
+      document.getElementById('playerStatus').textContent='— AGUARDA —';document.getElementById('playerStatus').className='status-badge';
+      document.getElementById('enemyStatus').textContent='— AGUARDA —';document.getElementById('enemyStatus').className='status-badge';
       updateButtons();
     }
-  }, 1100);
+  },1100);
 }
 
 // ═══════════════════════════════════════════
-// END GAME — skills gastas no fim do nível
+// END GAME
 // ═══════════════════════════════════════════
 function endGame(outcome) {
-  game.gameOver=true;
-
-  // Skills gastam-se no fim do nível (já foram removidas da bag ao usar)
-  game.activeBattleSkills = {};
-
+  game.gameOver=true; game.activeBattleSkills={};
   const lv=game.lvData;
-  if (outcome==='win') {
+  if(outcome==='win'){
     state.coins+=5;
-    if(game.level>=state.unlockedLevels) state.unlockedLevels=game.level+1;
-    document.getElementById('goTitle').textContent='VITÓRIA!'; document.getElementById('goTitle').className='go-title win';
+    if(game.level>=state.unlockedLevels)state.unlockedLevels=game.level+1;
+    document.getElementById('goTitle').textContent='VITÓRIA!';document.getElementById('goTitle').className='go-title win';
     document.getElementById('goEmoji').textContent='🏆';
     document.getElementById('goStats').textContent=`NÍVEL ${game.level} — ${lv.name}\nRONDA FINAL: ${game.round-1}`;
     document.getElementById('goCoins').textContent=`+5 🪙  (Total: ${state.coins})`;
-    flashLevel(); showNotif('+5 moedas! Vitória!','green'); floatCoins('+5');
-  } else if (outcome==='lose') {
+    flashLevel();showNotif('+5 moedas! Vitória!','green');floatCoins('+5');
+  }else if(outcome==='lose'){
     state.coins=Math.max(0,state.coins-1);
-    document.getElementById('goTitle').textContent='ELIMINADO!'; document.getElementById('goTitle').className='go-title lose';
+    document.getElementById('goTitle').textContent='ELIMINADO!';document.getElementById('goTitle').className='go-title lose';
     document.getElementById('goEmoji').textContent='💀';
     document.getElementById('goStats').textContent=`NÍVEL ${game.level} — ${lv.name}\nRONDA: ${game.round-1}`;
     document.getElementById('goCoins').textContent=`-1 🪙  (Total: ${state.coins})`;
-    showNotif('-1 moeda. Derrota!','red'); floatCoins('-1','red');
-  } else {
-    document.getElementById('goTitle').textContent='EMPATE!'; document.getElementById('goTitle').className='go-title'; document.getElementById('goTitle').style.color='var(--white)';
+    showNotif('-1 moeda. Derrota!','red');floatCoins('-1','red');
+  }else{
+    document.getElementById('goTitle').textContent='EMPATE!';document.getElementById('goTitle').className='go-title';document.getElementById('goTitle').style.color='var(--white)';
     document.getElementById('goEmoji').textContent='🤝';
     document.getElementById('goStats').textContent=`NÍVEL ${game.level}\nSem vencedor`;
     document.getElementById('goCoins').textContent=`Moedas: ${state.coins} 🪙`;
   }
-  save();
-  setTimeout(()=>showScreen('screen-gameover'),1400);
+  save(); setTimeout(()=>showScreen('screen-gameover'),1400);
 }
 
 // ═══════════════════════════════════════════
@@ -1280,73 +1384,777 @@ function switchTab(tab) {
 function renderShop(tab) {
   const items=SHOP[tab]; const grid=document.getElementById('shopGrid'); grid.innerHTML='';
   items.forEach(item=>{
-    const isUtility = tab === 'utilitys';
-    const isSkill   = tab === 'skills';
-    const isSkin    = tab === 'skins';
-    const isWeapon  = tab === 'weapons';
-
-    // Weapons & Skins: buy once, equip
-    // Utilitys: buy multiple, go to bag
-    // Skills: buy, go to bag
-
-    const owned    = state.owned.includes(item.id);
-    const equipped = state.equipped[tab] === item.id;
-    const inBag    = bagCount(item.id) > 0;
-    const bagQty   = bagCount(item.id);
-
+    const isUtility=tab==='utilitys', isSkill=tab==='skills';
+    const owned=state.owned.includes(item.id), equipped=state.equipped[tab]===item.id;
+    const inBag=bagCount(item.id)>0, bagQty=bagCount(item.id);
     const card=document.createElement('div');
-    let cls = 'shop-item';
-    let badgeHtml = '';
-    let priceLabel = '';
-
-    if (isUtility || isSkill) {
-      if (inBag) { cls += ' in-bag'; badgeHtml = `<span class="bag-badge">x${bagQty}</span>`; }
-      priceLabel = `<div class="item-price">🪙 ${item.price}</div>`;
-    } else {
-      if (owned)    { cls += ' owned'; badgeHtml = `<span class="owned-badge">✓</span>`; }
-      if (equipped) { cls += ' equipped'; }
-      if (equipped) priceLabel = `<div class="item-price equipped-lbl">✅ EQUIPADO</div>`;
-      else if (owned) priceLabel = `<div class="item-price owned-lbl">🔧 EQUIPAR</div>`;
-      else priceLabel = `<div class="item-price">🪙 ${item.price}</div>`;
+    let cls='shop-item', badgeHtml='', priceLabel='';
+    if(isUtility||isSkill){
+      if(inBag){cls+=' in-bag';badgeHtml=`<span class="bag-badge">x${bagQty}</span>`;}
+      priceLabel=`<div class="item-price">🪙 ${item.price}</div>`;
+    }else{
+      if(owned){cls+=' owned';badgeHtml=`<span class="owned-badge">✓</span>`;}
+      if(equipped)cls+=' equipped';
+      if(equipped)priceLabel=`<div class="item-price equipped-lbl">✅ EQUIPADO</div>`;
+      else if(owned)priceLabel=`<div class="item-price owned-lbl">🔧 EQUIPAR</div>`;
+      else priceLabel=`<div class="item-price">🪙 ${item.price}</div>`;
     }
-
-    card.className = cls;
-    card.innerHTML = `${badgeHtml}<div class="item-icon">${item.icon}</div><div class="item-name">${item.name}</div><div class="item-desc">${item.desc}</div>${priceLabel}`;
-    card.onclick = () => shopAction(tab, item);
+    card.className=cls;
+    card.innerHTML=`${badgeHtml}<div class="item-icon">${item.icon}</div><div class="item-name">${item.name}</div><div class="item-desc">${item.desc}</div>${priceLabel}`;
+    card.onclick=()=>shopAction(tab,item);
     grid.appendChild(card);
   });
 }
 
-function shopAction(tab, item) {
-  const isUtility = tab === 'utilitys';
-  const isSkill   = tab === 'skills';
-
-  // Utilitys: sempre compráveis (múltiplas vezes), vão para a bag
-  if (isUtility || isSkill) {
-    if (state.coins < item.price) { showNotif('Moedas insuficientes!','red'); return; }
-    state.coins -= item.price;
-    bagAdd(item.id, 1);
-    save();
-    document.getElementById('shopCoins').textContent = state.coins;
+function shopAction(tab,item){
+  const isUtility=tab==='utilitys',isSkill=tab==='skills';
+  if(isUtility||isSkill){
+    if(state.coins<item.price){showNotif('Moedas insuficientes!','red');return;}
+    state.coins-=item.price; bagAdd(item.id,1); save();
+    document.getElementById('shopCoins').textContent=state.coins;
     renderShop(tab);
-    // Atualizar bag se estiver em batalha
-    if (document.getElementById('screen-game').classList.contains('active') || game.previousScreen === 'screen-game') {
-      renderBag();
-    }
-    showNotif(`✅ ${item.name} adicionado à bag!`,'green');
-    floatCoins(`-${item.price}`,'red');
-    return;
+    if(game.previousScreen==='screen-game')renderBag();
+    showNotif(`✅ ${item.name} adicionado à bag!`,'green'); floatCoins(`-${item.price}`,'red'); return;
+  }
+  const owned=state.owned.includes(item.id),equipped=state.equipped[tab]===item.id;
+  if(equipped){delete state.equipped[tab];save();renderShop(tab);showNotif('Item desequipado.');return;}
+  if(owned){state.equipped[tab]=item.id;save();renderShop(tab);showNotif('✅ Equipado: '+item.name,'green');return;}
+  if(state.coins<item.price){showNotif('Moedas insuficientes!','red');return;}
+  state.coins-=item.price;state.owned.push(item.id);state.equipped[tab]=item.id;
+  save();document.getElementById('shopCoins').textContent=state.coins;renderShop(tab);
+  showNotif('✅ Comprado e equipado!','green');floatCoins(`-${item.price}`,'red');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ██████╗ █████╗ ███████╗██╗███╗   ██╗ ██████╗
+// ██╔════╝██╔══██╗██╔════╝██║████╗  ██║██╔═══██╗
+// ██║     ███████║███████╗██║██╔██╗ ██║██║   ██║
+// ██║     ██╔══██║╚════██║██║██║╚██╗██║██║   ██║
+// ╚██████╗██║  ██║███████║██║██║ ╚████║╚██████╔╝
+//  ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝
+// ═══════════════════════════════════════════════════════════
+
+let currentCasinoTab = 'slots';
+let casinoLog = [];
+
+// Prize table — coins multiplier and optional item prize
+const CASINO_PRIZES = {
+  // multiplier: coins gained = bet * mult
+  // item: null | {id, name, icon, rarity}
+  jackpot:  { mult: 10,  item: { id:'hamsa',        icon:'🪬', name:'HAMSA',        rarity:'rare' } },
+  bigwin:   { mult: 5,   item: { id:'beer',          icon:'🍺', name:'BEER',         rarity:'uncommon' } },
+  win:      { mult: 3,   item: null },
+  smallwin: { mult: 2,   item: null },
+  push:     { mult: 1,   item: null },   // break even
+  lose:     { mult: 0,   item: null },
+};
+
+const RARE_SKILL_PRIZES = [
+  { id:'double_reload', icon:'⚡', name:'DOUBLE RELOAD', rarity:'rare' },
+  { id:'burst_shield',  icon:'💠', name:'BURST SHIELD',  rarity:'rare' },
+  { id:'helmet',        icon:'⛑️', name:'HELMET 35',     rarity:'rare' },
+];
+
+function switchCasinoTab(tab) {
+  currentCasinoTab = tab;
+  const tabs = ['slots','blackjack','roulette','donuts'];
+  document.querySelectorAll('.casino-tab').forEach((t,i)=>t.classList.toggle('active',tabs[i]===tab));
+  renderCasinoTab(tab);
+}
+
+function renderCasinoTab(tab) {
+  const c = document.getElementById('casinoContent');
+  c.innerHTML = '';
+  if (tab === 'slots')     renderSlots(c);
+  if (tab === 'blackjack') renderBlackjack(c);
+  if (tab === 'roulette')  renderRoulette(c);
+  if (tab === 'donuts')    renderDoN(c);
+  // Prize banner
+  const pb = document.createElement('div');
+  pb.className = 'prize-banner';
+  pb.innerHTML = `PRÉMIOS: 🪙×2 SMALL | 🪙×3 WIN | 🪙×5 BIG + <span class="uncommon">🍺BEER</span> | 🪙×10 JACKPOT + <span class="rare">🪬HAMSA</span>`;
+  c.appendChild(pb);
+  // Log
+  renderCasinoLog(c);
+}
+
+function addCasinoLog(msg, cls='') {
+  casinoLog.unshift({ msg, cls });
+  if (casinoLog.length > 12) casinoLog.pop();
+}
+
+function renderCasinoLog(container) {
+  const log = document.createElement('div');
+  log.className = 'casino-log';
+  log.id = 'casinoLog';
+  casinoLog.forEach(e => {
+    const p = document.createElement('p');
+    p.className = e.cls;
+    p.textContent = e.msg;
+    log.appendChild(p);
+  });
+  container.appendChild(log);
+}
+
+function updateCasinoCoins() {
+  document.getElementById('casinoCoins').textContent = state.coins;
+  save();
+}
+
+function grantCasinoPrize(prize, bet) {
+  const won = bet * prize.mult;
+  if (won > bet) {
+    state.coins += won;
+    floatCoins(`+${won}`);
+  } else if (won === bet) {
+    // push: no change (already deducted bet, refund)
+    state.coins += bet;
+  }
+  // grant item
+  let itemMsg = '';
+  if (prize.item) {
+    bagAdd(prize.item.id, 1);
+    itemMsg = ` + ${prize.item.icon} ${prize.item.name}!`;
+    showNotif(`${prize.item.icon} ${prize.item.name} na bag!`, 'purple');
+  }
+  updateCasinoCoins();
+  return { won, itemMsg };
+}
+
+// ─────────────────────────────────────────
+// 🎰 SLOT MACHINE
+// ─────────────────────────────────────────
+const SLOT_SYMBOLS = ['🔫','💣','🍸','🃏','💎','🎯','🕴🏼','⚡'];
+const SLOT_PAYOUTS = [
+  // [symbol, count, prize_key]
+  ['💎','3','jackpot'],
+  ['🎯','3','jackpot'],
+  ['🕴🏼','3','bigwin'],
+  ['💎','2','win'],
+  ['🎯','2','win'],
+  ['🍸','3','win'],
+  ['🍸','2','smallwin'],
+  ['🔫','3','win'],
+];
+
+let slotBet = 2;
+let slotSpinning = false;
+
+function renderSlots(container) {
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div class="slot-machine">
+      <div class="slot-title">🎰 SLOT MACHINE</div>
+      <div class="slot-reels" id="slotReels">
+        <div class="slot-reel"><div class="slot-reel-inner" id="reel0"><div class="slot-symbol" id="sym0">🎯</div></div></div>
+        <div class="slot-reel"><div class="slot-reel-inner" id="reel1"><div class="slot-symbol" id="sym1">🍸</div></div></div>
+        <div class="slot-reel"><div class="slot-reel-inner" id="reel2"><div class="slot-symbol" id="sym2">💎</div></div></div>
+      </div>
+      <div class="slot-line"></div>
+      <div class="slot-result" id="slotResult">Faz girar para jogar!</div>
+    </div>
+    <div class="bet-area">
+      <div class="bet-label">APOSTA</div>
+      <div class="bet-btns" id="slotBetBtns">
+        <button class="bet-btn selected" onclick="setSlotBet(2,this)">2🪙</button>
+        <button class="bet-btn" onclick="setSlotBet(5,this)">5🪙</button>
+        <button class="bet-btn" onclick="setSlotBet(10,this)">10🪙</button>
+      </div>
+      <button class="px-btn casino" id="slotSpinBtn" onclick="spinSlots()" style="max-width:200px">🎰 GIRAR</button>
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+function setSlotBet(val, btn) {
+  slotBet = val;
+  document.querySelectorAll('#slotBetBtns .bet-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function spinSlots() {
+  if (slotSpinning) return;
+  if (state.coins < slotBet) { showNotif('Moedas insuficientes!','red'); return; }
+  state.coins -= slotBet;
+  updateCasinoCoins();
+  slotSpinning = true;
+  document.getElementById('slotSpinBtn').disabled = true;
+  document.getElementById('slotResult').textContent = '🎰 ...';
+  document.getElementById('slotResult').className = 'slot-result';
+
+  // Pick final symbols
+  const finals = [0,1,2].map(() => SLOT_SYMBOLS[Math.floor(Math.random()*SLOT_SYMBOLS.length)]);
+
+  // Animate each reel with delay
+  [0,1,2].forEach((i) => {
+    const sym = document.getElementById(`sym${i}`);
+    const inner = document.getElementById(`reel${i}`);
+    const delay = 300 + i*250;
+
+    // Quick flicker animation
+    let ticks = 0;
+    const maxTicks = 8 + i*3;
+    const interval = setInterval(() => {
+      sym.textContent = SLOT_SYMBOLS[Math.floor(Math.random()*SLOT_SYMBOLS.length)];
+      ticks++;
+      if (ticks >= maxTicks) {
+        clearInterval(interval);
+        setTimeout(() => {
+          sym.textContent = finals[i];
+          inner.classList.add('spinning');
+          setTimeout(() => inner.classList.remove('spinning'), 300);
+          if (i === 2) {
+            setTimeout(() => resolveSlots(finals), 200);
+          }
+        }, delay);
+      }
+    }, 80);
+  });
+}
+
+function resolveSlots(syms) {
+  const counts = {};
+  syms.forEach(s => counts[s] = (counts[s]||0)+1);
+  let prizeKey = 'lose';
+
+  // Check payouts in order (best first)
+  for (const [sym, cnt, key] of SLOT_PAYOUTS) {
+    if ((counts[sym]||0) >= parseInt(cnt)) { prizeKey = key; break; }
   }
 
-  // Weapons & Skins: comprar uma vez, equipar
-  const owned   = state.owned.includes(item.id);
-  const equipped = state.equipped[tab] === item.id;
-  if (equipped)  { delete state.equipped[tab]; save(); renderShop(tab); showNotif('Item desequipado.'); return; }
-  if (owned)     { state.equipped[tab]=item.id; save(); renderShop(tab); showNotif('✅ Equipado: '+item.name,'green'); return; }
-  if (state.coins < item.price) { showNotif('Moedas insuficientes!','red'); return; }
-  state.coins -= item.price; state.owned.push(item.id); state.equipped[tab]=item.id;
-  save(); document.getElementById('shopCoins').textContent=state.coins; renderShop(tab);
-  showNotif('✅ Comprado e equipado!','green'); floatCoins(`-${item.price}`,'red');
+  // Rare bonus: 3% chance of skill prize on any win
+  let rarePrize = null;
+  if (prizeKey !== 'lose' && Math.random() < 0.03) {
+    rarePrize = RARE_SKILL_PRIZES[Math.floor(Math.random()*RARE_SKILL_PRIZES.length)];
+  }
+
+  const prize = CASINO_PRIZES[prizeKey];
+  const { won, itemMsg } = grantCasinoPrize(prize, slotBet);
+
+  const el = document.getElementById('slotResult');
+  let msg, cls;
+  if (prizeKey === 'jackpot') {
+    msg = `🎉 JACKPOT! +${won}🪙${itemMsg}`; cls = 'slot-result win';
+    showNotif('🎰 JACKPOT! 🎉', 'casino');
+  } else if (prizeKey === 'bigwin') {
+    msg = `🏆 BIG WIN! +${won}🪙${itemMsg}`; cls = 'slot-result win';
+  } else if (prizeKey === 'win') {
+    msg = `✅ WIN! +${won}🪙${itemMsg}`; cls = 'slot-result win';
+  } else if (prizeKey === 'smallwin') {
+    msg = `👍 Pequena vitória! +${won}🪙`; cls = 'slot-result win';
+  } else if (prizeKey === 'push') {
+    msg = `↔️ Break-even. Aposta devolvida.`; cls = 'slot-result';
+  } else {
+    msg = `💸 Sem sorte. -${slotBet}🪙`; cls = 'slot-result lose';
+    floatCoins(`-${slotBet}`, 'red');
+  }
+
+  if (rarePrize) {
+    bagAdd(rarePrize.id, 1);
+    msg += `\n⭐ BÓNUS RARO: ${rarePrize.icon} ${rarePrize.name}!`;
+    showNotif(`⭐ ${rarePrize.name} na bag!`, 'purple');
+  }
+
+  el.textContent = msg; el.className = cls;
+  addCasinoLog(msg, prizeKey==='lose'?'lose':'win');
+  const logEl = document.getElementById('casinoLog');
+  if (logEl) { logEl.innerHTML = ''; casinoLog.forEach(e=>{const p=document.createElement('p');p.className=e.cls;p.textContent=e.msg;logEl.appendChild(p);}); }
+
+  slotSpinning = false;
+  document.getElementById('slotSpinBtn').disabled = false;
+}
+
+// ─────────────────────────────────────────
+// 🃏 BLACKJACK
+// ─────────────────────────────────────────
+let bjGame = { playerHand:[], dealerHand:[], deck:[], bet:2, phase:'idle' };
+
+function renderBlackjack(container) {
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div class="bj-table">
+      <div class="bj-title">🃏 BLACKJACK</div>
+      <div class="bj-area">
+        <div class="bj-dealer-area">
+          <div class="bj-area-label">🤵 DEALER</div>
+          <div class="bj-cards" id="dealerCards"></div>
+          <div class="bj-score" id="dealerScore">—</div>
+        </div>
+        <div class="bj-player-area">
+          <div class="bj-area-label">🕴🏼 TU</div>
+          <div class="bj-cards" id="playerBjCards"></div>
+          <div class="bj-score" id="playerBjScore">—</div>
+        </div>
+      </div>
+      <div class="bj-result" id="bjResult">Clica DEAL para jogar!</div>
+      <div class="bj-btns">
+        <button class="px-btn casino sm" id="bjDeal" onclick="bjDeal()" style="flex:1;max-width:100px">🃏 DEAL</button>
+        <button class="px-btn green sm" id="bjHit" onclick="bjHit()" style="flex:1;max-width:100px" disabled>➕ HIT</button>
+        <button class="px-btn red sm" id="bjStand" onclick="bjStand()" style="flex:1;max-width:100px" disabled>✋ STAND</button>
+      </div>
+    </div>
+    <div class="bet-area">
+      <div class="bet-label">APOSTA</div>
+      <div class="bet-btns" id="bjBetBtns">
+        <button class="bet-btn selected" onclick="setBjBet(2,this)">2🪙</button>
+        <button class="bet-btn" onclick="setBjBet(5,this)">5🪙</button>
+        <button class="bet-btn" onclick="setBjBet(10,this)">10🪙</button>
+        <button class="bet-btn" onclick="setBjBet(20,this)">20🪙</button>
+      </div>
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+function setBjBet(val, btn) {
+  bjGame.bet = val;
+  document.querySelectorAll('#bjBetBtns .bet-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function buildDeck() {
+  const suits = ['♠','♥','♦','♣'];
+  const vals  = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+  let deck = [];
+  suits.forEach(s => vals.forEach(v => deck.push({v, s, red: s==='♥'||s==='♦'})));
+  // shuffle
+  for (let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]];}
+  return deck;
+}
+
+function cardVal(card) {
+  if (card.hidden) return 0;
+  if (['J','Q','K'].includes(card.v)) return 10;
+  if (card.v === 'A') return 11;
+  return parseInt(card.v);
+}
+
+function handValue(hand) {
+  let total = hand.reduce((s,c)=>s+cardVal(c),0);
+  let aces  = hand.filter(c=>c.v==='A'&&!c.hidden).length;
+  while (total > 21 && aces > 0) { total -= 10; aces--; }
+  return total;
+}
+
+function renderBjCards(elId, hand) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.innerHTML = '';
+  hand.forEach(c => {
+    const card = document.createElement('div');
+    if (c.hidden) {
+      card.className = 'bj-card hidden';
+      card.textContent = '?';
+    } else {
+      card.className = 'bj-card' + (c.red ? ' red-card' : '');
+      card.innerHTML = `${c.v}<div class="card-suit">${c.s}</div>`;
+    }
+    el.appendChild(card);
+  });
+}
+
+function bjDeal() {
+  if (state.coins < bjGame.bet) { showNotif('Moedas insuficientes!','red'); return; }
+  state.coins -= bjGame.bet;
+  updateCasinoCoins();
+  bjGame.deck = buildDeck();
+  bjGame.playerHand = [bjGame.deck.pop(), bjGame.deck.pop()];
+  bjGame.dealerHand = [bjGame.deck.pop(), {v:'?', s:'', red:false, hidden:true}];
+  bjGame.phase = 'playing';
+  document.getElementById('bjDeal').disabled = true;
+  document.getElementById('bjHit').disabled = false;
+  document.getElementById('bjStand').disabled = false;
+  document.getElementById('bjResult').textContent = '';
+  document.getElementById('bjResult').className = 'bj-result';
+  renderBjCards('dealerCards', bjGame.dealerHand);
+  renderBjCards('playerBjCards', bjGame.playerHand);
+  const pVal = handValue(bjGame.playerHand);
+  document.getElementById('dealerScore').textContent = cardVal(bjGame.dealerHand[0]) + '+?';
+  const scoreEl = document.getElementById('playerBjScore');
+  scoreEl.textContent = pVal;
+  if (pVal === 21) { scoreEl.className = 'bj-score blackjack'; bjStand(); }
+  else scoreEl.className = 'bj-score';
+}
+
+function bjHit() {
+  if (bjGame.phase !== 'playing') return;
+  bjGame.playerHand.push(bjGame.deck.pop());
+  renderBjCards('playerBjCards', bjGame.playerHand);
+  const val = handValue(bjGame.playerHand);
+  const scoreEl = document.getElementById('playerBjScore');
+  scoreEl.textContent = val;
+  if (val > 21) { scoreEl.className = 'bj-score bust'; bjEndRound('bust'); }
+  else if (val === 21) { scoreEl.className = 'bj-score blackjack'; bjStand(); }
+  else scoreEl.className = 'bj-score';
+}
+
+function bjStand() {
+  bjGame.phase = 'dealer';
+  document.getElementById('bjHit').disabled = true;
+  document.getElementById('bjStand').disabled = true;
+  // Reveal dealer hidden card
+  bjGame.dealerHand[1] = bjGame.deck.pop();
+  renderBjCards('dealerCards', bjGame.dealerHand);
+  // Dealer draws to 17
+  function dealerDraw() {
+    const dVal = handValue(bjGame.dealerHand);
+    document.getElementById('dealerScore').textContent = dVal;
+    if (dVal < 17) {
+      bjGame.dealerHand.push(bjGame.deck.pop());
+      renderBjCards('dealerCards', bjGame.dealerHand);
+      setTimeout(dealerDraw, 400);
+    } else {
+      bjEndRound('stand');
+    }
+  }
+  setTimeout(dealerDraw, 400);
+}
+
+function bjEndRound(trigger) {
+  bjGame.phase = 'idle';
+  document.getElementById('bjDeal').disabled = false;
+  const pVal = handValue(bjGame.playerHand);
+  const dVal = handValue(bjGame.dealerHand);
+  const resEl = document.getElementById('bjResult');
+  let prizeKey, msg;
+
+  if (trigger === 'bust') {
+    prizeKey = 'lose'; msg = `💥 Bust! Ultrapassaste 21. -${bjGame.bet}🪙`;
+    floatCoins(`-${bjGame.bet}`, 'red');
+  } else if (dVal > 21) {
+    prizeKey = pVal===21 ? 'bigwin' : 'win'; msg = `🏆 Dealer bust! Ganhaste!`;
+  } else if (pVal > dVal) {
+    prizeKey = pVal===21 ? 'bigwin' : 'win'; msg = `✅ ${pVal} vs ${dVal} — Ganhaste!`;
+  } else if (pVal === dVal) {
+    prizeKey = 'push'; msg = `↔️ Empate (${pVal}). Aposta devolvida.`;
+  } else {
+    prizeKey = 'lose'; msg = `💸 ${pVal} vs ${dVal} — Perdeste. -${bjGame.bet}🪙`;
+    floatCoins(`-${bjGame.bet}`, 'red');
+  }
+
+  const prize = CASINO_PRIZES[prizeKey];
+  const { won, itemMsg } = grantCasinoPrize(prize, bjGame.bet);
+  if (prizeKey !== 'lose') msg += ` +${won}🪙${itemMsg}`;
+
+  // Rare skill bonus on bigwin
+  let rarePrize = null;
+  if (prizeKey === 'bigwin' && Math.random() < 0.08) {
+    rarePrize = RARE_SKILL_PRIZES[Math.floor(Math.random()*RARE_SKILL_PRIZES.length)];
+    bagAdd(rarePrize.id, 1);
+    msg += `\n⭐ BÓNUS: ${rarePrize.icon} ${rarePrize.name}!`;
+    showNotif(`⭐ ${rarePrize.name} na bag!`, 'purple');
+  }
+
+  resEl.textContent = msg;
+  resEl.className = 'bj-result ' + (prizeKey==='lose'?'lose':prizeKey==='push'?'push':'win');
+  addCasinoLog(msg.split('\n')[0], prizeKey==='lose'?'lose':'win');
+  const logEl = document.getElementById('casinoLog');
+  if (logEl) { logEl.innerHTML=''; casinoLog.forEach(e=>{const p=document.createElement('p');p.className=e.cls;p.textContent=e.msg;logEl.appendChild(p);}); }
+}
+
+// ─────────────────────────────────────────
+// 🎯 RUSSIAN ROULETTE
+// ─────────────────────────────────────────
+let rrGame = {
+  chamber: [], // 6 slots, 1 bullet, shuffled
+  position: 0, // current firing position
+  roundsLeft: 6,
+  active: false,
+  bet: 3,
+  totalWon: 0,
+};
+
+function renderRoulette(container) {
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div class="rr-table">
+      <div class="rr-title">🎯 ROLETA RUSSA</div>
+      <div class="rr-gun" id="rrGun">🔫</div>
+      <div class="rr-chamber" id="rrChamber">
+        ${[0,1,2,3,4,5].map(i=>`<div class="rr-slot" id="rrSlot${i}"></div>`).join('')}
+      </div>
+      <div class="rr-rounds-left" id="rrRoundsLeft">Carrega o revólver e aperta o gatilho!</div>
+      <div class="rr-odds" id="rrOdds">Cada sobrevivência × 2 aposta</div>
+      <div class="rr-result" id="rrResult"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%">
+        <button class="px-btn casino sm" id="rrLoadBtn" onclick="rrLoad()" style="flex:1;max-width:130px">🔫 CARREGAR</button>
+        <button class="px-btn red sm" id="rrFireBtn" onclick="rrFire()" style="flex:1;max-width:130px" disabled>💥 GATILHO</button>
+        <button class="px-btn green sm" id="rrCashBtn" onclick="rrCashOut()" style="flex:1;max-width:130px" disabled>💰 SACAR</button>
+      </div>
+    </div>
+    <div class="bet-area">
+      <div class="bet-label">APOSTA INICIAL</div>
+      <div class="bet-btns" id="rrBetBtns">
+        <button class="bet-btn" onclick="setRrBet(2,this)">2🪙</button>
+        <button class="bet-btn selected" onclick="setRrBet(3,this)">3🪙</button>
+        <button class="bet-btn" onclick="setRrBet(5,this)">5🪙</button>
+        <button class="bet-btn" onclick="setRrBet(10,this)">10🪙</button>
+      </div>
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+function setRrBet(val, btn) {
+  rrGame.bet = val;
+  document.querySelectorAll('#rrBetBtns .bet-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function rrLoad() {
+  if (state.coins < rrGame.bet) { showNotif('Moedas insuficientes!','red'); return; }
+  state.coins -= rrGame.bet;
+  updateCasinoCoins();
+  floatCoins(`-${rrGame.bet}`, 'red');
+  // Random chamber
+  rrGame.chamber = [false,false,false,false,false,false];
+  rrGame.chamber[Math.floor(Math.random()*6)] = true; // one bullet
+  rrGame.position = 0;
+  rrGame.roundsLeft = 6;
+  rrGame.active = true;
+  rrGame.totalWon = 0;
+  renderRrChamber(false);
+  document.getElementById('rrLoadBtn').disabled = true;
+  document.getElementById('rrFireBtn').disabled = false;
+  document.getElementById('rrCashBtn').disabled = true;
+  document.getElementById('rrResult').textContent = '';
+  document.getElementById('rrResult').className = 'rr-result';
+  document.getElementById('rrRoundsLeft').innerHTML = `Posição: <span>${rrGame.position+1}/6</span>`;
+  document.getElementById('rrOdds').textContent = `Sobrevivência × 2 aposta | Cash-out disponível após 1ª ronda`;
+}
+
+function renderRrChamber(reveal) {
+  for (let i=0;i<6;i++) {
+    const el = document.getElementById(`rrSlot${i}`);
+    if (!el) continue;
+    el.className = 'rr-slot';
+    if (reveal) {
+      el.classList.add(rrGame.chamber[i] ? 'loaded' : 'empty');
+      el.textContent = rrGame.chamber[i] ? '🔴' : '⚪';
+    } else {
+      el.textContent = '';
+    }
+    if (i === rrGame.position && rrGame.active && !reveal) el.classList.add('active');
+  }
+}
+
+function rrFire() {
+  if (!rrGame.active) return;
+  const gun = document.getElementById('rrGun');
+  gun.classList.add('fired');
+  setTimeout(()=>gun.classList.remove('fired'), 500);
+
+  const hit = rrGame.chamber[rrGame.position];
+  const resEl = document.getElementById('rrResult');
+
+  if (hit) {
+    // DEAD
+    renderRrChamber(true);
+    resEl.textContent = '💀 BANG! Game over!';
+    resEl.className = 'rr-result dead';
+    document.getElementById('rrFireBtn').disabled = true;
+    document.getElementById('rrCashBtn').disabled = true;
+    document.getElementById('rrLoadBtn').disabled = false;
+    rrGame.active = false;
+    addCasinoLog(`💀 BANG! Perdeste ${rrGame.bet}🪙`, 'lose');
+    floatCoins(`-${rrGame.bet}`, 'red');
+    showNotif('💀 BANG! Que azar!', 'red');
+  } else {
+    // SURVIVE
+    rrGame.position++;
+    rrGame.roundsLeft--;
+    const reward = rrGame.bet * 2;
+    rrGame.totalWon += reward;
+    state.coins += reward;
+    updateCasinoCoins();
+    floatCoins(`+${reward}`);
+    resEl.textContent = `😅 CLICK! Sobreviveste! +${reward}🪙`;
+    resEl.className = 'rr-result survive';
+    renderRrChamber(false);
+
+    // Check if gun emptied (all 6 survived = impossible to hit, but just in case)
+    if (rrGame.position >= 6) {
+      // Survived all 6! Jackpot
+      const jackpotItem = CASINO_PRIZES.jackpot.item;
+      bagAdd(jackpotItem.id, 1);
+      resEl.textContent = `🏆 SOBREVIVESTE TODO O CARREGADOR! +${rrGame.totalWon}🪙 + ${jackpotItem.icon}`;
+      showNotif('🏆 INCRÍVEL! Jackpot!', 'casino');
+      document.getElementById('rrFireBtn').disabled = true;
+      document.getElementById('rrCashBtn').disabled = true;
+      document.getElementById('rrLoadBtn').disabled = false;
+      rrGame.active = false;
+    } else {
+      document.getElementById('rrRoundsLeft').innerHTML = `Posição: <span>${rrGame.position+1}/6</span> | Total: +${rrGame.totalWon}🪙`;
+      document.getElementById('rrCashBtn').disabled = false;
+
+      // Rare skill prize on 4th+ survival
+      if (rrGame.position >= 4 && Math.random() < 0.15) {
+        const rarePrize = RARE_SKILL_PRIZES[Math.floor(Math.random()*RARE_SKILL_PRIZES.length)];
+        bagAdd(rarePrize.id, 1);
+        showNotif(`⭐ Bónus: ${rarePrize.name}!`, 'purple');
+      }
+    }
+
+    addCasinoLog(`😅 Sobreviveu! +${reward}🪙`, 'win');
+  }
+  const logEl = document.getElementById('casinoLog');
+  if (logEl) { logEl.innerHTML=''; casinoLog.forEach(e=>{const p=document.createElement('p');p.className=e.cls;p.textContent=e.msg;logEl.appendChild(p);}); }
+}
+
+function rrCashOut() {
+  if (!rrGame.active) return;
+  rrGame.active = false;
+  renderRrChamber(true);
+  document.getElementById('rrFireBtn').disabled = true;
+  document.getElementById('rrCashBtn').disabled = true;
+  document.getElementById('rrLoadBtn').disabled = false;
+  document.getElementById('rrResult').textContent = `💰 Sacaste! Total ganho: +${rrGame.totalWon}🪙`;
+  document.getElementById('rrResult').className = 'rr-result survive';
+  showNotif(`💰 +${rrGame.totalWon}🪙 sacados!`, 'green');
+  addCasinoLog(`💰 Cash-out: +${rrGame.totalWon}🪙`, 'win');
+  const logEl = document.getElementById('casinoLog');
+  if (logEl) { logEl.innerHTML=''; casinoLog.forEach(e=>{const p=document.createElement('p');p.className=e.cls;p.textContent=e.msg;logEl.appendChild(p);}); }
+}
+
+// ─────────────────────────────────────────
+// 🪙 DOUBLE OR NOTHING
+// ─────────────────────────────────────────
+let donGame = { bet: 2, streak: 0, currentPot: 0, active: false, flipping: false };
+
+function renderDoN(container) {
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div class="don-table">
+      <div class="don-title">🪙 DOUBLE OR NOTHING</div>
+      <div class="don-coin" id="donCoin">🪙</div>
+      <div class="don-streak" id="donStreak">Streak: <span>0</span> | Pot: <span>0🪙</span></div>
+      <div class="don-result" id="donResult">Aposta e lança a moeda!</div>
+      <div class="don-btns">
+        <button class="px-btn casino sm" id="donHeads" onclick="donFlip('heads')" style="flex:1;max-width:110px">⬆ CARA</button>
+        <button class="px-btn blue sm" id="donTails" onclick="donFlip('tails')" style="flex:1;max-width:110px">⬇ COROA</button>
+        <button class="px-btn green sm" id="donCash" onclick="donCashOut()" style="flex:1;max-width:110px" disabled>💰 SACAR</button>
+      </div>
+    </div>
+    <div class="bet-area">
+      <div class="bet-label">APOSTA</div>
+      <div class="bet-btns" id="donBetBtns">
+        <button class="bet-btn selected" onclick="setDonBet(2,this)">2🪙</button>
+        <button class="bet-btn" onclick="setDonBet(5,this)">5🪙</button>
+        <button class="bet-btn" onclick="setDonBet(10,this)">10🪙</button>
+        <button class="bet-btn" onclick="setDonBet(20,this)">20🪙</button>
+      </div>
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+function setDonBet(val, btn) {
+  if (donGame.active) return; // can't change bet mid-streak
+  donGame.bet = val;
+  document.querySelectorAll('#donBetBtns .bet-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function donFlip(choice) {
+  if (donGame.flipping) return;
+
+  if (!donGame.active) {
+    // New game — deduct bet
+    if (state.coins < donGame.bet) { showNotif('Moedas insuficientes!','red'); return; }
+    state.coins -= donGame.bet;
+    updateCasinoCoins();
+    floatCoins(`-${donGame.bet}`, 'red');
+    donGame.active = true;
+    donGame.streak = 0;
+    donGame.currentPot = donGame.bet;
+  } else {
+    // Continuing streak — pot doubles, already in
+    donGame.currentPot *= 2;
+  }
+
+  donGame.flipping = true;
+  const coin = document.getElementById('donCoin');
+  coin.classList.add('flipping');
+  document.getElementById('donHeads').disabled = true;
+  document.getElementById('donTails').disabled = true;
+  document.getElementById('donCash').disabled  = true;
+  document.getElementById('donResult').textContent = '🌀 ...';
+
+  setTimeout(() => {
+    coin.classList.remove('flipping');
+    const result = Math.random() < 0.5 ? 'heads' : 'tails';
+    coin.textContent = result === 'heads' ? '⬆' : '⬇';
+
+    const resEl = document.getElementById('donResult');
+    if (result === choice) {
+      // WIN
+      donGame.streak++;
+      const pot = donGame.currentPot;
+
+      // Update streak display
+      document.getElementById('donStreak').innerHTML = `Streak: <span>${donGame.streak}🔥</span> | Pot: <span>${pot}🪙</span>`;
+
+      // Rare item on streak 3+
+      let rareMsg = '';
+      if (donGame.streak === 3 && Math.random() < 0.2) {
+        const rp = RARE_SKILL_PRIZES[Math.floor(Math.random()*RARE_SKILL_PRIZES.length)];
+        bagAdd(rp.id, 1);
+        rareMsg = ` + ⭐${rp.name}`;
+        showNotif(`⭐ ${rp.name} na bag!`, 'purple');
+      }
+      if (donGame.streak >= 5) {
+        // Streak 5+: jackpot item
+        const jackItem = CASINO_PRIZES.jackpot.item;
+        bagAdd(jackItem.id, 1);
+        rareMsg += ` + ${jackItem.icon}${jackItem.name}`;
+        showNotif('🏆 STREAK LENDÁRIO!', 'casino');
+      }
+
+      resEl.textContent = `✅ ${result==='heads'?'CARA':'COROA'}! +${pot}🪙${rareMsg}`;
+      resEl.className = 'don-result win';
+      addCasinoLog(`✅ Streak ${donGame.streak}! Pot: ${pot}🪙`, 'win');
+
+      document.getElementById('donHeads').disabled = false;
+      document.getElementById('donTails').disabled = false;
+      document.getElementById('donCash').disabled  = false;
+    } else {
+      // LOSE
+      donGame.active = false;
+      donGame.streak = 0;
+      donGame.currentPot = 0;
+      resEl.textContent = `💸 ${result==='heads'?'CARA':'COROA'}! Perdeste tudo!`;
+      resEl.className = 'don-result lose';
+      floatCoins(`-${donGame.bet}`, 'red');
+      document.getElementById('donStreak').innerHTML = `Streak: <span>0</span> | Pot: <span>0🪙</span>`;
+      document.getElementById('donHeads').disabled = false;
+      document.getElementById('donTails').disabled = false;
+      document.getElementById('donCash').disabled  = true;
+      addCasinoLog(`💸 Perdeu! -${donGame.bet}🪙`, 'lose');
+    }
+
+    donGame.flipping = false;
+    const logEl = document.getElementById('casinoLog');
+    if (logEl) { logEl.innerHTML=''; casinoLog.forEach(e=>{const p=document.createElement('p');p.className=e.cls;p.textContent=e.msg;logEl.appendChild(p);}); }
+  }, 900);
+}
+
+function donCashOut() {
+  if (!donGame.active) return;
+  const pot = donGame.currentPot;
+  state.coins += pot;
+  updateCasinoCoins();
+  floatCoins(`+${pot}`);
+  showNotif(`💰 +${pot}🪙 sacados!`, 'green');
+  document.getElementById('donResult').textContent = `💰 Sacaste ${pot}🪙! Streak: ${donGame.streak}`;
+  document.getElementById('donResult').className = 'don-result win';
+  document.getElementById('donStreak').innerHTML = `Streak: <span>0</span> | Pot: <span>0🪙</span>`;
+  document.getElementById('donCash').disabled = true;
+  donGame.active = false;
+  donGame.streak = 0;
+  donGame.currentPot = 0;
+  addCasinoLog(`💰 Cash-out: +${pot}🪙`, 'win');
+  const logEl = document.getElementById('casinoLog');
+  if (logEl) { logEl.innerHTML=''; casinoLog.forEach(e=>{const p=document.createElement('p');p.className=e.cls;p.textContent=e.msg;logEl.appendChild(p);}); }
 }
 
 // ═══════════════════════════════════════════
@@ -1365,15 +2173,10 @@ function floatCoins(txt,color='gold') {
 function confirmReset()  { document.getElementById('resetModal').classList.add('open'); }
 function closeResetModal(){ document.getElementById('resetModal').classList.remove('open'); }
 function executeReset() {
-  localStorage.removeItem('007_coins');
-  localStorage.removeItem('007_maxLevel');
-  localStorage.removeItem('007_owned');
-  localStorage.removeItem('007_equipped');
-  localStorage.removeItem('007_bag');
+  localStorage.removeItem('007_coins'); localStorage.removeItem('007_maxLevel');
+  localStorage.removeItem('007_owned'); localStorage.removeItem('007_equipped'); localStorage.removeItem('007_bag');
   state.coins=10; state.unlockedLevels=1; state.owned=[]; state.equipped={}; state.bag={}; state._pendingBonusHP=0;
-  closeResetModal();
-  showNotif('Jogo reiniciado!','red');
-  showScreen('screen-title');
+  closeResetModal(); showNotif('Jogo reiniciado!','red'); showScreen('screen-title');
 }
 function confirmQuit() { document.getElementById('quitModal').classList.add('open'); }
 function closeQuitModal() { document.getElementById('quitModal').classList.remove('open'); }
