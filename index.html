@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>007 — Pixel Spy</title>
+<title>007 — RETRO PIXEL</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
@@ -57,24 +57,24 @@
 
   .title-logo { text-align:center; animation:flicker 5s infinite; }
   .title-logo .big {
-    display:block; font-size:clamp(36px,10vw,80px); color:var(--gold);
+    display:block; font-size:clamp(50px,10vw,110px); color:var(--gold);
     text-shadow:0 0 10px var(--gold),0 0 30px rgba(245,197,24,0.3); letter-spacing:10px;
   }
   .title-logo .sub {
-    display:block; font-size:clamp(7px,1.8vw,12px); color:var(--gray); letter-spacing:5px; margin-top:6px;
+    display:block; font-size:clamp(10px,1.8vw,17px); color:var(--gray); letter-spacing:5px; margin-top:6px;
   }
   @keyframes flicker { 0%,93%,100%{opacity:1} 94%{opacity:0.6} 95%{opacity:1} 97%{opacity:0.4} 98%{opacity:1} }
 
-  .pixel-spy { font-size:clamp(48px,12vw,80px); animation:bobbing 2s ease-in-out infinite; }
+  .pixel-spy { font-size:clamp(66px,12vw,110px); animation:bobbing 2s ease-in-out infinite; }
   @keyframes bobbing { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 
   .menu-btns { display:flex; flex-direction:column; gap:10px; width:100%; max-width:280px; }
-  .title-coins { font-size:clamp(6px,1.5vw,9px); color:var(--gray); }
+  .title-coins { font-size:clamp(8px,1.5vw,12px); color:var(--gray); }
   .title-coins span { color:var(--gold); }
 
   /* ── BUTTONS ── */
   .px-btn {
-    font-family:'Press Start 2P',monospace; font-size:clamp(8px,1.8vw,11px);
+    font-family:'Press Start 2P',monospace; font-size:clamp(11px,1.8vw,15px);
     padding:12px 16px; background:var(--panel); color:var(--gold);
     border:3px solid var(--gold); cursor:pointer; letter-spacing:1px;
     transition:all 0.08s; box-shadow:3px 3px 0 var(--gold2);
@@ -92,12 +92,12 @@
   .px-btn.purple { color:var(--purple); border-color:var(--purple); box-shadow:3px 3px 0 var(--purple2); }
   .px-btn.purple:hover,.px-btn.purple:active { background:var(--purple); color:#fff; }
   .px-btn:disabled { opacity:0.3; cursor:not-allowed; transform:none !important; }
-  .px-btn.sm { font-size:clamp(6px,1.4vw,9px); padding:8px 10px; }
+  .px-btn.sm { font-size:clamp(8px,1.4vw,12px); padding:8px 10px; }
 
   /* ── LEVELS ── */
   #screen-levels { gap:10px; padding:12px; }
   .levels-header { display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px; flex-shrink:0; }
-  .levels-title  { font-size:clamp(10px,2.5vw,15px); color:var(--gold); letter-spacing:2px; }
+  .levels-title  { font-size:clamp(14px,2.5vw,21px); color:var(--gold); letter-spacing:2px; }
   .levels-scroll { width:100%; flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; }
   .levels-grid   { display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; padding-bottom:8px; }
   .level-card {
@@ -110,16 +110,16 @@
   .level-card.locked  { opacity:0.35; cursor:not-allowed; }
   .level-card.current { border-color:var(--blue); }
   .level-card .lv-icon { font-size:22px; }
-  .level-card .lv-num  { font-size:12px; color:var(--gold); }
-  .level-card .lv-name { font-size:5px; color:var(--white); text-align:center; }
-  .level-card .lv-diff { font-size:5px; color:var(--gray); }
+  .level-card .lv-num  { font-size:15px; color:var(--gold); }
+  .level-card .lv-name { font-size:8px; color:var(--white); text-align:center; }
+  .level-card .lv-diff { font-size:8px; color:var(--gray); }
 
   /* ── GAME ── */
   #screen-game { justify-content:space-between; padding:6px 8px; gap:4px; }
 
   .top-bar {
     display:flex; justify-content:space-between; align-items:center; width:100%;
-    font-size:clamp(6px,1.5vw,9px); color:var(--gray); flex-shrink:0;
+    font-size:clamp(8px,1.5vw,12px); color:var(--gray); flex-shrink:0;
   }
   .top-bar .coins { color:var(--gold); }
   .top-bar .level { color:var(--blue); }
@@ -128,20 +128,20 @@
 
   .fighter-card {
     background:var(--panel); border:2px solid var(--border);
-    padding:clamp(5px,1.5vw,10px);
+    padding:clamp(7px,1.5vw,14px);
     display:flex; flex-direction:column; align-items:center; gap:clamp(2px,1vh,5px);
   }
   .fighter-card.player-card { border-color:var(--blue); }
   .fighter-card.enemy-card  { border-color:var(--red); }
 
   .fighter-name {
-    font-size:clamp(5px,1.2vw,7px); letter-spacing:1px;
+    font-size:clamp(7px,1.2vw,10px); letter-spacing:1px;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
   }
   .player-card .fighter-name { color:var(--blue); }
   .enemy-card  .fighter-name { color:var(--red); }
 
-  .fighter-sprite { font-size:clamp(26px,6.5vw,44px); line-height:1; }
+  .fighter-sprite { font-size:clamp(36px,6.5vw,61px); line-height:1; }
   .fighter-sprite.hit    { animation:hit-flash 0.4s; }
   .fighter-sprite.attack { animation:atk 0.35s; }
   @keyframes hit-flash { 0%,100%{filter:none} 50%{filter:brightness(4) saturate(0)} }
@@ -151,15 +151,15 @@
   @keyframes atk-e { 0%,100%{transform:scaleX(-1)} 35%{transform:scaleX(-1) translateX(14px)} }
 
   .hearts { display:flex; gap:2px; flex-wrap:wrap; justify-content:center; }
-  .heart  { font-size:clamp(9px,2.3vw,13px); }
+  .heart  { font-size:clamp(12px,2.3vw,18px); }
   .heart.lost { filter:grayscale(1); opacity:0.22; }
 
   .bullets-bar { display:flex; gap:2px; flex-wrap:wrap; justify-content:center; min-height:12px; }
-  .bullet-pip { width:5px; height:11px; background:var(--gold); clip-path:polygon(50% 0%,100% 20%,100% 100%,0% 100%,0% 20%); }
+  .bullet-pip { width:6px; height:13px; background:var(--gold); clip-path:polygon(50% 0%,100% 20%,100% 100%,0% 100%,0% 20%); }
   .bullet-pip.empty { background:var(--gray); opacity:0.22; }
 
   .status-badge {
-    font-size:clamp(5px,1.1vw,7px); padding:3px 5px;
+    font-size:clamp(7px,1.1vw,10px); padding:3px 5px;
     background:var(--border); color:var(--gray); text-align:center; white-space:nowrap;
   }
   .status-badge.defending { background:#0a3a1a; color:var(--green); }
@@ -167,10 +167,10 @@
   .status-badge.shooting  { background:#3a0a0a; color:var(--red); }
 
   .vs-area { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding-top:18px; }
-  .vs-txt  { font-size:clamp(11px,3vw,17px); color:var(--gold); text-shadow:0 0 6px var(--gold); }
+  .vs-txt  { font-size:clamp(15px,3vw,23px); color:var(--gold); text-shadow:0 0 6px var(--gold); }
 
   .result-banner {
-    font-size:clamp(6px,1.4vw,8px); text-align:center; padding:7px 9px;
+    font-size:clamp(8px,1.4vw,11px); text-align:center; padding:7px 9px;
     border:2px solid var(--gold); background:var(--panel); width:100%;
     color:var(--white); letter-spacing:1px; line-height:1.9; flex-shrink:0;
     min-height:clamp(34px,8vh,52px); display:flex; align-items:center; justify-content:center;
@@ -180,14 +180,14 @@
   .action-row  { display:flex; gap:7px; justify-content:center; width:100%; }
 
   .action-btn {
-    font-family:'Press Start 2P',monospace; font-size:clamp(6px,1.3vw,8px);
-    padding:clamp(7px,1.8vh,11px) clamp(6px,1.8vw,12px);
+    font-family:'Press Start 2P',monospace; font-size:clamp(8px,1.3vw,11px);
+    padding:clamp(7px,1.8vh,11px) clamp(8px,1.8vw,17px);
     background:var(--panel); border:2px solid var(--border); color:var(--white);
     cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px;
     transition:all 0.08s; flex:1; max-width:115px; box-shadow:2px 2px 0 var(--border);
     -webkit-tap-highlight-color:transparent;
   }
-  .action-btn .icon { font-size:clamp(16px,4.5vw,24px); }
+  .action-btn .icon { font-size:clamp(22px,4.5vw,33px); }
   .action-btn:hover:not(:disabled),.action-btn:active:not(:disabled) { transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--border); }
   .action-btn:disabled { opacity:0.22; cursor:not-allowed; }
   .action-btn.shoot  { border-color:var(--red);   color:var(--red);   box-shadow:2px 2px 0 var(--red2); }
@@ -197,7 +197,7 @@
   .action-btn.reload:hover:not(:disabled) { background:#1a1500; }
   .action-btn.defend:hover:not(:disabled) { background:#0a1a0a; }
 
-  .round-info { font-size:clamp(5px,1.2vw,7px); color:var(--gray); text-align:center; line-height:1.9; white-space:pre-line; }
+  .round-info { font-size:clamp(7px,1.2vw,10px); color:var(--gray); text-align:center; line-height:1.9; white-space:pre-line; }
 
   .game-btns { display:flex; gap:8px; width:100%; justify-content:center; flex-shrink:0; }
 
@@ -207,24 +207,24 @@
     min-height:14px; width:100%; flex-shrink:0;
   }
   .bag-btn {
-    font-family:'Press Start 2P',monospace; font-size:clamp(5px,1.2vw,7px);
+    font-family:'Press Start 2P',monospace; font-size:clamp(7px,1.2vw,10px);
     padding:3px 5px; background:var(--panel); border:2px solid var(--purple);
     color:var(--purple); cursor:pointer; display:flex; align-items:center; gap:3px;
     -webkit-tap-highlight-color:transparent; transition:all 0.08s;
   }
   .bag-btn:hover { background:var(--purple); color:#fff; }
   .bag-btn .bag-qty { font-size:5px; color:var(--gold); }
-  .bag-empty { font-size:clamp(5px,1.1vw,7px); color:var(--gray); }
+  .bag-empty { font-size:clamp(7px,1.1vw,10px); color:var(--gray); }
 
   /* ── SHOP ── */
   #screen-shop { gap:8px; padding:10px; }
   .shop-header { display:flex; justify-content:space-between; align-items:center; width:100%; flex-shrink:0; }
-  .shop-title  { font-size:clamp(10px,2.5vw,15px); color:var(--gold); letter-spacing:3px; }
-  .shop-coins  { font-size:clamp(7px,1.6vw,10px); color:var(--gold); }
+  .shop-title  { font-size:clamp(14px,2.5vw,21px); color:var(--gold); letter-spacing:3px; }
+  .shop-coins  { font-size:clamp(10px,1.6vw,14px); color:var(--gold); }
 
   .shop-tabs { display:flex; width:100%; flex-shrink:0; }
   .shop-tab {
-    font-family:'Press Start 2P',monospace; font-size:clamp(5px,1.2vw,7px);
+    font-family:'Press Start 2P',monospace; font-size:clamp(7px,1.2vw,10px);
     padding:7px 3px; background:var(--panel); border:2px solid var(--border);
     color:var(--gray); cursor:pointer; flex:1; text-align:center; border-bottom:none;
     -webkit-tap-highlight-color:transparent;
@@ -249,9 +249,9 @@
   .shop-item.equipped { border-color:var(--blue); background:#0a0f1a; }
   .shop-item.in-bag   { border-color:var(--purple); background:#0f0a1a; }
   .shop-item .item-icon  { font-size:24px; }
-  .shop-item .item-name  { font-size:6px; color:var(--white); text-align:center; letter-spacing:1px; }
-  .shop-item .item-desc  { font-size:5px; color:var(--gray); text-align:center; line-height:1.7; white-space:pre-line; }
-  .shop-item .item-price { font-size:7px; color:var(--gold); }
+  .shop-item .item-name  { font-size:9px; color:var(--white); text-align:center; letter-spacing:1px; }
+  .shop-item .item-desc  { font-size:7px; color:var(--gray); text-align:center; line-height:1.7; white-space:pre-line; }
+  .shop-item .item-price { font-size:10px; color:var(--gold); }
   .shop-item .item-price.owned-lbl    { color:var(--green); }
   .shop-item .item-price.equipped-lbl { color:var(--blue); }
   .shop-item .item-price.bag-lbl      { color:var(--purple); }
@@ -260,13 +260,13 @@
 
   /* ── GAME OVER ── */
   #screen-gameover { justify-content:center; gap:clamp(10px,3vh,22px); padding:20px; }
-  .go-title { font-size:clamp(18px,6vw,46px); animation:blink 1s step-end infinite; }
+  .go-title { font-size:clamp(25px,6vw,63px); animation:blink 1s step-end infinite; }
   .go-title.win  { color:var(--gold); }
   .go-title.lose { color:var(--red); }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-  .go-emoji { font-size:clamp(40px,10vw,70px); }
-  .go-stats { font-size:clamp(6px,1.5vw,9px); color:var(--gray); text-align:center; line-height:2.4; white-space:pre-line; }
-  .go-coins { font-size:clamp(8px,2vw,12px); color:var(--gold); }
+  .go-emoji { font-size:clamp(55px,10vw,97px); }
+  .go-stats { font-size:clamp(8px,1.5vw,12px); color:var(--gray); text-align:center; line-height:2.4; white-space:pre-line; }
+  .go-coins { font-size:clamp(11px,2vw,17px); color:var(--gold); }
   .go-btns  { display:flex; flex-direction:column; gap:9px; width:100%; max-width:250px; }
 
   /* ── MODAL (Save + Regras) ── */
@@ -282,9 +282,9 @@
     box-shadow:5px 5px 0 var(--gold2);
     max-height:90vh; overflow-y:auto;
   }
-  .modal-title   { font-size:clamp(9px,2.5vw,13px); color:var(--gold); letter-spacing:2px; }
+  .modal-title   { font-size:clamp(12px,2.5vw,18px); color:var(--gold); letter-spacing:2px; }
   .modal-section { display:flex; flex-direction:column; gap:7px; }
-  .modal-label   { font-size:clamp(6px,1.4vw,8px); color:var(--gray); }
+  .modal-label   { font-size:clamp(8px,1.4vw,11px); color:var(--gray); }
   .modal textarea {
     font-family:'Press Start 2P',monospace; font-size:6px;
     background:var(--bg); border:2px solid var(--border);
@@ -294,17 +294,17 @@
 
   /* rules modal */
   .rules-block { display:flex; flex-direction:column; gap:10px; }
-  .rules-section-title { font-size:clamp(7px,1.8vw,9px); color:var(--gold); border-bottom:1px solid var(--border); padding-bottom:5px; }
-  .rules-line { font-size:clamp(5px,1.2vw,7px); color:var(--white); line-height:2.2; display:flex; gap:6px; }
+  .rules-section-title { font-size:clamp(10px,1.8vw,12px); color:var(--gold); border-bottom:1px solid var(--border); padding-bottom:5px; }
+  .rules-line { font-size:clamp(7px,1.2vw,10px); color:var(--white); line-height:2.2; display:flex; gap:6px; }
   .rules-line span.lbl { color:var(--gold); min-width:18px; }
-  .rules-note { font-size:clamp(5px,1.1vw,6px); color:var(--gray); line-height:2; margin-top:2px; }
+  .rules-note { font-size:clamp(7px,1.1vw,8px); color:var(--gray); line-height:2; margin-top:2px; }
 
   /* ── NOTIF ── */
   .notif {
     position:fixed; top:14px; left:50%;
     transform:translateX(-50%) translateY(-100px);
     background:var(--panel); border:2px solid var(--gold); color:var(--gold);
-    font-family:'Press Start 2P',monospace; font-size:clamp(7px,1.8vw,9px);
+    font-family:'Press Start 2P',monospace; font-size:clamp(10px,1.8vw,12px);
     padding:9px 14px; z-index:1000; transition:transform 0.25s;
     text-align:center; max-width:min(290px,90vw); pointer-events:none;
   }
@@ -390,16 +390,17 @@
 
       <div>
         <div class="rules-section-title">🎒 BAG DE ITENS</div>
-        <div class="rules-line"><span class="lbl">🟣</span> Utilitys e Skills ficam na tua bag após compra.</div>
-        <div class="rules-line"><span class="lbl">🟣</span> Clica nos botões da bag durante a batalha para usar quando quiseres.</div>
-        <div class="rules-line"><span class="lbl">🟣</span> Utilitys podem ser compradas várias vezes e acumulam na bag.</div>
-        <div class="rules-line"><span class="lbl">🟣</span> Skills duram toda a batalha mas são gastas no fim do nível.</div>
+        <div class="rules-line"><span class="lbl">▸</span> Utilitys e Skills ficam na tua bag após compra.</div>
+        <div class="rules-line"><span class="lbl">▸</span> Clica nos botões da bag durante a batalha para usar quando quiseres.</div>
+        <div class="rules-line"><span class="lbl">▸</span> Utilitys podem ser compradas várias vezes e acumulam na bag.</div>
+        <div class="rules-line"><span class="lbl">▸</span> Skills duram toda a batalha mas são gastas no fim do nível.</div>
       </div>
 
       <div>
         <div class="rules-section-title">🔫 ARMAS &amp; SKINS</div>
         <div class="rules-line"><span class="lbl">▸</span> Armas e Skins compram-se uma vez e equipam-se na loja.</div>
         <div class="rules-line"><span class="lbl">▸</span> Só podes ter uma arma equipada de cada vez.</div>
+        <div class="rules-line"><span class="lbl">▸</span> Armas apenas são equipadas na próxima batalha.</div>
       </div>
 
       <div>
@@ -409,7 +410,7 @@
 
       <div>
         <div class="rules-section-title">💰 MOEDAS</div>
-        <div class="rules-line"><span class="lbl">🏆</span> Vitória +2 🪙</div>
+        <div class="rules-line"><span class="lbl">🏆</span> Vitória +5 🪙</div>
         <div class="rules-line"><span class="lbl">💀</span> Derrota -1 🪙</div>
       </div>
 
@@ -427,9 +428,9 @@
 <div class="screen active" id="screen-title">
   <div class="title-logo">
     <span class="big">007</span>
-    <span class="sub">PIXEL SPY</span>
+    <span class="sub">RETRO PIXEL</span>
   </div>
-  <div class="pixel-spy" id="titleSpy">🕵️</div>
+  <div class="pixel-spy" id="titleSpy">🕴🏼</div>
   <div class="menu-btns">
     <button class="px-btn" onclick="showScreen('screen-levels')">▶ JOGAR</button>
     <button class="px-btn blue" onclick="goShop('screen-title')">🛒 LOJA</button>
@@ -462,8 +463,8 @@
 
   <div class="arena">
     <div class="fighter-card player-card">
-      <div class="fighter-name">🕵️ AGENTE</div>
-      <div class="fighter-sprite" id="playerSprite">🕵️</div>
+      <div class="fighter-name">🕴🏼 AGENTE</div>
+      <div class="fighter-sprite" id="playerSprite">🕴🏼</div>
       <div class="hearts" id="playerHearts"></div>
       <div class="bullets-bar" id="playerBullets"></div>
       <div class="status-badge" id="playerStatus">— AGUARDA —</div>
@@ -577,12 +578,12 @@ const SAVE_VER = '3';
 
 function serializeSave(st) {
   const obj = { v:SAVE_VER, coins:st.coins, maxLvl:st.unlockedLevels, owned:st.owned, equipped:st.equipped, bag:st.bag };
-  return '=== 007 PIXEL SPY SAVE ===\n' + btoa(unescape(encodeURIComponent(JSON.stringify(obj)))) + '\n=== END ===';
+  return '=== 007 RETRO PIXEL SAVE ===\n' + btoa(unescape(encodeURIComponent(JSON.stringify(obj)))) + '\n=== END ===';
 }
 
 function deserializeSave(txt) {
   try {
-    const match = txt.match(/=== 007 PIXEL SPY SAVE ===\s*([\w+/=]+)\s*=== END ===/);
+    const match = txt.match(/=== 007 RETRO PIXEL SAVE ===\s*([\w+/=]+)\s*=== END ===/);
     if (!match) throw new Error('fmt');
     const obj = JSON.parse(decodeURIComponent(escape(atob(match[1]))));
     return obj;
@@ -666,37 +667,39 @@ const game = {
 };
 
 // ═══════════════════════════════════════════
-// SHOP DATA  (novo formato)
+// SHOP DATA
 // ═══════════════════════════════════════════
 const SHOP = {
   weapons:[
-    {id:'usps',             icon:'🔫',name:'USP-S',           desc:'Máx: 5 balas',                      price:10, effect:{maxBullets:5}},
-    {id:'glock',            icon:'🔫',name:'GLOCK',            desc:'Máx: 7 balas',                      price:15, effect:{maxBullets:7}},
-    {id:'shotgun',          icon:'💥',name:'SHOTGUN',           desc:'2 de Damage p/bala',                price:25, effect:{damage:2}},
-    {id:'american_shotgun', icon:'💥',name:'AMERICAN SHOTGUN', desc:'2 de Damage p/bala\nMáx: 5 balas',  price:35, effect:{maxBullets:5,damage:2}},
-    {id:'uzi',              icon:'🔫',name:'UZI',               desc:'Máx: 5 balas\n+1 vida',             price:35, effect:{maxBullets:5,bonusHP:1}},
-    {id:'ak47',             icon:'🔫',name:'AK-47',             desc:'Máx: 5 balas\n+ Double Reload',     price:35, effect:{maxBullets:5,doubleReload:true}},
-    {id:'sniper',           icon:'🎯',name:'SNIPER',            desc:'Perfura\ncolete inimigo',            price:60, effect:{armorPierce:true}},
+    {id:'usps',             icon:'🔫',name:'USP-S',           	desc:'Máx: 5 balas',                      price:10, effect:{maxBullets:5}},
+    {id:'glock',            icon:'🔫',name:'GLOCK',            	desc:'Máx: 7 balas',                      price:15, effect:{maxBullets:7}},
+    {id:'shotgun',          icon:'💥',name:'SHOTGUN',          	desc:'2 de Damage p/bala',                price:35, effect:{damage:2}},
+    {id:'american_shotgun', icon:'💥',name:'AMERICAN SHOTGUN', 	desc:'2 de Damage p/bala\nMáx: 5 balas',  price:45, effect:{maxBullets:5,damage:2}},
+    {id:'uzi',              icon:'🔫',name:'UZI',              	desc:'Máx: 5 balas\n+1 vida',             price:45, effect:{maxBullets:5,bonusHP:1}},
+    {id:'ak47',             icon:'🔫',name:'AK-47',            	desc:'Máx: 5 balas\n+ Double Reload',     price:50, effect:{maxBullets:5,doubleReload:true}},
+    {id:'sniper',           icon:'🎯',name:'SNIPER',           	desc:'Perfura\ncolete inimigo',           price:75, effect:{armorPierce:true}},
   ],
   utilitys:[
-    {id:'cigarrete',  icon:'🚬',name:'CIGARRETE',  desc:'+1 vida\npor ronda',       price:5,  effect:{bonusHP:1}},
-    {id:'beer',       icon:'🍺',name:'BEER',        desc:'+2 vidas\npor ronda',      price:8,  effect:{bonusHP:2}},
-    {id:'hamsa',      icon:'🪬',name:'HAMSA',       desc:'+3 vidas\npor ronda',      price:10, effect:{bonusHP:3}},
-    {id:'eyeofgod',   icon:'👁️',name:'EYE OF GOD', desc:'Vês a jogada\ndo inimigo', price:5,  effect:{seeEnemy:true}},
+    {id:'cigarrete',  icon:'🚬',name:'CIGARRETE',  	desc:'+1 vida\npor ronda',       	price:5,  effect:{bonusHP:1}},
+    {id:'beer',       icon:'🍺',name:'BEER',        	desc:'+2 vidas\npor ronda',      	price:8,  effect:{bonusHP:2}},
+    {id:'hamsa',      icon:'🪬',name:'HAMSA',       	desc:'+3 vidas\npor ronda',      	price:10, effect:{bonusHP:3}},
+    {id:'eyeofgod',   icon:'👁️',name:'EYE OF GOD', 	desc:'Vês a jogada\ndo inimigo', 	price:5,  effect:{seeEnemy:true}},
   ],
   skills:[
-    {id:'double_reload', icon:'⚡', name:'DOUBLE RELOAD', desc:'Recarrega a dobrar',          price:7,  effect:{doubleReload:true}},
-    {id:'helmet',        icon:'⛑️',name:'HELMET 35',      desc:'35% bloqueio\nautomático',    price:7,  effect:{autoBlock:0.35}},
-    {id:'burst_shield',  icon:'💠', name:'BURST SHIELD',  desc:'1x: defender\nE atacar',      price:10, effect:{shieldBurst:true}},
+    {id:'double_reload', icon:'⚡', name:'DOUBLE RELOAD', desc:'Recarrega a dobrar',          		price:7,  effect:{doubleReload:true}},
+    {id:'helmet',        icon:'⛑️',name:'HELMET 35',      desc:'35% bloqueio\nautomático',    		price:7,  effect:{autoBlock:0.35}},
+    {id:'burst_shield',  icon:'💠', name:'BURST SHIELD',  desc:'Defende e dispara\nna mesma ronda',    	price:10, effect:{shieldBurst:true}},
   ],
   skins:[
-    {id:'skin_clown',   icon:'🤡',  name:'CLOWN',   desc:'Smile! Why so serius?', price:2,  effect:{sprite:'🤡'}},
-    {id:'skin_merman',  icon:'🧜🏻‍♂️', name:'MERMAN',  desc:'Mermaid? Nah Merman',  price:3,  effect:{sprite:'🧜🏻‍♂️'}},
-    {id:'skin_ralien',  icon:'👾',  name:'RALIEN',  desc:'Retro alien',           price:5,  effect:{sprite:'👾'}},
-    {id:'skin_skull',   icon:'💀',  name:'SKULL',   desc:'We are all the same',  price:7,  effect:{sprite:'💀'}},
-    {id:'skin_hitman',  icon:'🤵🏼‍♂️', name:'HITMAN',  desc:'Kill it',              price:10, effect:{sprite:'🤵🏼‍♂️'}},
-    {id:'skin_lninja',  icon:'🥷',  name:'W NINJA', desc:'White Ninja',          price:12, effect:{sprite:'🥷'}},
-    {id:'skin_dninja',  icon:'🥷🏿', name:'B NINJA', desc:'Black Ninja',          price:12, effect:{sprite:'🥷🏿'}},
+    {id:'skin_clown',   icon:'🤡',  	name:'CLOWN',   	desc:'Smile! Why so serius?',price:2,  effect:{sprite:'🤡'}},
+    {id:'skin_merman',  icon:'🧜🏻‍♂️', 	name:'MERMAN',  	desc:'Mermaid? Nah Merman',  price:3,  effect:{sprite:'🧜🏻‍♂️'}},
+    {id:'skin_ralien',  icon:'👾',  	name:'RALIEN',  	desc:'Retro alien',          price:5,  effect:{sprite:'👾'}},
+    {id:'skin_villain', icon:'🦹🏻‍♂️',  	name:'VILLAIN',  	desc:'I gotta do it',        price:5,  effect:{sprite:'🦹🏻‍♂️'}},
+    {id:'skin_pbombero',icon:'👨🏻‍🚒',  	name:'PEDRO BOMBERO',  	desc:'Where is the fire?',   price:7,  effect:{sprite:'👨🏻‍🚒'}},
+    {id:'skin_skull',   icon:'💀',  	name:'SKULL',   	desc:'We are all the same',  price:7,  effect:{sprite:'💀'}},
+    {id:'skin_hitman',  icon:'🤵🏼‍♂️', 	name:'HITMAN',  	desc:'Kill it',              price:10, effect:{sprite:'🤵🏼‍♂️'}},
+    {id:'skin_lninja',  icon:'🥷',  	name:'W NINJA', 	desc:'White Ninja',          price:12, effect:{sprite:'🥷'}},
+    {id:'skin_dninja',  icon:'🥷🏿', 	name:'B NINJA', 	desc:'Black Ninja',          price:12, effect:{sprite:'🥷🏿'}},
   ],
 };
 
@@ -710,19 +713,26 @@ function getShopItem(id) {
 }
 
 const LEVEL_DEFS = [
-  {name:'RECRUTA',   icon:'👮',sprite:'👮',difficulty:'FÁCIL',    aiStyle:'random',     hp:5, maxBullets:3},
-  {name:'GUARDA',    icon:'💂',sprite:'💂',difficulty:'FÁCIL+',   aiStyle:'cautious',   hp:5, maxBullets:3},
-  {name:'AGENTE',    icon:'🕵️',sprite:'🕵️',difficulty:'MÉDIO',   aiStyle:'smart',      hp:6, maxBullets:4},
-  {name:'ASSASSINO', icon:'🧛',sprite:'🧛',difficulty:'MÉDIO+',   aiStyle:'aggressive', hp:6, maxBullets:5},
-  {name:'CYBORG',    icon:'🤖',sprite:'🤖',difficulty:'DIFÍCIL',  aiStyle:'adaptive',   hp:7, maxBullets:5},
-  {name:'CHEFE',     icon:'👹',sprite:'👹',difficulty:'DIFÍCIL+', aiStyle:'master',     hp:8, maxBullets:6},
+  {name:'RECRUTA',   	icon:'👮',sprite:'👮',difficulty:'FÁCIL',    	aiStyle:'master',     	hp:5, maxBullets:3},
+  {name:'GENIE',   	icon:'🧞‍♂️',sprite:'🧞‍♂️',difficulty:'FÁCIL',    	aiStyle:'random',     	hp:5, maxBullets:3},
+  {name:'GUARDA',    	icon:'💂',sprite:'💂',difficulty:'FÁCIL+',   	aiStyle:'cautious',   	hp:5, maxBullets:3},
+  {name:'MOAI',    	icon:'🗿​',sprite:'🗿​',difficulty:'FÁCIL+',   	aiStyle:'cautious',   	hp:5, maxBullets:3},
+  {name:'TROLL',    	icon:'🧌',sprite:'🧌',difficulty:'MÉDIO',   	aiStyle:'random',  	hp:6, maxBullets:4},
+  {name:'ASTRONAUT',    icon:'👨‍🚀',sprite:'👨‍🚀',difficulty:'MÉDIO',   	aiStyle:'random',  	hp:6, maxBullets:4},
+  {name:'DRACULA', 	icon:'🧛🏻‍♂️',sprite:'🧛🏻‍♂️',difficulty:'MÉDIO+',   	aiStyle:'cautious',     hp:6, maxBullets:5},
+  {name:'ALIEN', 	icon:'👽',sprite:'👽',difficulty:'MÉDIO+',   	aiStyle:'random',      	hp:6, maxBullets:5},
+  {name:'CYBORG',    	icon:'🤖',sprite:'🤖',difficulty:'DIFÍCIL',  	aiStyle:'random',   	hp:7, maxBullets:5},
+  {name:'DSKULL',    	icon:'🩻​',sprite:'🩻​',difficulty:'DIFÍCIL',  	aiStyle:'random',   	hp:7, maxBullets:5},
+  {name:'DEMON',     	icon:'👹',sprite:'👹',difficulty:'DIFÍCIL+', 	aiStyle:'cautious',    	hp:8, maxBullets:6},
+  {name:'RALIEN',     	icon:'👾',sprite:'👾',difficulty:'DIFÍCIL+', 	aiStyle:'random',     	hp:8, maxBullets:6},
 ];
 
 function getLevelData(lvl) {
   const base = LEVEL_DEFS[Math.min(lvl-1, LEVEL_DEFS.length-1)];
   if (lvl > LEVEL_DEFS.length) {
     const extra = lvl - LEVEL_DEFS.length;
-    return { ...base, name:`ÉLITE ${extra}`, icon:'💀', sprite:'💀', difficulty:`ELITE ${extra}`,
+    return { ...base, name:`ÉLITE ${extra}`, icon:'☠️', sprite:'☠️', difficulty:`ELITE ${extra}`,
+      aiStyle:'random',
       hp: base.hp + Math.floor(extra*0.6), maxBullets: Math.min(base.maxBullets + Math.floor(extra*0.4), 12) };
   }
   return base;
@@ -778,7 +788,7 @@ function renderLevels() {
 function getPlayerSprite() {
   const id = state.equipped.skins;
   if (id) { const s=SHOP.skins.find(i=>i.id===id); if(s) return s.effect.sprite; }
-  return '🕵️';
+  return '🕴🏼';
 }
 
 // Base effects from equipped weapon only (no more armor/skills tab)
@@ -1115,45 +1125,74 @@ function resolveRound(pA, eA, reloadAmt) {
   const armorPierce=fx.armorPierce||false;
   const pAutoBlk=fx.autoBlock||0;
 
-  if (pA==='reload') game.playerBullets=Math.min(game.playerBullets+reloadAmt, game.playerMaxBullets);
-  if (eA==='reload') game.enemyBullets =Math.min(game.enemyBullets+1,          game.enemyMaxBullets);
+  // ★ Burst Shield: se ativo e o jogador defender, trata-se como defender+disparar simultaneamente
+  let pActionFinal = pA;
+  let burstFired = false;
+  if (pA==='defend' && fx.shieldBurst && game.playerBullets > 0) {
+    burstFired = true;
+    pActionFinal = 'burst'; // defende E dispara
+    // consumir a skill após uso
+    delete game.activeBattleSkills.shieldBurst;
+    game.fx = getAllEffects();
+  }
 
-  const pShoot=pA==='shoot'&&game.playerBullets>0;
-  const eShoot=eA==='shoot'&&game.enemyBullets>0;
-  const pDefend=pA==='defend';
-  const eDefend=eA==='defend';
+  if (pActionFinal==='reload') game.playerBullets=Math.min(game.playerBullets+reloadAmt, game.playerMaxBullets);
+  if (eA==='reload') game.enemyBullets=Math.min(game.enemyBullets+1, game.enemyMaxBullets);
+
+  const pShoot  = pActionFinal==='shoot' && game.playerBullets>0;
+  const pDefend = pActionFinal==='defend' || pActionFinal==='burst';
+  const eBulletsBefore = game.enemyBullets;
+  const eShoot  = eA==='shoot' && game.enemyBullets>0;
+  const eDefend = eA==='defend';
   let pHit=false, eHit=false;
-  let playerLostLife = false;
+  let playerLostLife=false;
 
-  if (pShoot && eShoot) {
-    // Duelo simplificado: vence quem tem mais balas; empate = ninguém morre; balas sempre reiniciadas
+  // ── BURST SHIELD: defende e dispara na mesma ronda
+  if (burstFired) {
+    game.playerBullets -= 1; // gasta 1 bala ao disparar
+    // Resolver o disparo do inimigo (bloqueado pelo escudo)
+    if (eShoot) {
+      game.enemyBullets -= 1;
+      result = `💠 BURST SHIELD! Bloqueaste o disparo do inimigo`;
+    } else {
+      result = `💠 BURST SHIELD! Atacaste enquanto te defendias`;
+    }
+    // Resolver o teu disparo contra o inimigo
+    if (eDefend && !armorPierce) {
+      result += `\n🛡️ Inimigo defendeu-se do teu disparo.`;
+    } else {
+      game.enemyHP -= dmg; eHit = true;
+      game.enemyBullets = 0;
+      result += `\n🎯 ACERTO! Inimigo perde ${dmg} vida!`;
+    }
+  }
+  // ── DUELO: ambos disparam
+  else if (pShoot && eShoot) {
     const pB=game.playerBullets, eB=game.enemyBullets;
     game.playerBullets=0; game.enemyBullets=0;
     if (pB>eB)      { game.enemyHP-=dmg; eHit=true; result=`💥 DUELO! ${pB} vs ${eB} — Inimigo perde ${dmg} vida! Balas reiniciadas.`; }
     else if (eB>pB) { game.playerHP-=1; pHit=true; playerLostLife=true; result=`💥 DUELO! ${eB} vs ${pB} — Perdes 1 vida! Balas reiniciadas.`; }
     else            { result=`⚡ EMPATE no duelo (${pB} vs ${eB})! Ninguém morre. Balas reiniciadas.`; }
   }
+  // ── PLAYER DISPARA, INIMIGO NÃO
   else if (pShoot && !eShoot) {
-    game.playerBullets-=1;
-    if (eDefend&&!armorPierce) { result=`🛡️ Inimigo defendeu! Bala desperdiçada.`; }
-    else {
-      // Inimigo atingido -> perde a vida e reinicia as balas
-      game.enemyHP-=dmg; eHit=true;
-      game.enemyBullets=0;
-      result=`🎯 ACERTO! Inimigo perde ${dmg} vida! Balas do inimigo reiniciadas.`;
-    }
+    game.playerBullets -= 1;
+    if (eDefend && !armorPierce) { result=`🛡️ Inimigo defendeu! Bala desperdiçada.`; }
+    else { game.enemyHP-=dmg; eHit=true; game.enemyBullets=0; result=`🎯 ACERTO! Inimigo perde ${dmg} vida! Balas do inimigo reiniciadas.`; }
   }
+  // ── INIMIGO DISPARA, PLAYER NÃO
   else if (eShoot && !pShoot) {
-    game.enemyBullets-=1;
+    game.enemyBullets -= 1;
     if (pDefend) {
       if (armorPierce) { game.playerHP-=1; pHit=true; playerLostLife=true; result=`💀 SNIPER perfurou o teu colete! -1 vida!`; }
       else { result=`🛡️ Defendeste! Nenhum dano.`; }
-    } else if (pAutoBlk>0&&Math.random()<pAutoBlk) { result=`✨ Colete automático bloqueou o disparo!`; }
+    } else if (pAutoBlk>0 && Math.random()<pAutoBlk) { result=`✨ Colete automático bloqueou o disparo!`; }
     else { game.playerHP-=1; pHit=true; playerLostLife=true; result=`💥 Foste atingido! Perdes 1 vida!`; }
   }
+  // ── SEM DISPAROS
   else {
     const msgs={'reload-reload':'🔄 Ambos recarregaram. Silêncio.','reload-defend':'🔄 Recarregaste. Inimigo em guarda.','defend-reload':'🛡️ Defendeste. Inimigo recarregou.','defend-defend':'🛡️ Standoff! Ambos em guarda.'};
-    result = msgs[`${pA}-${eA}`]||'— Ronda sem incidentes.';
+    result = msgs[`${pA}-${eA}`] || '— Ronda sem incidentes.';
   }
 
   // ★ Perder uma vida → balas reiniciadas
