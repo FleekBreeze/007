@@ -1783,12 +1783,19 @@ function bjHit() {
   const val = handValue(bjGame.playerHand);
   const scoreEl = document.getElementById('playerBjScore');
   scoreEl.textContent = val;
-  if (val > 21) { scoreEl.className = 'bj-score bust'; bjEndRound('bust'); }
+  if (val > 21) {
+    bjGame.phase = 'bust';
+    scoreEl.className = 'bj-score bust';
+    document.getElementById('bjHit').disabled = true;
+    document.getElementById('bjStand').disabled = true;
+    bjEndRound('bust');
+  }
   else if (val === 21) { scoreEl.className = 'bj-score blackjack'; bjStand(); }
   else scoreEl.className = 'bj-score';
 }
 
 function bjStand() {
+  if (bjGame.phase !== 'playing') return;
   bjGame.phase = 'dealer';
   document.getElementById('bjHit').disabled = true;
   document.getElementById('bjStand').disabled = true;
