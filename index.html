@@ -837,6 +837,53 @@
   </div>
 </div>
 
+<!-- ═══ SLOT PAYTABLE MODAL ═══ -->
+<div class="modal-bg" id="slotPaytableModal">
+  <div class="modal">
+    <div class="modal-title">🎰 TABELA DE PRÉMIOS</div>
+    <div class="rules-block">
+
+      <div>
+        <div class="rules-section-title" style="color:var(--casino)">🏆 JACKPOT — ×10 aposta + 🪬 HAMSA</div>
+        <div class="rules-line"><span class="lbl">▸</span> 💎 💎 💎 — Três diamantes</div>
+        <div class="rules-line"><span class="lbl">▸</span> 🎯 🎯 🎯 — Três alvos</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title" style="color:var(--gold)">🥇 BIG WIN — ×5 aposta + 🍺 BEER</div>
+        <div class="rules-line"><span class="lbl">▸</span> 🕴🏼 🕴🏼 🕴🏼 — Três agentes</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title" style="color:var(--green)">✅ WIN — ×3 aposta</div>
+        <div class="rules-line"><span class="lbl">▸</span> 💎 💎 ✱ — Dois diamantes</div>
+        <div class="rules-line"><span class="lbl">▸</span> 🎯 🎯 ✱ — Dois alvos</div>
+        <div class="rules-line"><span class="lbl">▸</span> 🍸 🍸 🍸 — Três cocktails</div>
+        <div class="rules-line"><span class="lbl">▸</span> 🔫 🔫 🔫 — Três pistolas</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title" style="color:var(--blue)">👍 SMALL WIN — ×2 aposta</div>
+        <div class="rules-line"><span class="lbl">▸</span> 🍸 🍸 ✱ — Dois cocktails</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title" style="color:var(--gray)">💸 SEM PRÉMIO</div>
+        <div class="rules-line"><span class="lbl">▸</span> Qualquer outra combinação</div>
+        <div class="rules-note">Símbolos sem prémio: 💣 🃏 ⚡ (decorativos)</div>
+      </div>
+
+      <div>
+        <div class="rules-section-title" style="color:var(--purple)">⭐ BÓNUS RARO (3% em qualquer vitória)</div>
+        <div class="rules-line"><span class="lbl">▸</span> Skill aleatória adicionada à bag!</div>
+        <div class="rules-note">Possíveis: ⚡ Double Reload | 💠 Burst Shield | ⛑️ Helmet 35</div>
+      </div>
+
+    </div>
+    <button class="px-btn gray sm" onclick="closeSlotPaytable()">✕ FECHAR</button>
+  </div>
+</div>
+
 <script>
 // ═══════════════════════════════════════════
 // SAVE SYSTEM
@@ -1544,7 +1591,10 @@ function renderSlots(container) {
   const div = document.createElement('div');
   div.innerHTML = `
     <div class="slot-machine">
-      <div class="slot-title">🎰 SLOT MACHINE</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%">
+        <div class="slot-title">🎰 SLOT MACHINE</div>
+        <button class="px-btn gray sm" onclick="openSlotPaytable()" style="width:auto;padding:5px 8px;font-size:clamp(7px,1.1vw,9px)">? PRÉMIOS</button>
+      </div>
       <div class="slot-reels" id="slotReels">
         <div class="slot-reel"><div class="slot-reel-inner" id="reel0"><div class="slot-symbol" id="sym0">🎯</div></div></div>
         <div class="slot-reel"><div class="slot-reel-inner" id="reel1"><div class="slot-symbol" id="sym1">🍸</div></div></div>
@@ -2187,6 +2237,9 @@ function executeReset() {
 }
 function confirmQuit() { document.getElementById('quitModal').classList.add('open'); }
 function closeQuitModal() { document.getElementById('quitModal').classList.remove('open'); }
+
+function openSlotPaytable()  { document.getElementById('slotPaytableModal').classList.add('open'); }
+function closeSlotPaytable() { document.getElementById('slotPaytableModal').classList.remove('open'); }
 
 // ── INIT
 showScreen('screen-title');
